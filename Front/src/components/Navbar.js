@@ -9,7 +9,7 @@ class Navbar extends Component {
                     <div className="col-auto">HomeManager</div>
                     <div className="col" />
                     <div className="col-auto">FAQ</div>
-                    <div className="col-auto">Connexion</div>
+                    <button className="col-auto">Connexion</button>
                 </div>
             </div>
         )
