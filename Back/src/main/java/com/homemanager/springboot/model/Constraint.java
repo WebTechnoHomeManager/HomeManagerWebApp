@@ -1,19 +1,20 @@
 package com.homemanager.springboot.model;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "constraint")
 public class Constraint {
 	@Id
 	@GeneratedValue
-	private Integer id;
+  private Integer id;
 	@Column(name = "name")
-	private String name;
+	  private String name;
 	@Column(name = "description")
-	private String description;
+	  private String description;
 	
 	public Integer getId() {
 		return id;
