@@ -1,32 +1,25 @@
 import React, { Component, useState } from 'react';
-import { Form, Button, Row, Col, Accordion, Card } from 'react-bootstrap'
-
+import { Form, Button, Row, Col, Accordion, Card } from 'react-bootstrap';
+import moment from 'moment';
+//var moment = require('moment');
 class SearchBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
             services: [],
-            constraintes: [],
-            tags: [{ id: 'Thailand', text: 'Thailand' }, { id: 'India', text: 'India' }],
-            suggestions: suggestions,
-        };
-
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleAddition = this.handleAddition.bind(this);         
+            constraints: [],
+            dates: {
+                from: '',
+                to: ''
+            }
+        };      
       }
 
     // Update the state according to the checked boxes
-    handleClick(e, type) {
+    handleClick(e, key) {
 
         var label = e.target.labels[0].innerText; 
         var checked = e.target.checked; 
-        var key;
-
-        if (type == "serv"){
-            key = "services";
-        } else if (type == "const"){
-            key = "constraintes";
-        }
 
         const state = this.state[key].slice();
 
@@ -43,32 +36,53 @@ class SearchBar extends Component {
 
     }
 
+    // Update the state according to the date inputs
+    handleChangeDate(e, key) {
+        var input = e.target.value;  
+
+        this.setState(prevState => ({
+            dates: {                   // object that we want to update
+                ...prevState.dates,    // keep all other key-value pairs
+                [key]: input      // update the value of specific key
+            }
+        }));
+    }
+
     // Refresh the display of the selected items as string
-    updateDisplay(type){
+    updateDisplayCheckBox(key){
 
-        var key;
-        var stringDefault;
-
-        if (type == "serv"){
-            key = "services";
-            stringDefault = "Services..."
-        } else if (type == "const"){
-            key = "constraintes";
-            stringDefault = "Constraintes..."
+        const stringDefault = {
+            services: "Services...",
+            constraints: "Constraintes..."
         }
 
         const state = this.state[key];
 
         if (state.length == 0){
-            return stringDefault
+            return stringDefault[key];
         } else {
             var stringState = state.map((obj) => obj).join(', ');
             return stringState;
         }
     }
 
+    // Refresh the display of inputs
+    updateDisplayDate(){
+
+        const from = this.state.dates.from;
+        const to = this.state.dates.to;
+
+        if (from != '' && to != ''){
+            var fromFormat = moment(from).format('ddd, MMM Do YYYY');
+            var toFormat = moment(to).format('ddd, MMM Do YYYY');
+            return "From " + fromFormat + "to " + toFormat;
+        } else {
+            return "Dates...";
+        }
+    }
+
+
     render() {
-        const { tags, suggestions } = this.state;
         return (
             <Form>
                 <Row>
@@ -80,36 +94,46 @@ class SearchBar extends Component {
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
+                                        <Form.Control />
                                     </Card.Body>
                                 </Accordion.Collapse>
                             </Card>
                         </Accordion>
                     </Col>
                     <Col>
-                        <Form.Group controlId="dates">
-                            <Form.Label>Dates</Form.Label>
-                            <Form.Control />
-                        </Form.Group>
+                        <Accordion>
+                            <Card>
+                                <Accordion.Toggle as={Card.Header} eventKey="0">
+                                    {this.updateDisplayDate()}
+                                </Accordion.Toggle>
+                                <Accordion.Collapse eventKey="0">
+                                    <Card.Body>
+                                        <Form.Control type="date" onChange={(e) => this.handleChangeDate(e, "from")}/>
+                                        <Form.Control type="date" onChange={(e) => this.handleChangeDate(e, "to")}/>
+                                    </Card.Body>
+                                </Accordion.Collapse>
+                            </Card>
+                        </Accordion>
                     </Col>
                     <Col>
                         <Accordion>
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
-                                    {this.updateDisplay("serv")}
+                                    {this.updateDisplayCheckBox("services")}
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
                                     <Form.Check name="service1"
                                                 label="Service 1"
-                                                id="service1" onClick={(e) => this.handleClick(e, "serv")}
+                                                id="service1" onClick={(e) => this.handleClick(e, "services")}
                                     />
                                     <Form.Check name="service2"
                                                 label="Service 2"
-                                                id="service2" onClick={(e) => this.handleClick(e, "serv")}
+                                                id="service2" onClick={(e) => this.handleClick(e, "services")}
                                     />
                                     <Form.Check name="service3"
                                                 label="Service 3"
-                                                id="service3" onClick={(e) => this.handleClick(e, "serv")}
+                                                id="service3" onClick={(e) => this.handleClick(e, "services")}
                                     />
                                     </Card.Body>
                                 </Accordion.Collapse>
@@ -120,21 +144,21 @@ class SearchBar extends Component {
                         <Accordion>
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
-                                    {this.updateDisplay("const")}
+                                    {this.updateDisplayCheckBox("constraints")}
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
                                         <Form.Check name="constrainte1"
                                                     label="Contrainte 1"
-                                                    id="constrainte1" onClick={(e) => this.handleClick(e, "const")}
+                                                    id="constrainte1" onClick={(e) => this.handleClick(e, "constraints")}
                                         />
                                         <Form.Check name="constrainte2"
                                                     label="Contrainte 2"
-                                                    id="constrainte2" onClick={(e) => this.handleClick(e, "const")}
+                                                    id="constrainte2" onClick={(e) => this.handleClick(e, "constraints")}
                                         />
                                         <Form.Check name="constrainte3"
                                                     label="Contrainte 3"
-                                                    id="constrainte3" onClick={(e) => this.handleClick(e, "const")}
+                                                    id="constrainte3" onClick={(e) => this.handleClick(e, "constraints")}
                                         />
                                     </Card.Body>
                                 </Accordion.Collapse>
