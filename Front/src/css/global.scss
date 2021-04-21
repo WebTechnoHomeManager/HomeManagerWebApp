@@ -1,0 +1,24 @@
+
+$verydark: #475465;
+$dark: #556C96;
+$light: #B6CDE8;
+$verylight: #EEEDFF;
+$highlight: #FF584D;
+
+[class*="col"] {
+    /*border: 1px solid black;*/
+}
+
+body{
+    background-color: $verylight;
+}
+
+#header{
+    background-color: $dark;
+    color: black;
+}
+
+#footer{
+    background-color: $verydark;
+}
+

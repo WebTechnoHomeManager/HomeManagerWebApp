@@ -1,3 +1,6 @@
+@import "global";
+@import "welcome";
+
 .App {
   text-align: center;
 }
@@ -37,25 +40,3 @@
   }
 }
 
-[class*="col"] {
-    /*border: 1px solid black;*/
-}
-
-body{
-    background-color: #EEEDFF;
-}
-
-#header{
-    background-color: #556C96;
-    color: black;
-}
-
-
-#footer{
-    background-color: #475465;
-}
-
-.div-banner{
-    background-color: #222967;
-
-}
