@@ -4,6 +4,7 @@ $dark: #556C96;
 $light: #B6CDE8;
 $verylight: #EEEDFF;
 $highlight: #FF584D;
+$darkHighlight: #ff4034;
 
 [class*="col"] {
     /*border: 1px solid black;*/
@@ -22,3 +23,13 @@ body{
     background-color: $verydark;
 }
 
+input[type="submit"]{
+    background-color: $highlight;
+    border-color: $highlight;
+    border-radius: 2rem;
+}
+
+input[type="submit"]:hover{
+    background-color: $darkHighlight;
+    border-color: $darkHighlight;
+}
