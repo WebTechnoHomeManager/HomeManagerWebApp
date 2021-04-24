@@ -75,7 +75,7 @@ class SearchBar extends Component {
         if (from != '' && to != ''){
             var fromFormat = moment(from).format('ddd, MMM Do YYYY');
             var toFormat = moment(to).format('ddd, MMM Do YYYY');
-            return "From " + fromFormat + "to " + toFormat;
+            return "From " + fromFormat + " to " + toFormat;
         } else {
             return "Dates...";
         }
@@ -84,9 +84,9 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <Form>
+            <Form id="searchBar">
                 <Row>
-                    <Col>
+                    <Col className="inputSearch">
                         <Accordion>
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
@@ -100,7 +100,7 @@ class SearchBar extends Component {
                             </Card>
                         </Accordion>
                     </Col>
-                    <Col>
+                    <Col className="inputSearch">
                         <Accordion>
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
@@ -108,14 +108,20 @@ class SearchBar extends Component {
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
-                                        <Form.Control type="date" onChange={(e) => this.handleChangeDate(e, "from")}/>
-                                        <Form.Control type="date" onChange={(e) => this.handleChangeDate(e, "to")}/>
+                                        <Row>
+                                            <Col sm={6}>
+                                                <Form.Control type="date" onChange={(e) => this.handleChangeDate(e, "from")}/>
+                                            </Col>
+                                            <Col sm={6}>
+                                                <Form.Control type="date" onChange={(e) => this.handleChangeDate(e, "to")}/>
+                                            </Col>
+                                        </Row>
                                     </Card.Body>
                                 </Accordion.Collapse>
                             </Card>
                         </Accordion>
                     </Col>
-                    <Col>
+                    <Col className="inputSearch">
                         <Accordion>
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
@@ -140,7 +146,7 @@ class SearchBar extends Component {
                             </Card>
                         </Accordion>  
                     </Col>
-                    <Col>
+                    <Col className="inputSearch">
                         <Accordion>
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
@@ -164,6 +170,9 @@ class SearchBar extends Component {
                                 </Accordion.Collapse>
                             </Card>
                         </Accordion>  
+                    </Col>
+                    <Col sm={1}>
+                        <Button as="input" type="submit" value="Search"/>
                     </Col>
                 </Row>
 
