@@ -1,3 +1,4 @@
+import logo from '../images/logo.png';
 import React, { Component } from 'react';
 import { DropdownButton, Dropdown } from 'react-bootstrap';
 
@@ -7,7 +8,7 @@ class Navbar extends Component {
 
             <div className="container-fluid py-2" id="header">
                 <div className="row">
-                    <div className="col-auto">HomeManager</div>
+                    <img className="col-auto" src={logo} alt="Logo" />
                     <div className="col" />
                     <div className="col-auto">FAQ</div>
                     <DropdownButton id="dropdown-basic-button" className="col-auto" title="Connexion" >
