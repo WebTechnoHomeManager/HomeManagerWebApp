@@ -20,7 +20,14 @@ body{
 }
 
 #footer{
-    background-color: $verydark;
+    background-color: #475465;
+    color: white;
+    margin-top: 1rem;
+  padding: 1rem;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  position: fixed;
 }
 
 input[type="submit"]{

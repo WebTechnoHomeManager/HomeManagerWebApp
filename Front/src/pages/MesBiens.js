@@ -1,7 +1,7 @@
 //import logo from './logo.svg';
-import '../App.css';
+import '../css/App.scss';
 import { Container, Row, Col, Card, Button, Dropdown, DropdownButton } from 'react-bootstrap';
-import photo from '../images/banner2.jpg';
+import photo from '../images/banner/banner2.jpg';
 import { Pencil, Trash, PlusCircle } from 'react-bootstrap-icons';
 
 function MesBiens() {
