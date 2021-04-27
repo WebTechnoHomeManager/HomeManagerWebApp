@@ -1,36 +1,21 @@
-import logo from './logo.svg';
 import './css/App.scss';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import SearchBar from './components/SearchBar';
-import HProperties from './components/HProperties';
-import Image from 'react-bootstrap/Image'
-import { Container, Row, Col } from 'react-bootstrap'
-
-import banner from './images/banner/banner2-cropped2.jpg';
+import { Switch, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import MesBiens from './pages/MesBiens';
 
 
 function App() {
     return (
         <div>
             <Navbar></Navbar>
-            <Container fluid>
-                <Row className="div-banner">
-                    <Image src={banner} className="img-fluid mx-auto d-block banner" />
-                </Row>
-            </Container>
-            <Container className="my-5">
-                <Row>
-                    <SearchBar></SearchBar>
-                </Row>
-            </Container>
-            <Container className="my-5">
-                <Row>
-                    <HProperties></HProperties>
-                </Row>
-            </Container>
+            <Switch> {/* The Switch decides which component to show based on the current URL.*/}
+                <Route exact path='/' component={Home}></Route>
+                <Route exact path='/mesbiens' component={MesBiens}></Route>
+            </Switch>
             <Footer></Footer>
-        </div>
+        </div >
 
     );
 }
