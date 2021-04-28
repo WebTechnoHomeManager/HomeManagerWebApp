@@ -3,8 +3,8 @@ import '../css/App.scss';
 import banner from '../images/banner/banner2-cropped2.jpg';
 import { Container, Row } from 'react-bootstrap';
 import SearchBar from '../components/SearchBar';
-import HProperties from '../components/HProperties';
-import Image from 'react-bootstrap/Image'
+import HighlightedProperties from '../components/HighlightedProperties';
+import Image from 'react-bootstrap/Image';
 
 function Home() {
     return (
@@ -21,7 +21,7 @@ function Home() {
             </Container>
             <Container className="my-5">
                 <Row>
-                    <HProperties></HProperties>
+                    <HighlightedProperties></HighlightedProperties>
                 </Row>
             </Container>
         </div>

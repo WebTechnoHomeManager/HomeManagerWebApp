@@ -7,11 +7,12 @@ import house2 from '../images/houses/house2.jpg';
 import house3 from '../images/houses/house3.jpg';
 import house4 from '../images/houses/house4.jpg';
 
-class HProperties extends Component {
+class HighlightedProperties extends Component {
 
     render() {
         return (
             <Row>
+                <h2>Recently added...</h2>
                 <Col>
                     <h4>Paris</h4>
                     <Image src={house1} className="img-fluid mx-auto d-block" />
@@ -31,4 +32,4 @@ class HProperties extends Component {
             </Row>
         )
     }
-} export default HProperties;
+} export default HighlightedProperties;
