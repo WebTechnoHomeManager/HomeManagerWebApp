@@ -6,6 +6,12 @@
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
+<<<<<<< Updated upstream
+=======
+    "aios": "^1.0.1",
+    "bootstrap": "^4.6.0",
+    "bootstrap-sass": "^3.4.1",
+>>>>>>> Stashed changes
     "moment": "^2.29.1",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
