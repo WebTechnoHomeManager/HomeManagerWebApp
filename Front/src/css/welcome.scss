@@ -9,3 +9,24 @@
 #searchBar .card-header{    
     background-color: white;
 }
+
+#header{
+    background-color: $dark;
+    color: black;
+}
+
+#header .row>div{
+    margin: auto;
+}
+
+#footer{
+
+    background-color: $verydark;
+    color: white;
+    margin-top: 1rem;
+    padding: 1rem;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    //position: fixed;
+}
