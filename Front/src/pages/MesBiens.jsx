@@ -1,6 +1,6 @@
 //import logo from './logo.svg';
 import React, { Component } from 'react';
-import PropertiesService from '../services/PropertiesService';
+import PropertyService from '../services/PropertyService';
 import '../css/App.scss';
 import { Container, Row, Col, Card, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import photo from '../images/banner/banner2.jpg';
@@ -16,7 +16,7 @@ class MesBiens extends Component {
     }
 
     componentDidMount() {
-        PropertiesService.getProperties().then((res) => {
+        PropertyService.getProperties().then((res) => {
             this.setState({ properties: res.data });
         });
     }

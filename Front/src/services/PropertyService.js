@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const PROPERTY_API_BASE_URL = "http://localhost:9090/properties";
 
-class PropertiesService {
+class PropertyService {
 
     getProperties() {
         return axios.get(PROPERTY_API_BASE_URL);
@@ -10,4 +10,4 @@ class PropertiesService {
 
 }
 
-export default new PropertiesService();
+export default new PropertyService();
