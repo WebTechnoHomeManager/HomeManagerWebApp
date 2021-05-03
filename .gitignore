@@ -8,6 +8,7 @@ pom.properties
 /.metadata
 .metadata
 .class
+/.class
 
 # testing
 /coverage

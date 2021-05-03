@@ -5,12 +5,12 @@ const PROPERTY_API_BASE_URL = "http://localhost:8080/api/v1/property";
 class PropertyService {
 
     getProperties(){
-        return axios.get(EMPLOYEE_API_BASE_URL);
+        return axios.get(PROPERTY_API_BASE_URL);
     }
 
-    getPropertiesBy(data){
+    /*getPropertiesBy(data){
         return axios.post(EMPLOYEE_API_BASE_URL + '/search', data);
-    }
+    }*/
 
     /*createEmployee(employee){
         return axios.post(EMPLOYEE_API_BASE_URL, employee);
