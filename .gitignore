@@ -5,6 +5,8 @@ node_modules/
 /.pnp
 .pnp.js
 pom.properties
+/.metadata
+.metadata
 
 # testing
 /coverage
