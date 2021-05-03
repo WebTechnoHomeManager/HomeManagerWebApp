@@ -6,7 +6,6 @@ class SearchBar extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             locations: [],
             services: [],
@@ -28,6 +27,7 @@ class SearchBar extends Component {
         this.displayConstraintsValue = this.displayConstraintsValue.bind(this); 
 
         this.searchProperties = this.searchProperties.bind(this); 
+        console.log(this.props);
       }
 
 
@@ -129,8 +129,12 @@ class SearchBar extends Component {
     }
 
     searchProperties(e){
-        console.log('data => ' + JSON.stringify(this.state));
-
+        // e.preventDefault();
+        // console.log('data => ' + JSON.stringify(this.state));
+        this.props.history.push({
+            pathname: '/search',
+            state: this.state
+        });
     }
 
 

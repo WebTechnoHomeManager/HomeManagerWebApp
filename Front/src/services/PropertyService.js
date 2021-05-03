@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const PROPERTY_API_BASE_URL = "http://localhost:8080/api/v1/property";
+const PROPERTY_API_BASE_URL = "http://localhost:9090/api/v1/properties";
 
 class PropertyService {
 
@@ -8,9 +8,9 @@ class PropertyService {
         return axios.get(PROPERTY_API_BASE_URL);
     }
 
-    /*getPropertiesBy(data){
-        return axios.post(EMPLOYEE_API_BASE_URL + '/search', data);
-    }*/
+    getPropertiesBy(data){
+        return axios.post(PROPERTY_API_BASE_URL + '/search', data);
+    }
 
     /*createEmployee(employee){
         return axios.post(EMPLOYEE_API_BASE_URL, employee);
@@ -29,4 +29,4 @@ class PropertyService {
     }*/
 }
 
-export default new EmployeeService()
+export default new PropertyService()

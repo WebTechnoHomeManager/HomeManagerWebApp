@@ -11,17 +11,19 @@ import javax.persistence.Table;
 public class Property {
 	@Id
 	@GeneratedValue
-  private Integer id;
+	private Integer id;
 	@Column(name = "owner_id")
-  private Integer owner_id;
+	private Integer owner_id;
 	@Column(name = "title")
-  private String title;
+	private String title;
 	@Column(name = "description")
-  private String description;
+	private String description;
 	@Column(name = "address")
-  private String address;
+	private String address;
+	@Column(name = "city")
+	private String city;
 	@Column(name = "property_type")
-  private String property_type;
+	private String property_type;
 	@Column(name = "total_occupancy")
 	private Integer total_occupancy;
 	@Column(name = "latitude")
