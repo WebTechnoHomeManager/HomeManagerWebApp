@@ -5,20 +5,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.homemanager.springboot.model.Faq;
+import com.homemanager.springboot.repository.FaqRepository;
 
-import com.homemanager.springboot.model.Constraint;
-import com.homemanager.springboot.repository.ConstraintRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
-public class ConstraintController {
+public class FaqController {
 	@Autowired
-	private ConstraintRepository constraintRepository;
+	private FaqRepository faqRepository;
 	
-	@GetMapping(path="/constraints")
-	  public @ResponseBody Iterable<Constraint> getAllConstraints() {
+	@GetMapping(path="/faq")
+	  public @ResponseBody Iterable<Faq> getAllQuestions() {
 	    // This returns a JSON or XML with the users
-	    return constraintRepository.findAll();
+	    return faqRepository.findAll();
 	  }
 }
