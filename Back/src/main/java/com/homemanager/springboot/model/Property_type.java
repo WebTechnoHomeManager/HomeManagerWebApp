@@ -26,6 +26,5 @@ public class Property_type {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

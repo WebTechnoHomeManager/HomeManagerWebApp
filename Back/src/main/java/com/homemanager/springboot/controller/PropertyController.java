@@ -37,6 +37,12 @@ public class PropertyController {
 	public List<Property> getEmployeeById(@RequestBody String dataString) throws JSONException {
 		
 		JSONObject data = new JSONObject(dataString);
+		/*String locationsList = data.get("locations").toString().replace("[", "").replace("]", "");
+		String dateFrom = data.get("dateFrom").toString();
+		String dateTo = data.get("dateTo").toString();
+		String servicesList = data.get("services").toString().replace("[", "").replace("]", "");
+		String constraintsList = data.get("constraints").toString().replace("[", "").replace("]", "");*/
+		
 		List<Property> listProperty = propertyRepository.getPropertyBy(
 				data.get("locations").toString().replace("[", "").replace("]", "")/*, 
 				data.get("dateFrom").toString(), 

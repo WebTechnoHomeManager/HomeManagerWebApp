@@ -1,0 +1,19 @@
+#messaging [class*="col"]{
+    border: 1px solid $light;
+    background-color: white;
+}
+
+#messaging{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+#messaging .row{
+    flex: 1 1 auto;
+}
+
+.col-messaging{
+
+    margin: 1rem;
+}

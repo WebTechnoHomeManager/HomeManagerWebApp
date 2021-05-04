@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,7 +25,7 @@ public class Property {
 	@Column(name = "city")
 	  private String city;
 	@Column(name = "property_type_id")
-  private int property_type_id;
+	private int property_type_id;
 	@Column(name = "total_occupancy")
 	private Integer total_occupancy;
 	@Column(name = "latitude")
