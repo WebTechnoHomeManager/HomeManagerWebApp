@@ -19,11 +19,11 @@ public class Property {
 	@Column(name = "description")
 	private String description;
 	@Column(name = "address")
-	private String address;
+  private String address;
 	@Column(name = "city")
-	private String city;
-	@Column(name = "property_type")
-	private String property_type;
+	  private String city;
+	@Column(name = "property_type_id")
+  private int property_type_id;
 	@Column(name = "total_occupancy")
 	private Integer total_occupancy;
 	@Column(name = "latitude")
@@ -32,6 +32,12 @@ public class Property {
 	private double longitude;
 	
 	
+	public int getProperty_type_id() {
+		return property_type_id;
+	}
+	public void setProperty_type_id(int property_type_id) {
+		this.property_type_id = property_type_id;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -62,11 +68,11 @@ public class Property {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getProperty_type() {
-		return property_type;
+	public String getCity() {
+		return city;
 	}
-	public void setProperty_type(String property_type) {
-		this.property_type = property_type;
+	public void setCity(String city) {
+		this.city = city;
 	}
 	public Integer getTotal_occupancy() {
 		return total_occupancy;
