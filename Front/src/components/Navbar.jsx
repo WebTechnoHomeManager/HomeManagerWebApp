@@ -11,7 +11,7 @@ class Navbar extends Component {
                     <Image className="col-auto" src={logo} alt="logo" />
                     <Col></Col>
                     <Col sm="auto">FAQ</Col>
-                    <DropdownButton id="dropdown-basic-button" className="col-auto" title="Connexion" >
+                    <DropdownButton id="dropdown-basic-button" className="col-auto" title="Log in" >
                         <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
                         <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
                         <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
