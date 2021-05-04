@@ -14,29 +14,18 @@ body{
     background-color: $verylight;
 }
 
-#header{
-    background-color: $dark;
-    color: black;
+button, input[type="submit"]{
+    background-color: $highlight !important;
+    border-color: $highlight !important;
+    border-radius: 2rem !important;
 }
 
-#footer{
-    background-color: #475465;
-    color: white;
-    margin-top: 1rem;
-  padding: 1rem;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  position: fixed;
+button, input[type="submit"]:hover{
+    background-color: $darkHighlight !important;
+    border-color: $darkHighlight !important;
 }
 
-input[type="submit"]{
-    background-color: $highlight;
-    border-color: $highlight;
-    border-radius: 2rem;
-}
-
-input[type="submit"]:hover{
-    background-color: $darkHighlight;
-    border-color: $darkHighlight;
+button, input[type="submit"]:focus{
+    //box-shadow: 0 0 0 0.25rem rgb(245, 129, 122, 0.5) !important;
+    box-shadow: none !important;
 }
