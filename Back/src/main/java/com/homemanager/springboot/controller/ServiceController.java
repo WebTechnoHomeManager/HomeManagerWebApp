@@ -2,8 +2,11 @@ package com.homemanager.springboot.controller;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+//import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,4 +25,11 @@ public class ServiceController {
 	    // This returns a JSON or XML with the users
 	    return serviceRepository.findAll();
 	  }
+	
+	/*@GetMapping("/property_services")
+	public List<Service> getServicesByPropertyId() {
+		List<Service> listServices = serviceRepository.getListServices();
+	    return listServices;
+	}*/
+	
 }
