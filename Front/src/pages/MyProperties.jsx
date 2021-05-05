@@ -38,14 +38,16 @@ class MyProperties extends Component {
                                         <Card.Text>Total occupancy: {property.total_occupancy}</Card.Text>
                                         <Card.Text>Address: {property.address}</Card.Text>
                                         <Card.Text>City: {property.city}</Card.Text>
-                                        <Card.Text>Services: {property.property_services.name}</Card.Text>
+                                        <Card.Text>Services: {property.property_services.map(function (d, idx) {
+                                            return (<li key={idx}>{d.name}</li>)
+                                        })}</Card.Text>
                                         <Card.Text>Constraints:</Card.Text>
                                         <Button variant="primary"> <Pencil /> Update</Button>
                                         <Button variant="primary"> <Trash />Delete</Button>
                                     </Col>
                                     <Col><Card.Text>Réservations
                             </Card.Text>
-                                        <DropdownButton id="dropdown-basic-button" className="col-auto" title="à venir">
+                                        <DropdownButton id="dropdown-basic-button" className="col-auto" title="Future reservations">
                                             <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
                                             <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
                                             <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
