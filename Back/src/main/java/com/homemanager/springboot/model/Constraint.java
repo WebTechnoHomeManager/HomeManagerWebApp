@@ -10,11 +10,11 @@ import javax.persistence.Table;
 public class Constraint {
 	@Id
 	@GeneratedValue
-  private Integer id;
+	private Integer id;
 	@Column(name = "name")
-	  private String name;
+	 private String name;
 	@Column(name = "description")
-	  private String description;
+	 private String description;
 	
 	public Integer getId() {
 		return id;

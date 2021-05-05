@@ -34,11 +34,12 @@ class MyProperties extends Component {
                                     <Col>
                                         <Card.Title>{property.title}</Card.Title>
                                         <Card.Img variant="top" src={photo} />
-                                        <Card.Text>Type : {property.property_type_id}</Card.Text>
-                                        <Card.Text>Address : {property.address}</Card.Text>
-                                        <Card.Text>City : {property.city}</Card.Text>
-                                        <Card.Text>Services :</Card.Text>
-                                        <Card.Text>Constraints :</Card.Text>
+                                        <Card.Text>Type: {property.property_type_id.name}</Card.Text>
+                                        <Card.Text>Total occupancy: {property.total_occupancy}</Card.Text>
+                                        <Card.Text>Address: {property.address}</Card.Text>
+                                        <Card.Text>City: {property.city}</Card.Text>
+                                        <Card.Text>Services: {property.property_services.name}</Card.Text>
+                                        <Card.Text>Constraints:</Card.Text>
                                         <Button variant="primary"> <Pencil /> Update</Button>
                                         <Button variant="primary"> <Trash />Delete</Button>
                                     </Col>
@@ -50,7 +51,7 @@ class MyProperties extends Component {
                                             <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                                         </DropdownButton>
                                         <Card.Text>
-                                            From xx to xx 2021 - par First name NAME
+                                            From xx to xx 2021 - by First name NAME
                             </Card.Text>
                                     </Col>
                                 </Row>

@@ -1,11 +1,16 @@
 package com.homemanager.springboot.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToMany;
+//import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,21 +29,38 @@ public class Property {
   private String address;
 	@Column(name = "city")
 	  private String city;
-	@Column(name = "property_type_id")
-	private int property_type_id;
+	//@Column(name = "property_type_id")
+	//private int property_type_id;
+	@ManyToOne
+    @JoinColumn(name="property_type_id")
+    private Property_type property_type;
+	
 	@Column(name = "total_occupancy")
 	private Integer total_occupancy;
 	@Column(name = "latitude")
 	private double latitude;
 	@Column(name = "longitude")
 	private double longitude;
+	@ManyToMany
+	@JoinTable(
+			  name = "property_services", 
+			  joinColumns = @JoinColumn(name = "property_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "service_id"))
+    Set<Service> property_services;
 	
+	//idem pour contraints quand le problème sera réglé
 	
-	public int getProperty_type_id() {
-		return property_type_id;
+	public Set<Service> getProperty_services() {
+		return property_services;
 	}
-	public void setProperty_type_id(int property_type_id) {
-		this.property_type_id = property_type_id;
+	public void setProperty_services(Set<Service> property_services) {
+		this.property_services = property_services;
+	}
+	public Property_type getProperty_type_id() {
+		return property_type;
+	}
+	public void setProperty_type_id(Property_type property_type_id) {
+		this.property_type = property_type_id;
 	}
 	public Integer getId() {
 		return id;
