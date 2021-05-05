@@ -16,7 +16,7 @@ class Messaging extends Component {
                     <h1>My messaging</h1>
                     <Row>
                         <Col sm={3} className="col-messaging">
-                            <Row>
+                            <Row id="messaging-user-list">
                                 <Col sm={12}>cd</Col>
                                 <Col sm={12}>cd</Col>
                                 <Col sm={12}>cd</Col>

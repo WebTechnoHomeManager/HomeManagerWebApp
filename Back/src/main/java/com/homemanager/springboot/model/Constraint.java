@@ -1,4 +1,5 @@
 package com.homemanager.springboot.model;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,9 +13,9 @@ public class Constraint {
 	@GeneratedValue
 	private Integer id;
 	@Column(name = "name")
-	 private String name;
+	private String name;
 	@Column(name = "description")
-	 private String description;
+	private String description;
 	
 	public Integer getId() {
 		return id;
