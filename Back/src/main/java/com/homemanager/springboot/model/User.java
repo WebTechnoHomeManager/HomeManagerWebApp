@@ -1,9 +1,12 @@
 package com.homemanager.springboot.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -22,8 +25,13 @@ public class User {
   private String last_name;
 	@Column(name = "profile_picture_path")
   private String profile_picture_path;
-  
-  public Integer getId() {
+	
+	@OneToMany(mappedBy = "reservation_user")
+    private Set<Reservation> reservations;
+	
+
+
+public Integer getId() {
     return id;
   }
 

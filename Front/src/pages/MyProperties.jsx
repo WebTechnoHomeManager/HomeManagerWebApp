@@ -34,7 +34,7 @@ class MyProperties extends Component {
                                     <Col>
                                         <Card.Title>{property.title}</Card.Title>
                                         <Card.Img variant="top" src={photo} />
-                                        <Card.Text>Type: {property.property_type_id.name}</Card.Text>
+                                        <Card.Text>Type: {property.property_type.name}</Card.Text>
                                         <Card.Text>Total occupancy: {property.total_occupancy}</Card.Text>
                                         <Card.Text>Address: {property.address}</Card.Text>
                                         <Card.Text>City: {property.city}</Card.Text>
@@ -52,9 +52,10 @@ class MyProperties extends Component {
                                             <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
                                             <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                                         </DropdownButton>
-                                        <Card.Text>
-                                            From xx to xx 2021 - by First name NAME
-                            </Card.Text>
+
+                                        <Card.Text>{property.reservations.map(function (d, idx) {
+                                            return (<li key={idx}> From {d.start_date} to {d.end_date} - by {d.reservation_user.first_name} {d.reservation_user.last_name}</li>)
+                                        })}</Card.Text>
                                     </Col>
                                 </Row>
                                 </Container>

@@ -10,7 +10,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.ManyToMany;
-//import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -41,6 +41,11 @@ public class Property {
 	private double latitude;
 	@Column(name = "longitude")
 	private double longitude;
+	
+	@OneToMany(mappedBy = "property_reservation")
+    private Set<Reservation> reservations;
+	
+	
 	@ManyToMany
 	@JoinTable(
 			  name = "property_services", 
@@ -50,16 +55,25 @@ public class Property {
 	
 	//idem pour contraints quand le problème sera réglé
 	
+	
+	//Getters and Setters
+	public Set<Reservation> getReservations() {
+		return reservations;
+	}
+	public void setReservations(Set<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+	
 	public Set<Service> getProperty_services() {
 		return property_services;
 	}
 	public void setProperty_services(Set<Service> property_services) {
 		this.property_services = property_services;
 	}
-	public Property_type getProperty_type_id() {
+	public Property_type getProperty_type() {
 		return property_type;
 	}
-	public void setProperty_type_id(Property_type property_type_id) {
+	public void setProperty_type(Property_type property_type_id) {
 		this.property_type = property_type_id;
 	}
 	public Integer getId() {
