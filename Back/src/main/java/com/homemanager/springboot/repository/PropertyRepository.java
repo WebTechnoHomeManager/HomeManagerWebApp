@@ -13,7 +13,11 @@ public interface PropertyRepository extends CrudRepository<Property, Integer> {
 
 	@Query("SELECT P "
 			+ "FROM Property P "
-			+ "WHERE P.city in (:loca)")
+			+ "LEFT JOIN Reservation R ON P.id = R.property_reservation "
+			+ "WHERE P.city in (:loca) "
+			//+ "AND R.start_date < '2022-04-03'"
+			+ "")
+	//@Query("FROM ReleaseDateType AS rdt  rdt.cacheMedias AS cm WHERE cm.id = ?1") 
 	public List<Property> getPropertyBy(
 			@Param("loca") List<String> locations/*,
 			@Param("dateF") String dateFrom,

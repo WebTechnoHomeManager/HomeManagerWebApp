@@ -1,7 +1,10 @@
 package com.homemanager.springboot.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,22 +22,14 @@ public class Property {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Column(name = "owner_id")
-	private Integer owner_id;
 	@Column(name = "title")
 	private String title;
 	@Column(name = "description")
 	private String description;
 	@Column(name = "address")
-  private String address;
+    private String address;
 	@Column(name = "city")
-	  private String city;
-	//@Column(name = "property_type_id")
-	//private int property_type_id;
-	@ManyToOne
-    @JoinColumn(name="property_type_id")
-    private Property_type property_type;
-	
+	private String city;
 	@Column(name = "total_occupancy")
 	private Integer total_occupancy;
 	@Column(name = "latitude")
@@ -42,10 +37,25 @@ public class Property {
 	@Column(name = "longitude")
 	private double longitude;
 	
+	//@Column(name = "owner_id")
+	//private Integer owner_id;
+	@ManyToOne
+    @JoinColumn(name="owner_id")
+    private User owner;
+	
+	//@Column(name = "property_type_id")
+	//private int property_type_id;
+	@ManyToOne
+    @JoinColumn(name="property_type_id")
+    private Property_type property_type;
+	
 	@OneToMany(mappedBy = "property_reservation")
     private Set<Reservation> reservations;
 	
-	
+	// Liaison avec property_photo
+	/*@OneToMany(mappedBy = "property_reservation")
+    private Set<Reservation> reservations;*/
+
 	@ManyToMany
 	@JoinTable(
 			  name = "property_services", 
@@ -53,7 +63,13 @@ public class Property {
 			  inverseJoinColumns = @JoinColumn(name = "service_id"))
     Set<Service> property_services;
 	
-	//idem pour contraints quand le problème sera réglé
+	// marche pa !!!!!
+	@ManyToMany
+	@JoinTable(
+			  name = "property_constraints", 
+			  joinColumns = @JoinColumn(name = "property_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "constraint_id"))
+    Set<Restriction> property_constraints;
 	
 	
 	//Getters and Setters
@@ -82,12 +98,7 @@ public class Property {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getOwner_id() {
-		return owner_id;
-	}
-	public void setOwner_id(Integer owner_id) {
-		this.owner_id = owner_id;
-	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -129,5 +140,11 @@ public class Property {
 	}
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+	public User getOwner() {
+		return owner;
+	}
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 }

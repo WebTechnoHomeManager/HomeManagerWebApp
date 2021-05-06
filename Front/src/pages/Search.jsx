@@ -8,13 +8,14 @@ class Search extends Component {
         super(props);
 
         this.state = {
+            properties: []
         }
     }
 
     componentDidMount(){
         var dataFromSearch = this.props.location.state;
         PropertyService.getPropertiesBy(dataFromSearch).then((resp) => {
-            //this.setState({ properties: resp.data});
+            this.setState({properties: resp.data});
             console.log("res" + resp.data);
         });
     }
@@ -22,8 +23,7 @@ class Search extends Component {
     render() {
         return (
             <div>
-                {/* { this.state.properties }
-                { this.props.match.params} */}
+                <pre>{JSON.stringify(this.state.properties, null, 2)}</pre>
             </div>
         )
     }

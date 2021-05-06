@@ -41,19 +41,15 @@ public class PropertyController {
 		
 		JSONObject data = new JSONObject(dataString);
 		
-		List<String> test = convertJSONArrayInArrayList((JSONArray) data.get("locations"));
+		List<String> locationsList = convertJSONArrayInArrayList((JSONArray) data.get("locations"));
 
 		/*String dateFrom = data.get("dateFrom").toString();
 		String dateTo = data.get("dateTo").toString();
 		String servicesList = data.get("services").toString().replace("[", "").replace("]", "");
 		String constraintsList = data.get("constraints").toString().replace("[", "").replace("]", "");*/
 		
-		List<String> test3 = new ArrayList<>();
-		test3.add("Paris");
-		test3.add("Toulouse");
-		
 		List<Property> listProperty = propertyRepository.getPropertyBy(
-				test/*, 
+				locationsList/*, 
 				data.get("dateFrom").toString(), 
 				data.get("dateTo").toString(), 
 				data.get("services").toString(), 
@@ -71,7 +67,7 @@ public class PropertyController {
 		ArrayList<String> list = new ArrayList<String>();     
 		if (jsonArray != null) { 
 		   for (int i=0; i < jsonArray.length(); i++){ 
-			   list.add(jsonArray.getString(i));
+			   list.add(jsonArray.getString(i).toLowerCase());
 		   } 
 		} 
 		return list;

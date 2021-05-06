@@ -28,3 +28,4 @@ yarn-debug.log*
 yarn-error.log*
 *.class
 Back/target/classes/com/homemanager/springboot/controller/ServiceController.class
+*.class
