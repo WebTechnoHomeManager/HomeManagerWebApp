@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +40,16 @@ public class PropertyController {
 	public List<Property> getEmployeeById(@RequestBody String dataString) throws JSONException {
 		
 		JSONObject data = new JSONObject(dataString);
+		
+		List<String> locationsList = convertJSONArrayInArrayList((JSONArray) data.get("locations"));
+
+		/*String dateFrom = data.get("dateFrom").toString();
+		String dateTo = data.get("dateTo").toString();
+		String servicesList = data.get("services").toString().replace("[", "").replace("]", "");
+		String constraintsList = data.get("constraints").toString().replace("[", "").replace("]", "");*/
+		
 		List<Property> listProperty = propertyRepository.getPropertyBy(
-				data.get("locations").toString().replace("[", "").replace("]", "")/*, 
+				locationsList/*, 
 				data.get("dateFrom").toString(), 
 				data.get("dateTo").toString(), 
 				data.get("services").toString(), 
@@ -47,6 +58,18 @@ public class PropertyController {
 		/*Employee employee = propertyRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id :" + id));
 		return ResponseEntity.ok(employee);*/
+
 		return listProperty;
+	}
+	
+	private List<String> convertJSONArrayInArrayList(JSONArray jsonArray) throws JSONException{
+		
+		ArrayList<String> list = new ArrayList<String>();     
+		if (jsonArray != null) { 
+		   for (int i=0; i < jsonArray.length(); i++){ 
+			   list.add(jsonArray.getString(i).toLowerCase());
+		   } 
+		} 
+		return list;
 	}
 }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Property_type {
 	@Id
 	@GeneratedValue
-  private Integer id;
+    private Integer id;
 	@Column(name = "name")
 	private String name;
 	public Integer getId() {
@@ -26,6 +26,5 @@ public class Property_type {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 }

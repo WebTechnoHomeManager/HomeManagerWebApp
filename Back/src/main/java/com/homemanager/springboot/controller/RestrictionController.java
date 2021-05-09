@@ -1,24 +1,25 @@
 package com.homemanager.springboot.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 
-import com.homemanager.springboot.model.Constraint;
-import com.homemanager.springboot.repository.ConstraintRepository;
+import com.homemanager.springboot.model.Restriction;
+import com.homemanager.springboot.repository.RestrictionRepository;
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
-public class ConstraintController {
+public class RestrictionController {
 	@Autowired
-	private ConstraintRepository constraintRepository;
+	private RestrictionRepository restrictionRepository;
 	
 	@GetMapping(path="/constraints")
-	  public @ResponseBody Iterable<Constraint> getAllConstraints() {
+	  public @ResponseBody Iterable<Restriction> getAllConstraints() {
 	    // This returns a JSON or XML with the users
-	    return constraintRepository.findAll();
+	    return restrictionRepository.findAll();
 	  }
 }

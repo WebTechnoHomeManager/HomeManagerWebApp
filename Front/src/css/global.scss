@@ -10,9 +10,34 @@ $darkHighlight: #ff4034;
     /*border: 1px solid black;*/
 }
 
-body{
+body, html{
     background-color: $verylight;
+    height: 100%;
 }
+
+// To stick footer at the bottom of the page + make content take the left space
+#root{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+#body-content > div{
+    height:100%;
+}
+#body-content{
+    flex: 1 1 auto;
+}
+#footer{
+    //flex: 0 1 auto;
+    background-color: $verydark;
+    color: white;
+    margin-top: 1rem;
+    padding: 1rem;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
 
 button, input[type="submit"]{
     background-color: $highlight !important;
@@ -28,4 +53,20 @@ button, input[type="submit"]:hover{
 button, input[type="submit"]:focus{
     //box-shadow: 0 0 0 0.25rem rgb(245, 129, 122, 0.5) !important;
     box-shadow: none !important;
+}
+
+#header{
+    background-color: $dark;
+    color: black;
+}
+
+#header .row>div{
+    margin: auto;
+}
+
+
+
+h1{
+    text-align: center;
+    margin: 10px;
 }

@@ -1,0 +1,21 @@
+#messaging [class*="col"]{
+    border: 1px solid $light;
+    background-color: white;
+}
+
+// To make the messaging block take all the left space of the page
+#messaging{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+#messaging .row{
+    flex: 1 1 auto;
+}
+
+.col-messaging{
+    margin: 1rem;
+}
+#messaging-user-list div{
+    //margin: auto;
+}
