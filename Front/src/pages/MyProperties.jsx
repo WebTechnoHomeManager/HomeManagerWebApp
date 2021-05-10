@@ -24,7 +24,7 @@ class MyProperties extends Component {
     render() {
         return (
             <div>
-                <h1 style={{ textAlign: 'center' }}>My Properties</h1>
+                <h1 className="center">My Properties</h1>
                 <div style={{ display: 'flex', justifyContent: 'center' }}><Button variant="primary"><PlusCircle />Add a property</Button></div>
                 {
                     this.state.properties.map(

@@ -1,6 +1,8 @@
 import React, { Component, useState } from 'react';
 import { Form, Button, Row, Col, Accordion, Card } from 'react-bootstrap';
 import moment from 'moment';
+import ServiceService from '../services/ServiceService';
+import RestrictionService from '../services/RestrictionService';
 
 class SearchBar extends Component {
 
@@ -9,14 +11,16 @@ class SearchBar extends Component {
         this.state = {
             locations: [],
             services: [],
-            constraints: [],
+            restrictions: [],
             dateFrom: '',
-            dateTo: ''
+            dateTo: '',
+            allServices: [],
+            allRestrictions: []
         }
 
         // If not, it won't recognize the right "this" in the functions
         this.handleClickService = this.handleClickService.bind(this); 
-        this.handleClickConstraint = this.handleClickConstraint.bind(this); 
+        this.handleClickRestriction = this.handleClickRestriction.bind(this); 
         this.handleChangeDateFrom = this.handleChangeDateFrom.bind(this); 
         this.handleChangeDateTo = this.handleChangeDateTo.bind(this); 
         this.handleEnterLocation = this.handleEnterLocation.bind(this); 
@@ -24,9 +28,12 @@ class SearchBar extends Component {
         this.displayDateValue = this.displayDateValue.bind(this); 
         this.displayLocationValue = this.displayLocationValue.bind(this); 
         this.displayServicesValue = this.displayServicesValue.bind(this); 
-        this.displayConstraintsValue = this.displayConstraintsValue.bind(this); 
+        this.displayRestrictionsValue = this.displayRestrictionsValue.bind(this); 
 
         this.searchProperties = this.searchProperties.bind(this); 
+        this.doesServiceNeedToBeChecked = this.doesServiceNeedToBeChecked.bind(this); 
+        this.doesRestrictionNeedToBeChecked = this.doesRestrictionNeedToBeChecked.bind(this); 
+        
         console.log(this.props);
       }
 
@@ -47,31 +54,29 @@ class SearchBar extends Component {
         }
     }
 
-    handleClickService(e) {
-        var label = e.target.labels[0].innerText; 
+    handleClickService(e, service) {
         var checked = e.target.checked; 
 
         const services = this.state.services.slice();
 
         if (checked){
-            this.setState({services: services.concat([label])});
+            this.setState({services: services.concat([service])});
         } else {
-            services.splice(services.indexOf(label), 1)
+            services.splice(services.indexOf(service), 1)
             this.setState({services: services});
         }
     }
 
-    handleClickConstraint(e) {
-        var label = e.target.labels[0].innerText; 
+    handleClickRestriction(e, restriction) {
         var checked = e.target.checked; 
 
-        const constraints = this.state.constraints.slice();
+        const restrictions = this.state.restrictions.slice();
 
         if (checked){
-            this.setState({constraints: constraints.concat([label])});
+            this.setState({restrictions: restrictions.concat([restriction])});
         } else {
-            constraints.splice(constraints.indexOf(label), 1)
-            this.setState({constraints: constraints});
+            restrictions.splice(restrictions.indexOf(restriction), 1)
+            this.setState({restrictions: restrictions});
         }
     }
 
@@ -111,25 +116,27 @@ class SearchBar extends Component {
     displayServicesValue(){
         const services = this.state.services;
 
-        if (services.length != 0){
+        /*if (services.length != 0){
             var stringServices = services.map((obj) => obj).join(', ');
             return stringServices;
         }
-        return "Services...";
+        return "Services...";*/
+        return services.length + " possible service(s)";
     }
 
-    displayConstraintsValue(){
-        const constraints = this.state.constraints;
+    displayRestrictionsValue(){
+        const restrictions = this.state.restrictions;
 
-        if (constraints.length != 0){
-            var stringConstraints = constraints.map((obj) => obj).join(', ');
-            return stringConstraints;
+        /*if (restrictions.length != 0){
+            var stringRestrictions = restrictions.map((obj) => obj).join(', ');
+            return stringRestrictions;
         }
-        return "Constraints...";
+        return "Constraints...";*/
+        return restrictions.length + " possible constraint(s)";
     }
 
     searchProperties(e){
-        // e.preventDefault();
+        //e.preventDefault();
         // console.log('data => ' + JSON.stringify(this.state));
         this.props.history.push({
             pathname: '/search',
@@ -137,6 +144,30 @@ class SearchBar extends Component {
         });
     }
 
+    componentDidMount() {
+
+        var dataFromPreviousSearch = this.props.data;
+        if (dataFromPreviousSearch != undefined){
+            this.setState(dataFromPreviousSearch);
+        } else {
+            ServiceService.getServices().then((res) => {
+                this.setState({ allServices: res.data,
+                                services: res.data });
+            });
+            RestrictionService.getRestrictions().then((res) => {
+                this.setState({ allRestrictions: res.data,
+                                restrictions: res.data });
+            });
+        }
+    }
+
+    doesServiceNeedToBeChecked(id){
+        return this.state.services.filter(service => service.id == id).length != 0;
+    } 
+
+    doesRestrictionNeedToBeChecked(id){
+        return this.state.restrictions.filter(restriction => restriction.id == id).length != 0;
+    } 
 
     render() {
         return (
@@ -185,18 +216,18 @@ class SearchBar extends Component {
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
-                                    <Form.Check name="service1"
-                                                label="Service 1"
-                                                id="service1" onClick={this.handleClickService}
-                                    />
-                                    <Form.Check name="service2"
-                                                label="Service 2"
-                                                id="service2" onClick={this.handleClickService}
-                                    />
-                                    <Form.Check name="service3"
-                                                label="Service 3"
-                                                id="service3" onClick={this.handleClickService}
-                                    />
+                                    {
+                                        this.state.allServices.map(
+                                            service => 
+                                            <Form.Check key={"service" + service.id}
+                                                    defaultChecked={this.doesServiceNeedToBeChecked(service.id)} 
+                                                    name={"service" + service.id}
+                                                    label={service.name}
+                                                    id={"service" + service.id} onClick={(e) => {this.handleClickService(e, service)}}
+                                            />
+                                        )
+                                    }
+
                                     </Card.Body>
                                 </Accordion.Collapse>
                             </Card>
@@ -206,22 +237,21 @@ class SearchBar extends Component {
                         <Accordion>
                             <Card>
                                 <Accordion.Toggle as={Card.Header} eventKey="0">
-                                    {this.displayConstraintsValue()}
+                                    {this.displayRestrictionsValue()}
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
-                                        <Form.Check name="constrainte1"
-                                                    label="Contrainte 1"
-                                                    id="constrainte1" onClick={this.handleClickConstraint}
-                                        />
-                                        <Form.Check name="constrainte2"
-                                                    label="Contrainte 2"
-                                                    id="constrainte2" onClick={this.handleClickConstraint}
-                                        />
-                                        <Form.Check name="constrainte3"
-                                                    label="Contrainte 3"
-                                                    id="constrainte3" onClick={this.handleClickConstraint}
-                                        />
+                                        {
+                                            this.state.allRestrictions.map(
+                                                restriction => 
+                                                <Form.Check key={"restriction" + restriction.id}
+                                                        defaultChecked={this.doesRestrictionNeedToBeChecked(restriction.id)} 
+                                                        name={"restriction" + restriction.id}
+                                                        label={restriction.name}
+                                                        id={"restriction" + restriction.id} onClick={(e) => {this.handleClickRestriction(e, restriction)}}
+                                                />
+                                            )
+                                        }
                                     </Card.Body>
                                 </Accordion.Collapse>
                             </Card>

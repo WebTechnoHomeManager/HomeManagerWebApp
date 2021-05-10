@@ -13,7 +13,7 @@ class Messaging extends Component {
         return (
             <div>
                 <Container id="messaging">
-                    <h1>My messaging</h1>
+                    <h1 className="center">My messaging</h1>
                     <Row>
                         <Col sm={3} className="col-messaging">
                             <Row id="messaging-user-list">

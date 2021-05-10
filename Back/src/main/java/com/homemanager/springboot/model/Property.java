@@ -36,15 +36,11 @@ public class Property {
 	private double latitude;
 	@Column(name = "longitude")
 	private double longitude;
-	
-	//@Column(name = "owner_id")
-	//private Integer owner_id;
+
 	@ManyToOne
     @JoinColumn(name="owner_id")
     private User owner;
-	
-	//@Column(name = "property_type_id")
-	//private int property_type_id;
+
 	@ManyToOne
     @JoinColumn(name="property_type_id")
     private Property_type property_type;
@@ -62,14 +58,13 @@ public class Property {
 			  joinColumns = @JoinColumn(name = "property_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "service_id"))
     Set<Service> property_services;
-	
-	// marche pa !!!!!
+
 	@ManyToMany
 	@JoinTable(
-			  name = "property_constraints", 
-			  joinColumns = @JoinColumn(name = "property_id"), 
-			  inverseJoinColumns = @JoinColumn(name = "constraint_id"))
-    Set<Restriction> property_constraints;
+			  name = "property_restrictions", // = nom de la table dans la base
+			  joinColumns = @JoinColumn(name = "property_id"), // champ dans la base
+			  inverseJoinColumns = @JoinColumn(name = "restriction_id")) // champ dans la base
+    Set<Restriction> property_restrictions;
 	
 	
 	//Getters and Setters
@@ -147,4 +142,12 @@ public class Property {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
+	public Set<Restriction> getProperty_restrictions() {
+		return property_restrictions;
+	}
+
+	public void setProperty_restrictions(Set<Restriction> property_restrictions) {
+		this.property_restrictions = property_restrictions;
+	}
+
 }
