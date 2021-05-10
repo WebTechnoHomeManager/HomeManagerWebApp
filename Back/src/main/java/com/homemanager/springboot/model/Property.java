@@ -58,7 +58,7 @@ public class Property {
 			  joinColumns = @JoinColumn(name = "property_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "service_id"))
     Set<Service> property_services;
-
+	
 	@ManyToMany
 	@JoinTable(
 			  name = "property_restrictions", // = nom de la table dans la base
@@ -67,6 +67,12 @@ public class Property {
     Set<Restriction> property_restrictions;
 	
 	
+	public Set<Restriction> getProperty_constraints() {
+		return property_constraints;
+	}
+	public void setProperty_constraints(Set<Restriction> property_constraints) {
+		this.property_constraints = property_constraints;
+	}
 	//Getters and Setters
 	public Set<Reservation> getReservations() {
 		return reservations;
