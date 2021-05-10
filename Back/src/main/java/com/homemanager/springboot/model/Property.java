@@ -63,7 +63,6 @@ public class Property {
 			  inverseJoinColumns = @JoinColumn(name = "service_id"))
     Set<Service> property_services;
 	
-	// marche pa !!!!!
 	@ManyToMany
 	@JoinTable(
 			  name = "property_constraints", 
@@ -72,6 +71,12 @@ public class Property {
     Set<Restriction> property_constraints;
 	
 	
+	public Set<Restriction> getProperty_constraints() {
+		return property_constraints;
+	}
+	public void setProperty_constraints(Set<Restriction> property_constraints) {
+		this.property_constraints = property_constraints;
+	}
 	//Getters and Setters
 	public Set<Reservation> getReservations() {
 		return reservations;
