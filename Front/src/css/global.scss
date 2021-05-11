@@ -38,19 +38,26 @@ body, html{
     width: 100%;
 }
 
-
-button, input[type="submit"]{
+.btn-primary{
     background-color: $highlight !important;
     border-color: $highlight !important;
-    border-radius: 2rem !important;
 }
 
-button, input[type="submit"]:hover{
+.btn-primary:hover{
     background-color: $darkHighlight !important;
     border-color: $darkHighlight !important;
 }
 
-button, input[type="submit"]:focus{
+.btn-primary:active{
+    background-color: $highlight !important;
+    border-color: $highlight !important;
+}
+
+button, input[type="button"]{
+    border-radius: 2rem !important;
+}
+
+button, input[type="button"]:focus{
     //box-shadow: 0 0 0 0.25rem rgb(245, 129, 122, 0.5) !important;
     box-shadow: none !important;
 }
@@ -69,4 +76,9 @@ button, input[type="submit"]:focus{
 .center{
     text-align: center;
     margin: 10px;
+}
+
+.card-list-items{
+    margin: 0;
+    font-size: 0.9rem;
 }

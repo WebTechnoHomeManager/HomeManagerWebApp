@@ -1,7 +1,8 @@
 import React, { Component, useState } from 'react';
 import { Container, Form, Button, Row, Col, Accordion, Card } from 'react-bootstrap';
-import PropertyService from '../services/PropertyService';
 import SearchBar from '../components/SearchBar';
+import PropertyService from '../services/PropertyService';
+import photo from '../images/houses/house1.jpg';
 
 class Search extends Component {
 
@@ -11,11 +12,19 @@ class Search extends Component {
         this.state = {
             properties: []
         }
+
+        this.launchSearch = this.launchSearch.bind(this); 
     }
 
     componentDidMount(){
         var dataFromSearch = this.props.location.state;
-        PropertyService.getPropertiesBy(dataFromSearch).then((resp) => {
+        if (dataFromSearch){
+            this.launchSearch(dataFromSearch);
+        }
+    }
+
+    launchSearch(data){
+        PropertyService.getPropertiesBy(data).then((resp) => {
             this.setState({properties: resp.data});
         });
     }
@@ -29,10 +38,57 @@ class Search extends Component {
                     <Row>
                         {/* history attribute : to allow the use of "this.props.history.push" in the child component
                         (normally it works only if the component has a defined Route in App.js) */}
-                        <SearchBar history={this.props.history} data={this.props.location.state}></SearchBar>
+                        <SearchBar history={this.props.history}
+                                   data={this.props.location.state}
+                                   launchSearch={this.launchSearch}></SearchBar>
                     </Row>
                 </Container>
-                <pre>{JSON.stringify(this.state.properties, null, 2)}</pre>
+                <Container className="my-5">
+                    <Row>
+                        <Col sm={6}>
+                            <h4>{this.state.properties.length} result(s)</h4>
+                            {
+                                this.state.properties.map(property => 
+                                    <Card className="my-3" key={"property" + property.id}>
+                                        <Card.Body>
+                                            <Row>
+                                                <Col sm={6}>
+                                                    <Card.Img variant="top" src={photo} />
+                                                </Col>
+                                                <Col sm={6}>
+                                                    <Card.Title>{property.title}</Card.Title>
+                                                    <Card.Text>{property.city}</Card.Text>
+                                                    <Card.Text>For {property.total_occupancy} occupant(s)</Card.Text>
+                                                    <Card.Text>Required services:
+                                                        <ul>
+                                                            {property.property_services.map(service => 
+                                                                <li className="card-list-items">{service.name}</li>
+                                                            )}
+                                                        </ul>
+                                                    </Card.Text>
+                                                    <Card.Text>Constraints to respect:
+                                                        <ul>
+                                                            {property.property_restrictions.map(restriction => 
+                                                                <li className="card-list-items">{restriction.name}</li>
+                                                            )}
+                                                        </ul>
+                                                    </Card.Text>
+                                                    {/* <Card.Text>
+                                                        <small className="text-muted">Last updated 3 mins ago</small>
+                                                    </Card.Text> */}
+                                                </Col>
+                                            </Row>
+                                        </Card.Body>
+                                    </Card>
+                                )
+                            }
+                            
+                        </Col>
+                        <Col sm={6}></Col>
+                    </Row>
+                </Container>
+                
+                {/* <pre>{JSON.stringify(this.state.properties, null, 2)}</pre> */}
 
             </div>
         )

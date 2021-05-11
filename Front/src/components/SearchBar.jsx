@@ -3,6 +3,8 @@ import { Form, Button, Row, Col, Accordion, Card } from 'react-bootstrap';
 import moment from 'moment';
 import ServiceService from '../services/ServiceService';
 import RestrictionService from '../services/RestrictionService';
+import PropertyService from '../services/PropertyService';
+import { useLocation } from 'react-router-dom'
 
 class SearchBar extends Component {
 
@@ -35,6 +37,7 @@ class SearchBar extends Component {
         this.doesRestrictionNeedToBeChecked = this.doesRestrictionNeedToBeChecked.bind(this); 
         
         console.log(this.props);
+        
       }
 
 
@@ -88,7 +91,6 @@ class SearchBar extends Component {
         this.setState({dateTo: e.target.value});
     }
 
-
     displayDateValue(){
         const from = this.state.dateFrom;
         const to = this.state.dateTo;
@@ -136,12 +138,17 @@ class SearchBar extends Component {
     }
 
     searchProperties(e){
-        //e.preventDefault();
+        // e.preventDefault();
         // console.log('data => ' + JSON.stringify(this.state));
-        this.props.history.push({
-            pathname: '/search',
-            state: this.state
-        });
+        
+        if (this.props.history && this.props.history.location.pathname == "/search"){
+            this.props.launchSearch(this.state);
+        } else {
+            this.props.history.push({
+                pathname: '/search',
+                state: this.state
+            });
+        }
     }
 
     componentDidMount() {
@@ -168,6 +175,7 @@ class SearchBar extends Component {
     doesRestrictionNeedToBeChecked(id){
         return this.state.restrictions.filter(restriction => restriction.id == id).length != 0;
     } 
+
 
     render() {
         return (
@@ -258,7 +266,7 @@ class SearchBar extends Component {
                         </Accordion>  
                     </Col>
                     <Col sm={1}>
-                        <Button as="input" type="submit" value="Search" onClick={this.searchProperties}/>
+                        <Button as="input" type="button" value="Search" onClick={this.searchProperties}/>
                     </Col>
                 </Row>
 
