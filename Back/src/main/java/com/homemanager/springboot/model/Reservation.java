@@ -10,8 +10,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 @Entity
 @Table(name = "reservation")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Reservation {
 	@Id
 	@GeneratedValue
@@ -31,6 +35,12 @@ public class Reservation {
 	  private LocalDateTime end_date;
 	
 	
+	public Property getProperty_reservation() {
+		return property_reservation;
+	}
+	public void setProperty_reservation(Property property_reservation) {
+		this.property_reservation = property_reservation;
+	}
 	public Integer getId() {
 		return id;
 	}

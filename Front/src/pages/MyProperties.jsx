@@ -41,7 +41,7 @@ class MyProperties extends Component {
                                         <Card.Text>Services: {property.property_services.map(function (d, idx) {
                                             return (<li key={idx}>{d.name}</li>)
                                         })}</Card.Text>
-                                        <Card.Text>Constraints: {property.property_constraints.map(function (d, idx) {
+                                        <Card.Text>Constraints: {property.property_restrictions.map(function (d, idx) {
                                             return (<li key={idx}>{d.name}</li>)
                                         })}</Card.Text>
                                         <Button variant="primary"> <Pencil /> Update</Button>

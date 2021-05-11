@@ -40,14 +40,20 @@ class MyReservations extends Component {
                                         <img class="card-img" src={photo} alt="Card image"></img>
                                     </Col>
                                     <Col>
-                                        <Card.Text>Title : {reservation.property_type_id}</Card.Text>
-                                        <Card.Text>City : {reservation.address}</Card.Text>
-                                        <Card.Text>Number of rooms :</Card.Text>
-                                        <Card.Text>Services :</Card.Text>
+                                        <Card.Text>Title : {reservation.property_reservation.title}</Card.Text>
+                                        <Card.Text>Total occupancy: {reservation.total_occupancy}</Card.Text>
+                                        <Card.Text>Address: {reservation.property_reservation.address}</Card.Text>
+                                        <Card.Text>City: {reservation.property_reservation.city}</Card.Text>
+                                        <Card.Text>Services: {reservation.property_reservation.property_services.map(function (d, idx) {
+                                            return (<li key={idx}>{d.name}</li>)
+                                        })}</Card.Text>
+                                        <Card.Text>Constraints: {reservation.property_reservation.property_restrictions.map(function (d, idx) {
+                                            return (<li key={idx}>{d.name}</li>)
+                                        })}</Card.Text>
                                     </Col>
                                     <Col>
                                         <Card.Text style={{ textAlign: 'center' }}>
-                                            Owner : Last name First name
+                                            Owner : {reservation.property_reservation.owner.first_name} {reservation.property_reservation.owner.last_name}
                                         </Card.Text>
                                         <div style={{ textAlign: 'center' }}>
                                             <Button variant="primary" style={{ margin: '3px' }}> <PersonLinesFill /> Contact</Button>
