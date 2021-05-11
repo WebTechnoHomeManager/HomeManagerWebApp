@@ -8,11 +8,11 @@ import Moment from 'moment';
 
 class MyReservations extends Component {
     constructor(props) {
-            super(props)
+        super(props)
 
-            this.state = {
-                reservations: []
-            }
+        this.state = {
+            reservations: []
+        }
     }
 
     componentDidMount() {
@@ -24,11 +24,11 @@ class MyReservations extends Component {
     render() {
         return (
             <div>
-                <h1 style={{ textAlign: 'center', margin:'20px'}}>My reservations</h1>
+                <h1 style={{ textAlign: 'center', margin: '20px' }}>My reservations</h1>
 
                 {
                     this.state.reservations.map(
-                        reservation => <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px'}}><Card style={{ width: '70%' }}>
+                        reservation => <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}><Card style={{ width: '70%' }}>
                             <Card.Header>
                                 From&nbsp;
                                 {Moment(reservation.start_date).format('DD MMMM YYYY')}
@@ -50,8 +50,8 @@ class MyReservations extends Component {
                                             Owner : Last name First name
                                         </Card.Text>
                                         <div style={{ textAlign: 'center' }}>
-                                            <Button variant="primary" style={{ margin:'3px' }}> <PersonLinesFill /> Contact</Button>
-                                            <Button variant="primary" style={{ margin:'3px' }}> <Trash />Cancel</Button>
+                                            <Button variant="primary" style={{ margin: '3px' }}> <PersonLinesFill /> Contact</Button>
+                                            <Button variant="primary" style={{ margin: '3px' }}> <Trash />Cancel</Button>
                                         </div>
                                     </Col>
                                 </Row>
