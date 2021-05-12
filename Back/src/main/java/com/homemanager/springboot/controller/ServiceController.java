@@ -1,6 +1,5 @@
 package com.homemanager.springboot.controller;
 
-import com.homemanager.springboot.model.Property;
 import org.springframework.web.bind.annotation.*;
 
 //import java.util.List;
@@ -23,10 +22,5 @@ public class ServiceController {
 	    return serviceRepository.findAll();
 	  }
 
-	/*@GetMapping("/property_services")
-	public List<Service> getServicesByPropertyId() {
-		List<Service> listServices = serviceRepository.getListServices();
-	    return listServices;
-	}*/
 	
 }

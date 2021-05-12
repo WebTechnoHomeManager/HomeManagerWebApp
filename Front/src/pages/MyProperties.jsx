@@ -66,9 +66,9 @@ class MyProperties extends Component {
                         </div>
                     )
                 }
-
-
             </div >
+
+
         )
     }
 }

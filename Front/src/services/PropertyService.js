@@ -4,29 +4,29 @@ const PROPERTY_API_BASE_URL = "http://localhost:9090/api/v1/properties";
 
 class PropertyService {
 
-    getProperties(){
+    getProperties() {
         return axios.get(PROPERTY_API_BASE_URL);
     }
 
-    getPropertiesBy(data){
+    getPropertiesBy(data) {
         return axios.post(PROPERTY_API_BASE_URL + '/search', data);
     }
 
-    /*createEmployee(employee){
-        return axios.post(EMPLOYEE_API_BASE_URL, employee);
+    createProperty(property) {
+        return axios.post(PROPERTY_API_BASE_URL, property);
     }
 
-    getEmployeeById(employeeId){
-        return axios.get(EMPLOYEE_API_BASE_URL + '/' + employeeId);
+    getPropertyById(propertyId) {
+        return axios.get(PROPERTY_API_BASE_URL + '/' + propertyId);
     }
 
-    updateEmployee(employee, employeeId){
-        return axios.put(EMPLOYEE_API_BASE_URL + '/' + employeeId, employee);
+    updateProperty(property, propertyId) {
+        return axios.put(PROPERTY_API_BASE_URL + '/' + propertyId, property);
     }
 
-    deleteEmployee(employeeId){
-        return axios.delete(EMPLOYEE_API_BASE_URL + '/' + employeeId);
-    }*/
+    deleteProperty(propertyId) {
+        return axios.delete(PROPERTY_API_BASE_URL + '/' + propertyId);
+    }
 }
 
 export default new PropertyService()
