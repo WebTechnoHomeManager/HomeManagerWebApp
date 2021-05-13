@@ -50,16 +50,21 @@ public class PropertyController {
 			return propertyRepository.save(property);
 		}
 	 
-	// get user by id rest api
+	// get property by id rest api
 		@GetMapping("/properties/{id}")
 		public ResponseEntity<Property> getPropertyById(@PathVariable Integer id) {
 			Property property = propertyRepository.findById(id)
 					.orElseThrow();
 			return ResponseEntity.ok(property);
 		}
+	
+		// get property by user id rest api
+			@GetMapping("/properties/owner/{id}")
+			public List<Property> findByOwner_Id(@PathVariable Integer id) {
+				return propertyRepository.findByOwner_Id(id);
+			}
 	 
-	 
-	// update user rest api
+	// update property rest api
 		@PutMapping("/properties/{id}")
 		public ResponseEntity<Property> updateProperty(@PathVariable Integer id, @RequestBody Property propertyDetails){
 			Property property = propertyRepository.findById(id)

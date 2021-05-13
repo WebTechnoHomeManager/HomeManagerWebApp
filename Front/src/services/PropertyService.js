@@ -20,6 +20,10 @@ class PropertyService {
         return axios.get(PROPERTY_API_BASE_URL + '/' + id);
     }
 
+    getPropertiesByOwnerId(id) {
+        return axios.get(PROPERTY_API_BASE_URL + '/owner/' + id);
+    }
+
     updateProperty(property, propertyId) {
         return axios.put(PROPERTY_API_BASE_URL + '/' + propertyId, property);
     }

@@ -1,6 +1,7 @@
 package com.homemanager.springboot.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.data.jpa.repository.Query;
@@ -24,6 +25,9 @@ public interface PropertyRepository extends CrudRepository<Property, Integer> {
 			@Param("dateT") String dateTo,
 			@Param("serv") String services,
 			@Param("const") String constraints*/);
+
+	// list all properties from a specific user
+	public List<Property> findByOwner_Id(@Param("id") int id); 
 	
 	//public List<Property> findByCityInAnd(List<String> locationsList);
 	

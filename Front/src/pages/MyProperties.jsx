@@ -11,12 +11,13 @@ class MyProperties extends Component {
         super(props)
 
         this.state = {
+            ownerId: 2,
             properties: []
         }
     }
 
     componentDidMount() {
-        PropertyService.getProperties().then((res) => {
+        PropertyService.getPropertiesByOwnerId(this.state.ownerId).then((res) => {
             this.setState({ properties: res.data });
         });
     }

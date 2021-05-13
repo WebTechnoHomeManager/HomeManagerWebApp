@@ -51,7 +51,7 @@ public class UserController {
 					.orElseThrow();
 			return ResponseEntity.ok(user);
 		}
-	 
+					
 	 
 	// update user rest api
 		@PutMapping("/users/{id}")
