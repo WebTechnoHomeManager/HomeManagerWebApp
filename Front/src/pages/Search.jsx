@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { Container, Form, Button, Row, Col, Accordion, Card } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col, Accordion, Card, Image} from 'react-bootstrap';
 import SearchBar from '../components/SearchBar';
 import PropertyService from '../services/PropertyService';
 import photo from '../images/houses/house1.jpg';
@@ -14,6 +14,7 @@ class Search extends Component {
         }
 
         this.launchSearch = this.launchSearch.bind(this); 
+        this.viewProperty = this.viewProperty.bind(this); 
     }
 
     componentDidMount(){
@@ -27,6 +28,10 @@ class Search extends Component {
         PropertyService.getPropertiesBy(data).then((resp) => {
             this.setState({properties: resp.data});
         });
+    }
+
+    viewProperty(id){
+        this.props.history.push(`/property/${id}`);
     }
 
     render() {
@@ -49,7 +54,8 @@ class Search extends Component {
                             <h4>{this.state.properties.length} result(s)</h4>
                             {
                                 this.state.properties.map(property => 
-                                    <Card className="my-3" key={"property" + property.id}>
+                                    <Card className="my-3 card-with-link" key={"property" + property.id}
+                                          onClick={() => this.viewProperty(property.id)}>
                                         <Card.Body>
                                             <Row>
                                                 <Col sm={6}>
@@ -62,14 +68,14 @@ class Search extends Component {
                                                     <Card.Text>Required services:
                                                         <ul>
                                                             {property.property_services.map(service => 
-                                                                <li className="card-list-items">{service.name}</li>
+                                                                <li key={service.id} className="card-list-items">{service.name}</li>
                                                             )}
                                                         </ul>
                                                     </Card.Text>
                                                     <Card.Text>Constraints to respect:
                                                         <ul>
                                                             {property.property_restrictions.map(restriction => 
-                                                                <li className="card-list-items">{restriction.name}</li>
+                                                                <li key={restriction.id} className="card-list-items">{restriction.name}</li>
                                                             )}
                                                         </ul>
                                                     </Card.Text>
