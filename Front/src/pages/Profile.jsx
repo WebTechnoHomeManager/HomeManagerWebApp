@@ -9,13 +9,15 @@ class Profile extends Component {
         super(props)
 
         this.state = {
-            users: []
+            id: 2,
+            user: {}
         }
     }
 
     componentDidMount() {
-        UserService.getUsers().then((res) => {
-            this.setState({ users: res.data });
+        UserService.getUserById(this.state.id).then((res) => {
+            console.log(res);
+            this.setState({ user: res.data });
         });
     }
 
@@ -24,33 +26,32 @@ class Profile extends Component {
             <h1 style={{ textAlign: 'center' }}>My profile</h1>
             <br></br>
 
-            {
-                this.state.users.map(
-                    user => <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
-                        <form>
-                            <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
-                                Last name :
-    <input type="text" name="name" value={user.last_name} />
-                            </label>
-                            <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
-                                First name :
-    <input type="text" name="surname" value={user.first_name} />
-                            </label>
-                            <br></br>
-                            <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
-                                Email :
-    <input type="text" name="email" value={user.email} />
-                            </label>
-                            <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
-                                Password :
-    <input type="text" name="psw" value={user.password} />
-                            </label>
-                            <br></br>
-                        </form>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                <form>
+                    <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                        Last name :
+    <input type="text" name="name" value={this.state.user.last_name} style={{ width: "250px" }} />
+                    </label>
+                    <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                        First name :
+    <input type="text" name="surname" value={this.state.user.first_name} style={{ width: "250px" }} />
+                    </label>
+                    <br></br>
+                    <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                        Email :
+    <input type="text" name="email" value={this.state.user.email} style={{ width: "250px" }} />
+                    </label>
+                    <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                        Password :
+    <input type="text" name="psw" value={this.state.user.password} style={{ width: "250px" }} />
+                    </label>
+                    <br></br>
+                </form>
 
-                    </div>
+
+            </div>
                 )
-            }
+
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Button variant="primary"> <Pencil /> Update</Button>
             </div>

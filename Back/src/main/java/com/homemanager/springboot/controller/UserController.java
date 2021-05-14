@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,13 +44,19 @@ public class UserController {
 		public User createUser(@RequestBody User user) {
 			return userRepository.save(user);
 		}
-	 
-	// get user by id rest api
-		@GetMapping("/users/{id}")
+		
+		// get user by id rest api
+		/*@GetMapping("/users/{id}")
 		public ResponseEntity<User> getUserById(@PathVariable Integer id) {
 			User user = userRepository.findById(id)
 					.orElseThrow();
 			return ResponseEntity.ok(user);
+		}*/
+		
+		@GetMapping("/users/{id}")
+		public User findById(@PathVariable Integer id) {
+			Optional<User> User = userRepository.findById(id);
+		   	return User.get();
 		}
 					
 	 
