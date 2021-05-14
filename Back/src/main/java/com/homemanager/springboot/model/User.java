@@ -14,17 +14,19 @@ import javax.persistence.Table;
 public class User {
 	@Id
 	@GeneratedValue
-  private Integer id;
+  	private Integer id;
 	@Column(name = "email")
-  private String email;
+  	private String email;
 	@Column(name = "password")
-  private String password;
+  	private String password;
 	@Column(name = "first_name")
-  private String first_name;
+  	private String first_name;
 	@Column(name = "last_name")
-  private String last_name;
+  	private String last_name;
+	@Column(name = "type")
+	private String type;
 	@Column(name = "profile_picture_path")
-  private String profile_picture_path;
+  	private String profile_picture_path;
 	
 	@OneToMany(mappedBy = "reservation_user")
     private Set<Reservation> reservations;
@@ -78,7 +80,13 @@ public String getProfile_picture_path() {
 public void setProfile_picture_path(String profile_picture_path) {
 	this.profile_picture_path = profile_picture_path;
 }
-  
-  
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
   
 }	
