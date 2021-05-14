@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,47 +43,30 @@ public class UserController {
 			return userRepository.save(user);
 		}
 		
-		// get user by id rest api
-		/*@GetMapping("/users/{id}")
-		public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-			User user = userRepository.findById(id)
-					.orElseThrow();
-			return ResponseEntity.ok(user);
-		}*/
-		
 		@GetMapping("/users/{id}")
-		public User findById(@PathVariable Integer id) {
+		public User findUserById(@PathVariable Integer id) {
 			Optional<User> User = userRepository.findById(id);
 		   	return User.get();
 		}
 					
 	 
-	// update user rest api
+	// update user rest api		
 		@PutMapping("/users/{id}")
-		public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User userDetails){
-			User user = userRepository.findById(id)
-					.orElseThrow();
+			   public ResponseEntity<User> updateUser(@RequestBody User userDetails, @PathVariable Integer id) {
+			User user = userRepository.findById(id).get();
 			
 			user.setFirst_name(userDetails.getFirst_name());
 			user.setLast_name(userDetails.getLast_name());
 			user.setEmail(userDetails.getEmail());
 			user.setPassword(userDetails.getPassword());
-			
-			User updatedUser = userRepository.save(user);
-			return ResponseEntity.ok(updatedUser);
-		}
+			userRepository.save(user);
+			   	return ResponseEntity.noContent().build();
+			   }
 		
 		
 		// delete user rest api
 		@DeleteMapping("/users/{id}")
-		public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Integer id){
-			User user = userRepository.findById(id)
-					.orElseThrow();
-			
-			userRepository.delete(user);
-			Map<String, Boolean> response = new HashMap<>();
-			response.put("deleted", Boolean.TRUE);
-			return ResponseEntity.ok(response);
+		public void deleteUser(@PathVariable Integer id) {
+			userRepository.deleteById(id);
 		}
-	 
 }
