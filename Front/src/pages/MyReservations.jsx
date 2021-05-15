@@ -28,7 +28,7 @@ class MyReservations extends Component {
 
                 {
                     this.state.reservations.map(
-                        reservation => <div style={{ display: 'flex', justifyContent: 'center', marginTop: '30px' }}><Card style={{ width: '70%' }}>
+                        reservation => <div className="div-center-content" style={{marginTop: '30px' }}><Card style={{ width: '70%' }}>
                             <Card.Header>
                                 From&nbsp;
                                 {Moment(reservation.start_date).format('DD MMMM YYYY')}

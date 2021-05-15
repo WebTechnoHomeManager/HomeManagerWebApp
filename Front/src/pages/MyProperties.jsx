@@ -26,10 +26,10 @@ class MyProperties extends Component {
         return (
             <div>
                 <h1 className="center">My Properties</h1>
-                <div style={{ display: 'flex', justifyContent: 'center' }}><Button variant="primary"><PlusCircle />Add a property</Button></div>
+                <div className="div-center-content"><Button variant="primary"><PlusCircle />Add a property</Button></div>
                 {
                     this.state.properties.map(
-                        property => <div style={{ display: 'flex', justifyContent: 'center' }}><Card style={{ width: '70%' }}> <Card.Header>{property.title}</Card.Header>
+                        property => <div className="div-center-content"><Card style={{ width: '70%' }}> <Card.Header>{property.title}</Card.Header>
                             <Card.Body>
                                 <Container><Row>
                                     <Col>

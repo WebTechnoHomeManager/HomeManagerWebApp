@@ -98,3 +98,13 @@ button, input[type="button"]:focus{
     cursor: pointer;
 }
 
+// Close icon in popUp
+.close { 
+    position: absolute; 
+    right: 1rem;
+}
+
+.div-center-content{
+    display: flex;
+    justify-content: center;
+}

@@ -6,6 +6,7 @@ import { Container, Row } from 'react-bootstrap';
 import SearchBar from '../components/SearchBar';
 import HighlightedProperties from '../components/HighlightedProperties';
 import Image from 'react-bootstrap/Image';
+import LogInPopUp from '../components/LogInPopUp';
 
 class Home extends Component {
 

@@ -2,6 +2,7 @@ import logo from '../images/logo.png';
 import React, { Component } from 'react';
 import { Container, Row, Col, Image, DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
+import LogInPopUp from '../components/LogInPopUp';
 
 class Navbar extends Component {
 
@@ -9,8 +10,11 @@ class Navbar extends Component {
         super(props);
 
         this.state = {
-            userType: ''
+            userType: '',
+            logInPopUp: false
         }
+
+        this.myRef = React.createRef();
 
         this.logOut = this.logOut.bind(this);
         this.logIn = this.logIn.bind(this);
@@ -21,12 +25,20 @@ class Navbar extends Component {
         this.setState({ userType: userType });
     }
 
-    logIn(type) {
+    logIn() {
+        this.setState({ logInPopUp: true });
+        
+        //
+        var type = "member";
         localStorage.setItem('userType', type);
         this.setState({ userType: type });
     }
 
     logOut() {
+        this.setState({ logInPopUp: false });
+
+        //
+        var type = "member";
         localStorage.setItem('userType', '');
         this.setState({ userType: '' });
     }
@@ -34,8 +46,7 @@ class Navbar extends Component {
     render() {
 
         var userType = this.state.userType;
-        var dropDownItems = <Col sm="auto"><Col sm="auto"><Button as="input" type="button" value="Log in as member" onClick={() => this.logIn('member')} /></Col>
-            <Col sm="auto"><Button as="input" type="button" value="Log in as admin" onClick={() => this.logIn('admin')} /></Col></Col>
+        var dropDownItems = <Col sm="auto"><Button as="input" type="button" value="Log in" onClick={this.logIn} /></Col>
 
         if (userType.toLowerCase() == 'member') {
             dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="My space" >
@@ -57,21 +68,24 @@ class Navbar extends Component {
 
         return (
 
-            <Container fluid className="py-2" id="header">
+            <Container fluid className="py-2" id="header" ref={c => !this.state.container && this.setState({ container: c })}>
+                
                 <Row>
                     <Link to="/" className="col-auto" >
                         <Image src={logo} alt="logo" id="logo" />
                     </Link>
                     <Col></Col>
 
-                    {/* <Col sm="auto">({localStorage.getItem('userType').toUpperCase()[0]})</Col> */}
                     <Col sm="auto">({this.state.userType.toUpperCase()[0]})</Col>
                     <Col sm="auto">FAQ</Col>
-
                     {dropDownItems}
-                </Row>
 
+                    {/* key: to rerender when the key change */}
+                    <LogInPopUp container={this.state.container} show={this.state.logInPopUp} key={this.state.logInPopUp}/>
+                 
+                </Row>
             </Container>
+            
         )
     }
 } export default Navbar;

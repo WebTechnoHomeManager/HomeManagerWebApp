@@ -44,22 +44,22 @@ class Profile extends Component {
             <h1 style={{ textAlign: 'center' }}>My profile</h1>
             <br></br>
 
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+            <div className="div-center-content">
                 <form onChange={this.handleChange} >
-                    <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                    <label className="div-center-content">
                         Last name :
     <input type="text" name="last_name" defaultValue={this.state.user.last_name} style={{ width: "250px" }} />
                     </label>
-                    <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                    <label className="div-center-content">
                         First name :
     <input type="text" name="first_name" defaultValue={this.state.user.first_name} style={{ width: "250px" }} />
                     </label>
                     <br></br>
-                    <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                    <label className="div-center-content">
                         Email :
     <input type="text" name="email" defaultValue={this.state.user.email} style={{ width: "250px" }} />
                     </label>
-                    <label style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }}>
+                    <label className="div-center-content">
                         Password :
     <input type="password" name="password" defaultValue={this.state.user.password} style={{ width: "250px" }} />
                     </label>
@@ -70,11 +70,11 @@ class Profile extends Component {
             </div>
                 )
 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className="div-center-content">
                 <Button variant="primary" onClick={this.handleSubmit}> <Pencil /> Update</Button>
             </div>
             <br></br>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <div className="div-center-content">
                 <Button variant="primary"> <Trash />Delete my profile</Button>
             </div>
 
