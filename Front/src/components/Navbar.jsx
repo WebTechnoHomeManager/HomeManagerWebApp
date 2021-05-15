@@ -1,6 +1,6 @@
 import logo from '../images/logo.png';
 import React, { Component } from 'react';
-import { Container, Row, Col, Image, DropdownButton, Dropdown, Button} from 'react-bootstrap';
+import { Container, Row, Col, Image, DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
 class Navbar extends Component {
@@ -11,33 +11,33 @@ class Navbar extends Component {
         this.state = {
             userType: ''
         }
-        
-        this.logOut = this.logOut.bind(this); 
-        this.logIn = this.logIn.bind(this); 
+
+        this.logOut = this.logOut.bind(this);
+        this.logIn = this.logIn.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         var userType = localStorage.getItem('userType');
-        this.setState({userType: userType});
+        this.setState({ userType: userType });
     }
 
-    logIn(type){
+    logIn(type) {
         localStorage.setItem('userType', type);
-        this.setState({userType: type});
+        this.setState({ userType: type });
     }
 
-    logOut(){
+    logOut() {
         localStorage.setItem('userType', '');
-        this.setState({userType: ''});
+        this.setState({ userType: '' });
     }
 
     render() {
 
         var userType = this.state.userType;
-        var dropDownItems = <Col sm="auto"><Col sm="auto"><Button as="input" type="button" value="Log in as member" onClick={() => this.logIn('member')}/></Col>
-                <Col sm="auto"><Button as="input" type="button" value="Log in as admin" onClick={() => this.logIn('admin')}/></Col></Col>
+        var dropDownItems = <Col sm="auto"><Col sm="auto"><Button as="input" type="button" value="Log in as member" onClick={() => this.logIn('member')} /></Col>
+            <Col sm="auto"><Button as="input" type="button" value="Log in as admin" onClick={() => this.logIn('admin')} /></Col></Col>
 
-        if (userType.toLowerCase() == 'member'){
+        if (userType.toLowerCase() == 'member') {
             dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="My space" >
                 <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                 <Dropdown.Item href="/messaging">Messaging</Dropdown.Item>
@@ -45,7 +45,7 @@ class Navbar extends Component {
                 <Dropdown.Item href="/myproperties">My properties</Dropdown.Item>
                 <Dropdown.Item onClick={this.logOut}>Log out</Dropdown.Item>
             </DropdownButton>
-        } else if (userType.toLowerCase() == 'admin'){
+        } else if (userType.toLowerCase() == 'admin') {
             dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="My space" >
                 <Dropdown.Item href="/messaging">Messaging</Dropdown.Item>
                 <Dropdown.Item href="">Members</Dropdown.Item>
@@ -53,21 +53,21 @@ class Navbar extends Component {
                 <Dropdown.Item onClick={this.logOut}>Log out</Dropdown.Item>
             </DropdownButton>
         }
-        
+
 
         return (
 
             <Container fluid className="py-2" id="header">
                 <Row>
                     <Link to="/" className="col-auto" >
-                        <Image src={logo} alt="logo" id="logo"/>
+                        <Image src={logo} alt="logo" id="logo" />
                     </Link>
                     <Col></Col>
 
                     {/* <Col sm="auto">({localStorage.getItem('userType').toUpperCase()[0]})</Col> */}
                     <Col sm="auto">({this.state.userType.toUpperCase()[0]})</Col>
                     <Col sm="auto">FAQ</Col>
-                    
+
                     {dropDownItems}
                 </Row>
 
