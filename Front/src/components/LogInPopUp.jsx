@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Accordion, Card, Modal } from 'react-bootstrap';
+import UserService from '../services/UserService';
 
 class LogInPopUp extends Component {
 
@@ -7,51 +8,90 @@ class LogInPopUp extends Component {
         super(props);
 
         this.state = {
-            showModal: this.props.show
+            showModal: this.props.show,
+            errorUser: '',
+            errorPassword: ''
         };
 
-        this.onHide = this.onHide.bind(this);
-        this.logIn = this.logIn.bind(this);
+        this.tryToLogIn = this.tryToLogIn.bind(this);
+        this.resetDisplayedErrors = this.resetDisplayedErrors.bind(this);
+        this.displayError = this.displayError.bind(this);
+        this.checkPassword = this.checkPassword.bind(this);
     }
 
-    onHide(){
-        this.setState({ showModal: false });
-    };
 
-    logIn(){
+
+    tryToLogIn(e){
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        
+        var data = {
+            email: formData.get("email"),
+            password: formData.get("password")
+        }
+        
+        this.resetDisplayedErrors();
+
+        UserService.checkAuthentication(data).then((resp) => {
+            console.log(resp.data);
+
+            if (resp.data.error){
+                this.displayError(resp.data.error);
+            } else if (resp.data.result != undefined){
+                this.checkPassword(resp.data)
+            }            
+        });
         
     };
     
+    resetDisplayedErrors(){
+        this.setState({ errorUser: '' });
+        this.setState({ errorPassword: '' });
+    }
+
+    displayError(error){
+        if (error == "UserNotFound"){
+            this.setState({ errorUser: "User not found" });
+        }
+    }
+
+    checkPassword(data){
+        if(data.result){
+            this.props.logIn(data);
+        } else {
+            this.setState({ errorPassword: "Wrong password" });
+        }
+    }
+
     render() {
         return (
-               
+            <div>{this.state.showModal}
             <Modal aria-labelledby="contained-modal-title-vcenter" centered 
                    show={this.state.showModal}
-                   onHide={this.onHide}>
+                   onHide={this.props.onHide}>
 
                 <Modal.Header closeButton className="text-center d-block">
                     <Modal.Title id="contained-modal-title-vcenter" className="d-inline-block">
                         Log in</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Form>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="" />
-                    </Form.Group>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Email address</Form.Label>
-                        <Form.Control type="email" placeholder="" />
-                    </Form.Group>
-                    <div className="div-center-content">
-                        <Button className="center" onClick={this.logIn}>Log in</Button>
-                    </div>
-                </Form>
+                    <Form onSubmit={this.tryToLogIn}>
+                        <Form.Group>
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control type="email" placeholder="" name="email"/>
+                            <Form.Text className="text-muted">{this.state.errorUser}</Form.Text>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" placeholder="" name="password"/>
+                            <Form.Text className="text-muted">{this.state.errorPassword}</Form.Text>
+                        </Form.Group>
+                        <div className="div-center-content">
+                            <Button className="center" type="submit">Log in</Button>
+                        </div>
+                    </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    
-                </Modal.Footer>
-            </Modal>
+            </Modal></div>
 
         );
       }

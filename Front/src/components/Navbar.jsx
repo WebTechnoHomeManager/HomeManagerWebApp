@@ -16,8 +16,10 @@ class Navbar extends Component {
 
         this.myRef = React.createRef();
 
-        this.logOut = this.logOut.bind(this);
+        this.showLogInPopUp = this.showLogInPopUp.bind(this);
         this.logIn = this.logIn.bind(this);
+        this.logOut = this.logOut.bind(this);
+        this.onHidePopUp = this.onHidePopUp.bind(this);
     }
 
     componentDidMount() {
@@ -26,28 +28,35 @@ class Navbar extends Component {
         this.setState({ userType: userType });
     }
 
-    logIn() {
+    showLogInPopUp() {
         this.setState({ logInPopUp: true });
+    }
 
-        //
-        var type = "member";
+    
+    logIn(data) {
+        this.setState({ logInPopUp: false });
+
+        var type = data.userType;
+        var id = data.userId;
         localStorage.setItem('userType', type);
+        localStorage.setItem('userId', id);
         this.setState({ userType: type });
     }
 
     logOut() {
-        this.setState({ logInPopUp: false });
-
-        //
-        var type = "member";
         localStorage.setItem('userType', '');
+        localStorage.setItem('userId', '');
         this.setState({ userType: '' });
     }
+
+    onHidePopUp(){
+        this.setState({ logInPopUp: false });
+    };
 
     render() {
 
         var userType = this.state.userType;
-        var dropDownItems = <Col sm="auto"><Button as="input" type="button" value="Log in" onClick={this.logIn} /></Col>
+        var dropDownItems = <Col sm="auto"><Button as="input" type="button" value="Log in" onClick={this.showLogInPopUp} /></Col>
 
         if (userType.toLowerCase() == 'member') {
             dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="My space" >
@@ -82,8 +91,11 @@ class Navbar extends Component {
                     {dropDownItems}
 
                     {/* key: to rerender when the key change */}
-                    <LogInPopUp container={this.state.container} show={this.state.logInPopUp} key={this.state.logInPopUp} />
-
+                    <LogInPopUp container={this.state.container} 
+                                show={this.state.logInPopUp} key={this.state.logInPopUp}
+                                logIn={this.logIn}
+                                onHide={this.onHidePopUp}/>
+                 
                 </Row>
             </Container>
 

@@ -23,7 +23,9 @@ class UserService {
         return axios.delete(USER_API_BASE_URL + '/' + userId);
     }
 
-
+    checkAuthentication(data) {
+        return axios.post(USER_API_BASE_URL + '/authentication', data);
+    }
 }
 
 export default new UserService();

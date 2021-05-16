@@ -9,4 +9,6 @@ import com.homemanager.springboot.model.User;
 
 public interface UserRepository extends CrudRepository<User, Integer> {
 
+    //public List<Property> findByCityInAnd(List<String> locationsList)
+    public User findByEmail(String email);
 }
