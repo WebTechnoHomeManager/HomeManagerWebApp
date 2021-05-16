@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import UserService from '../services/UserService';
 import '../css/App.scss';
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 import { Pencil, Trash } from 'react-bootstrap-icons';
 
 class Profile extends Component {
@@ -29,7 +29,7 @@ class Profile extends Component {
         console.log('id => ' + JSON.stringify(this.state.id));
         UserService.updateUser(user, this.state.id).then(res => {
             this.props.history.push('/profile');
-            alert("Profil modifié");
+            alert("Profile updated");
         });
     }
 
@@ -45,28 +45,25 @@ class Profile extends Component {
             <br></br>
 
             <div className="div-center-content">
-                <form onChange={this.handleChange} >
-                    <label className="div-center-content">
-                        Last name :
-    <input type="text" name="last_name" defaultValue={this.state.user.last_name} style={{ width: "250px" }} />
-                    </label>
-                    <label className="div-center-content">
-                        First name :
-    <input type="text" name="first_name" defaultValue={this.state.user.first_name} style={{ width: "250px" }} />
-                    </label>
-                    <br></br>
-                    <label className="div-center-content">
-                        Email :
-    <input type="text" name="email" defaultValue={this.state.user.email} style={{ width: "250px" }} />
-                    </label>
-                    <label className="div-center-content">
-                        Password :
-    <input type="password" name="password" defaultValue={this.state.user.password} style={{ width: "250px" }} />
-                    </label>
-                    <br></br>
-                </form>
 
-
+                <Form onChange={this.handleChange}>
+                    <Form.Group controlId="last_name">
+                        <Form.Label>Last name:</Form.Label>
+                        <Form.Control type="text" name="last_name" defaultValue={this.state.user.last_name} />
+                    </Form.Group>
+                    <Form.Group controlId="first_name">
+                        <Form.Label>First name:</Form.Label>
+                        <Form.Control type="text" name="first_name" defaultValue={this.state.user.first_name} />
+                    </Form.Group>
+                    <Form.Group controlId="email">
+                        <Form.Label>Email:</Form.Label>
+                        <Form.Control type="email" name="email" defaultValue={this.state.user.email} />
+                    </Form.Group>
+                    <Form.Group controlId="password">
+                        <Form.Label>Password:</Form.Label>
+                        <Form.Control type="password" name="password" defaultValue={this.state.user.password} />
+                    </Form.Group>
+                </Form>
             </div>
                 )
 

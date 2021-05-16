@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
@@ -52,10 +53,9 @@ public class PropertyController {
 	 
 	// get property by id rest api
 		@GetMapping("/properties/{id}")
-		public ResponseEntity<Property> getPropertyById(@PathVariable Integer id) {
-			Property property = propertyRepository.findById(id)
-					.orElseThrow();
-			return ResponseEntity.ok(property);
+		public Property findPropertyById(@PathVariable Integer id) {
+			Optional<Property> Property = propertyRepository.findById(id);
+		   	return Property.get();
 		}
 	
 		// get property by user id rest api

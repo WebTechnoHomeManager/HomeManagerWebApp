@@ -22,12 +22,13 @@ class Navbar extends Component {
 
     componentDidMount() {
         var userType = localStorage.getItem('userType');
+        //var userType = "Member";
         this.setState({ userType: userType });
     }
 
     logIn() {
         this.setState({ logInPopUp: true });
-        
+
         //
         var type = "member";
         localStorage.setItem('userType', type);
@@ -69,7 +70,7 @@ class Navbar extends Component {
         return (
 
             <Container fluid className="py-2" id="header" ref={c => !this.state.container && this.setState({ container: c })}>
-                
+
                 <Row>
                     <Link to="/" className="col-auto" >
                         <Image src={logo} alt="logo" id="logo" />
@@ -81,11 +82,11 @@ class Navbar extends Component {
                     {dropDownItems}
 
                     {/* key: to rerender when the key change */}
-                    <LogInPopUp container={this.state.container} show={this.state.logInPopUp} key={this.state.logInPopUp}/>
-                 
+                    <LogInPopUp container={this.state.container} show={this.state.logInPopUp} key={this.state.logInPopUp} />
+
                 </Row>
             </Container>
-            
+
         )
     }
 } export default Navbar;

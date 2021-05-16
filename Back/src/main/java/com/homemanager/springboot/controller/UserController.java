@@ -37,12 +37,14 @@ public class UserController {
 	  }
 	 
 	 
-	// create employee rest api
+	// create user rest api
 		@PostMapping("/users")
 		public User createUser(@RequestBody User user) {
 			return userRepository.save(user);
 		}
 		
+		
+		// get user by id rest api
 		@GetMapping("/users/{id}")
 		public User findUserById(@PathVariable Integer id) {
 			Optional<User> User = userRepository.findById(id);
