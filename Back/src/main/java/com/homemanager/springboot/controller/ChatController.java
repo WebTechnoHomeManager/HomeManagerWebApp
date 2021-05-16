@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
 public class ChatController {
+	
 	@Autowired
 	private ChatRepository chatRepository;
 	
 	@GetMapping(path="/chat")
 	  public @ResponseBody Iterable<Chat> getAllMessages() {
-	    // This returns a JSON or XML with the users
 	    return chatRepository.findAll();
 	  }
 	

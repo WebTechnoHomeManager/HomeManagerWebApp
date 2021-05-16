@@ -17,10 +17,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "reservation")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Reservation {
+
 	@Id
 	@GeneratedValue
-  private Integer id;
-	
+  	private Integer id;
+
 	@ManyToOne
     @JoinColumn(name="user_id")
     private User reservation_user;
@@ -30,10 +31,9 @@ public class Reservation {
     private Property property_reservation;
 	
 	@Column(name = "start_date")
-	  private LocalDateTime start_date;
+	private LocalDateTime start_date;
 	@Column(name = "end_date")
-	  private LocalDateTime end_date;
-	
+	private LocalDateTime end_date;
 	
 	public Property getProperty_reservation() {
 		return property_reservation;
@@ -47,8 +47,6 @@ public class Reservation {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-
 	public User getReservation_user() {
 		return reservation_user;
 	}

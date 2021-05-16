@@ -9,6 +9,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "service")
 public class Service {
+	
 	@Id
 	@GeneratedValue
     private Integer id;

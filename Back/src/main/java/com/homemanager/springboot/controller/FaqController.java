@@ -13,12 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
 public class FaqController {
+	
 	@Autowired
 	private FaqRepository faqRepository;
 	
 	@GetMapping(path="/faq")
 	  public @ResponseBody Iterable<Faq> getAllQuestions() {
-	    // This returns a JSON or XML with the users
 	    return faqRepository.findAll();
 	  }
 }

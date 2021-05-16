@@ -12,11 +12,12 @@ import com.homemanager.springboot.repository.RestrictionRepository;
 @CrossOrigin(origins="http://localhost:3000")
 @RequestMapping("/api/v1/")
 public class RestrictionController {
+
 	@Autowired
 	private RestrictionRepository restrictionRepository;
 	
 	@GetMapping(path="/restrictions")
-	  public @ResponseBody Iterable<Restriction> getAllConstraints() {
+	public @ResponseBody Iterable<Restriction> getAllConstraints() {
 	    return restrictionRepository.findAll();
-	  }
+	}
 }

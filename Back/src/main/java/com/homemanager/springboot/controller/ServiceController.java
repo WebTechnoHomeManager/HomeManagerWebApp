@@ -13,14 +13,14 @@ import com.homemanager.springboot.repository.ServiceRepository;
 @CrossOrigin(origins="http://localhost:3000")
 @RequestMapping("/api/v1/")
 public class ServiceController {
+
 	@Autowired
 	private ServiceRepository serviceRepository;
 	
-	
 	@GetMapping(path="/services")
-	  public @ResponseBody Iterable<Service> getAllServices() {
+	public @ResponseBody Iterable<Service> getAllServices() {
 	    return serviceRepository.findAll();
-	  }
+	}
 
 	
 }

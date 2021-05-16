@@ -51,7 +51,7 @@ class UpdatePropertyPopUp extends Component {
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
                         Update Property
-        </Modal.Title>
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Row>

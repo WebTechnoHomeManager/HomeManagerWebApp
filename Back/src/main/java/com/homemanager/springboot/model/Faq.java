@@ -9,14 +9,14 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "faq")
 public class Faq {
+
 	@Id
 	@GeneratedValue
-  private Integer id;
+  	private Integer id;
 	@Column(name = "question")
-	  private String question;
+	private String question;
 	@Column(name = "answer")
-	  private String answer;
-	
+	private String answer;
 	
 	public Integer getId() {
 		return id;
@@ -36,6 +36,4 @@ public class Faq {
 	public void setAnswer(String answer) {
 		this.answer = answer;
 	}
-	
-	
 }

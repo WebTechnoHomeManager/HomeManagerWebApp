@@ -9,6 +9,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "restriction")
 public class Restriction {
+	
 	@Id
 	@GeneratedValue
 	private Integer id;

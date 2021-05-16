@@ -12,11 +12,12 @@ import com.homemanager.springboot.repository.PropertyTypeRepository;
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
 public class PropertyTypeController {
+
 	@Autowired
 	private PropertyTypeRepository propertytypeRepository;
+
 	@GetMapping(path="/types")
-	  public @ResponseBody Iterable<Property_type> getAllTypes() {
-	    // This returns a JSON or XML with the users
+	public @ResponseBody Iterable<Property_type> getAllTypes() {
 	    return propertytypeRepository.findAll();
-	  }
+	}
 }

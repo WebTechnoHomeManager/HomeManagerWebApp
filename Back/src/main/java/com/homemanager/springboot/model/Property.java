@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name = "property")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Property {
+
 	@Id
 	@GeneratedValue
 	private Integer id;
@@ -74,7 +75,7 @@ public class Property {
 	public void setProperty_constraints(Set<Restriction> property_constraints) {
 		this.property_restrictions = property_constraints;
 	}
-	//Getters and Setters
+
 	public Set<Reservation> getReservations() {
 		return reservations;
 	}
@@ -152,9 +153,7 @@ public class Property {
 	public Set<Restriction> getProperty_restrictions() {
 		return property_restrictions;
 	}
-
 	public void setProperty_restrictions(Set<Restriction> property_restrictions) {
 		this.property_restrictions = property_restrictions;
 	}
-
 }

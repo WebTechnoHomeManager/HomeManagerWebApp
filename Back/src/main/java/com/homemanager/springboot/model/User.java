@@ -12,6 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
+
 	@Id
 	@GeneratedValue
   	private Integer id;
@@ -30,7 +31,6 @@ public class User {
 	
 	@OneToMany(mappedBy = "reservation_user")
     private Set<Reservation> reservations;
-	
 
 	public boolean isPasswordRight(String inputPassword) {
 		return inputPassword.equals(this.password);
@@ -91,5 +91,4 @@ public class User {
 	public void setType(String type) {
 		this.type = type;
 	}
-  
 }	

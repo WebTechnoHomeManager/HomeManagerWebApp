@@ -11,19 +11,21 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "chat")
 public class Chat {
+
 	@Id
 	@GeneratedValue
-  private Integer id;
+  	private Integer id;
 	@Column(name = "id_user1")
-	  private Integer id_user1;
+	private Integer id_user1;
 	@Column(name = "id_user2")
-	  private Integer id_user2;
+	private Integer id_user2;
 	@Column(name = "message")
-	  private String message;
+	private String message;
 	@Column(name = "datetime")
-	  private LocalDateTime datetime;
+	private LocalDateTime datetime;
 	@Column(name = "read_or_not")
-	  private Boolean read_or_not;
+	private Boolean read_or_not;
+
 	public Integer getId() {
 		return id;
 	}
@@ -60,6 +62,4 @@ public class Chat {
 	public void setRead_or_not(Boolean read_or_not) {
 		this.read_or_not = read_or_not;
 	}
-	
-	
 }
