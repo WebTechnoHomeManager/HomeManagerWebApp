@@ -14,6 +14,10 @@ class Navbar extends Component {
             logInPopUp: false
         }
 
+        if (localStorage.getItem('userType') == null){
+            localStorage.setItem('userType', '');
+        }
+
         this.myRef = React.createRef();
 
         this.showLogInPopUp = this.showLogInPopUp.bind(this);
@@ -24,7 +28,6 @@ class Navbar extends Component {
 
     componentDidMount() {
         var userType = localStorage.getItem('userType');
-        //var userType = "Member";
         this.setState({ userType: userType });
     }
 
