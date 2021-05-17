@@ -67,9 +67,9 @@ class UpdatePropertyPopUp extends Component {
                                         <Form.Label>Description:</Form.Label>
                                         <Form.Control type="text" name="description" defaultValue={this.state.property.description} />
                                     </Form.Group>
-                                    <Form.Group controlId="adress">
+                                    <Form.Group controlId="address">
                                         <Form.Label>Address:</Form.Label>
-                                        <Form.Control type="text" name="adress" defaultValue={this.state.property.address} />
+                                        <Form.Control type="text" name="address" defaultValue={this.state.property.address} />
                                     </Form.Group>
                                     <Form.Group controlId="city">
                                         <Form.Label>City:</Form.Label>
