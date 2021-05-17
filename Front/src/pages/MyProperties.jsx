@@ -12,7 +12,7 @@ class MyProperties extends Component {
         super(props)
 
         this.state = {
-            ownerId: 2,
+            ownerId: localStorage.userId,
             properties: [],
             addModalShow: false
         }

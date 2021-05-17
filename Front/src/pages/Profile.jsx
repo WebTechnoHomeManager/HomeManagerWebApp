@@ -9,7 +9,7 @@ class Profile extends Component {
         super(props)
 
         this.state = {
-            id: 2,
+            id: localStorage.userId,
             user: {}
         }
         this.handleChange = this.handleChange.bind(this);
