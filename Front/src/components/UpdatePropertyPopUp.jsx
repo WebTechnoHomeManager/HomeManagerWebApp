@@ -132,7 +132,7 @@ class UpdatePropertyPopUp extends Component {
                                                     this.state.allServices.map(
                                                         service =>
                                                             <Form.Check key={"service" + service.id}
-                                                                defaultChecked={service}
+                                                                defaultChecked={service.name}
                                                                 name={"service" + service.id}
                                                                 label={service.name}
                                                                 id={"service" + service.id} onClick={(e) => { }}
@@ -156,7 +156,7 @@ class UpdatePropertyPopUp extends Component {
                                                     this.state.allRestrictions.map(
                                                         restriction =>
                                                             <Form.Check key={"restriction" + restriction.id}
-                                                                defaultChecked={restriction}
+                                                                defaultChecked={restriction.name}
                                                                 name={"service" + restriction.id}
                                                                 label={restriction.name}
                                                                 id={"service" + restriction.id} onClick={(e) => { }}
