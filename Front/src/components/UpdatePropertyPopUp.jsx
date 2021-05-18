@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Button, Modal, Row, Col, Accordion, Card } from 'react-bootstrap';
 import PropertyService from '../services/PropertyService';
+import RestrictionService from '../services/RestrictionService';
+import ServiceService from '../services/ServiceService';
+import TypeService from '../services/TypeService';
 import { Pencil, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
 
 class UpdatePropertyPopUp extends Component {
@@ -10,6 +13,9 @@ class UpdatePropertyPopUp extends Component {
 
         this.state = {
             id: 2,
+            allServices: [],
+            allRestrictions: [],
+            allPropertyTypes: [],
             property: {
                 property_services: [],
                 property_restrictions: [],
@@ -25,6 +31,21 @@ class UpdatePropertyPopUp extends Component {
         PropertyService.getPropertyById(this.state.id).then(res => {
             this.setState({ property: res.data });
         })
+        ServiceService.getServices().then((res) => {
+            this.setState({
+                allServices: res.data
+            });
+        });
+        RestrictionService.getRestrictions().then((res) => {
+            this.setState({
+                allRestrictions: res.data
+            });
+        });
+        TypeService.getPropertyTypes().then((res) => {
+            this.setState({
+                allPropertyTypes: res.data
+            });
+        });
     }
 
     handleSubmit = (e) => {
@@ -91,10 +112,11 @@ class UpdatePropertyPopUp extends Component {
                             <Form.Group controlId="property_type">
                                 <Form.Label>Property type:</Form.Label>
                                 <Form.Control as="select">
-                                    <option>  {this.state.property.property_type.name}</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                    {
+                                        this.state.allPropertyTypes.map(
+                                            type => <option selected={type.name === this.state.property.property_type.name} > {type.name} </option>
+                                        )
+                                    }
                                 </Form.Control>
                             </Form.Group>
 
@@ -107,7 +129,7 @@ class UpdatePropertyPopUp extends Component {
                                         <Accordion.Collapse eventKey="0">
                                             <Card.Body>
                                                 {
-                                                    this.state.property.property_services.map(
+                                                    this.state.allServices.map(
                                                         service =>
                                                             <Form.Check key={"service" + service.id}
                                                                 defaultChecked={service}
@@ -131,7 +153,7 @@ class UpdatePropertyPopUp extends Component {
                                         <Accordion.Collapse eventKey="0">
                                             <Card.Body>
                                                 {
-                                                    this.state.property.property_restrictions.map(
+                                                    this.state.allRestrictions.map(
                                                         restriction =>
                                                             <Form.Check key={"restriction" + restriction.id}
                                                                 defaultChecked={restriction}
