@@ -65,6 +65,16 @@ class UpdatePropertyPopUp extends Component {
         this.setState({ property });
     }
 
+    handleTypeChange = (event) => {
+        let property = { ...this.state.property };
+        const [id, name] = event.target.value.split(',');
+        property.property_type["id"] = id;
+        property.property_type["name"] = name;
+        console.log(property.property_type);
+        this.setState({ property });
+        console.log(this.state)
+    }
+
     render() {
         return (
             <Modal
@@ -109,12 +119,12 @@ class UpdatePropertyPopUp extends Component {
                         </Col>
                         <Col>
 
-                            <Form.Group controlId="property_type">
+                            <Form.Group controlId="property_type" onChange={this.handleTypeChange}>
                                 <Form.Label>Property type:</Form.Label>
-                                <Form.Control as="select">
+                                <Form.Control as="select" name="property_type">
                                     {
                                         this.state.allPropertyTypes.map(
-                                            type => <option selected={type.name === this.state.property.property_type.name} > {type.name} </option>
+                                            type => <option key={type.id} value={[type.id, type.name]} selected={type.name === this.state.property.property_type.name} > {type.name} </option>
                                         )
                                     }
                                 </Form.Control>

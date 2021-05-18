@@ -69,6 +69,9 @@ public class PropertyController {
 		property.setAddress(propertyDetails.getAddress());
 		property.setCity(propertyDetails.getCity());
 		property.setTotal_occupancy(propertyDetails.getTotal_occupancy());
+		property.setProperty_type(propertyDetails.getProperty_type());
+		property.setProperty_services(propertyDetails.getProperty_services());
+		property.setProperty_restrictions(property.getProperty_restrictions());
 		
 		Property updatedProperty = propertyRepository.save(property);
 		return ResponseEntity.ok(updatedProperty);

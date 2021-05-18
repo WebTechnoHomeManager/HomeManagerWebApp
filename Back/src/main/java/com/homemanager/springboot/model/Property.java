@@ -69,13 +69,6 @@ public class Property {
     Set<Restriction> property_restrictions;
 	
 	
-	public Set<Restriction> getProperty_constraints() {
-		return property_restrictions;
-	}
-	public void setProperty_constraints(Set<Restriction> property_constraints) {
-		this.property_restrictions = property_constraints;
-	}
-
 	public Set<Reservation> getReservations() {
 		return reservations;
 	}
