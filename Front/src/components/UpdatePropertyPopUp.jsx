@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Form, Button, Modal, Row, Col, } from 'react-bootstrap';
+import { Form, Button, Modal, Row, Col, Accordion, Card } from 'react-bootstrap';
 import PropertyService from '../services/PropertyService';
-import { Pencil } from 'react-bootstrap-icons';
+import { Pencil, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
 
 class UpdatePropertyPopUp extends Component {
 
@@ -10,7 +10,12 @@ class UpdatePropertyPopUp extends Component {
 
         this.state = {
             id: 2,
-            property: {}
+            property: {
+                property_services: [],
+                property_restrictions: [],
+                property_type: {},
+                owner: {}
+            }
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,7 +46,6 @@ class UpdatePropertyPopUp extends Component {
 
     render() {
         return (
-
             <Modal
                 {...this.props}
                 size="lg"
@@ -65,7 +69,7 @@ class UpdatePropertyPopUp extends Component {
                                     </Form.Group>
                                     <Form.Group controlId="description">
                                         <Form.Label>Description:</Form.Label>
-                                        <Form.Control type="text" name="description" defaultValue={this.state.property.description} />
+                                        <Form.Control as="textarea" rows={3} type="text" name="description" defaultValue={this.state.property.description} />
                                     </Form.Group>
                                     <Form.Group controlId="address">
                                         <Form.Label>Address:</Form.Label>
@@ -83,12 +87,72 @@ class UpdatePropertyPopUp extends Component {
                             </div>
                         </Col>
                         <Col>
-                            <Button variant="primary" onClick={this.handleSubmit}> <Pencil /> Update</Button>
+
+                            <Form.Group controlId="property_type">
+                                <Form.Label>Property type:</Form.Label>
+                                <Form.Control as="select">
+                                    <option>  {this.state.property.property_type.name}</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </Form.Control>
+                            </Form.Group>
+
+                            <Form.Group controlId="property_services">
+                                <Accordion className="col-auto">
+                                    <Card>
+                                        <Accordion.Toggle as={Card.Header} eventKey="0">
+                                            <CardChecklist></CardChecklist>  Services
+                                </Accordion.Toggle>
+                                        <Accordion.Collapse eventKey="0">
+                                            <Card.Body>
+                                                {
+                                                    this.state.property.property_services.map(
+                                                        service =>
+                                                            <Form.Check key={"service" + service.id}
+                                                                defaultChecked={service}
+                                                                name={"service" + service.id}
+                                                                label={service.name}
+                                                                id={"service" + service.id} onClick={(e) => { }}
+                                                            />
+                                                    )
+                                                }
+                                            </Card.Body>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                            </Form.Group>
+                            <Form.Group controlId="property_restrictions">
+                                <Accordion className="col-auto">
+                                    <Card>
+                                        <Accordion.Toggle as={Card.Header} eventKey="0">
+                                            <CardList></CardList>  Restrictions
+                                </Accordion.Toggle>
+                                        <Accordion.Collapse eventKey="0">
+                                            <Card.Body>
+                                                {
+                                                    this.state.property.property_restrictions.map(
+                                                        restriction =>
+                                                            <Form.Check key={"restriction" + restriction.id}
+                                                                defaultChecked={restriction}
+                                                                name={"service" + restriction.id}
+                                                                label={restriction.name}
+                                                                id={"service" + restriction.id} onClick={(e) => { }}
+                                                            />
+                                                    )
+                                                }
+                                            </Card.Body>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                            </Form.Group>
+
                         </Col>
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.props.onHide}>Close</Button>
+                    <Button onClick={this.props.onHide}> <XCircle /> Close</Button>
+                    <Button variant="primary" onClick={this.handleSubmit}> <Pencil /> Update</Button>
                 </Modal.Footer>
             </Modal>
 

@@ -10,7 +10,6 @@ import MyReservations from './pages/MyReservations';
 import Profile from './pages/Profile';
 import Messaging from './pages/Messaging';
 
-
 function App() {
     return (
 

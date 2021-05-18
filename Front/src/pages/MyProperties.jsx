@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import PropertyService from '../services/PropertyService';
 import '../css/App.scss';
-import { Container, Row, Col, Card, Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Dropdown, DropdownButton, Form, Accordion } from 'react-bootstrap';
 import photo from '../images/banner/banner2.jpg';
-import { Pencil, Trash, PlusCircle } from 'react-bootstrap-icons';
+import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
 import UpdatePropertyPopUp from '../components/UpdatePropertyPopUp';
 
 class MyProperties extends Component {
@@ -63,12 +63,33 @@ class MyProperties extends Component {
                                         })}</Card.Text>
                                     </Col>
                                     <Col>
-                                        <Card.Text>Réservations</Card.Text>
-                                        <DropdownButton id="dropdown-basic-button" className="col-auto" title="Future reservations">
-                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-                                        </DropdownButton>
+
+                                        <Accordion style={{ color: "white" }} className="col-auto">
+                                            <Card style={{ backgroundColor: "#FF584D" }}>
+                                                <Accordion.Toggle as={Card.Header} eventKey="0">
+                                                    <ArrowDown></ArrowDown>Upcoming reservations
+                                </Accordion.Toggle>
+                                                <Accordion.Collapse eventKey="0">
+                                                    <Card.Body>
+                                                        <Form.Check
+                                                            name={"something"}
+                                                            label={"something"}></Form.Check>
+                                                        <Form.Check
+                                                            name={"something"}
+                                                            label={"something"}></Form.Check>
+                                                        <Form.Check
+                                                            name={"something"}
+                                                            label={"something"}></Form.Check>
+                                                        <Form.Check
+                                                            name={"something"}
+                                                            label={"something"}></Form.Check>
+                                                    </Card.Body>
+                                                </Accordion.Collapse>
+                                            </Card>
+                                        </Accordion>
+
+
+
                                         <Card.Text>{property.reservations.map(function (d, idx) {
                                             return (<li key={idx}> From {d.start_date} to {d.end_date} - by {d.reservation_user.first_name} {d.reservation_user.last_name}</li>)
                                         })}</Card.Text></Col>
