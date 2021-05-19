@@ -4,23 +4,32 @@ import PropertyService from '../services/PropertyService';
 import RestrictionService from '../services/RestrictionService';
 import ServiceService from '../services/ServiceService';
 import TypeService from '../services/TypeService';
-import { Pencil, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
+import UserService from '../services/UserService';
+import { PlusCircle, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
+
 
 class UpdatePropertyPopUp extends Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
-            id: this.props.children,
+            //id: this.props.children,
             allServices: [],
             allRestrictions: [],
             allPropertyTypes: [],
             property: {
-                property_services: [],
-                property_restrictions: [],
+                title: "",
+                description: "",
+                address: "",
+                city: "",
+                total_occupancy: "",
+                latitude: 0,
+                longitude: 0,
+                owner: {},
                 property_type: {},
-                owner: {}
+                reservations: [],
+                property_services: [],
+                property_restrictions: []
             }
         }
         this.handleChange = this.handleChange.bind(this);
@@ -28,10 +37,14 @@ class UpdatePropertyPopUp extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.children);
-        PropertyService.getPropertyById(this.state.id).then(res => {
-            this.setState({ property: res.data });
-        })
+        UserService.getUserById(localStorage.userId).then((res) => {
+            let property = { ...this.state.property };
+            property["owner"] = res.data;
+            this.setState({
+                property: property
+            });
+            console.log("user" + res.data);
+        });
         ServiceService.getServices().then((res) => {
             this.setState({
                 allServices: res.data
@@ -53,10 +66,11 @@ class UpdatePropertyPopUp extends Component {
         e.preventDefault();
         let property = this.state.property;
         console.log('property => ' + JSON.stringify(property));
-        console.log('id => ' + JSON.stringify(this.state.id));
-        PropertyService.updateProperty(property, this.state.id).then(res => {
+        PropertyService.createProperty(JSON.stringify(property)).then(res => {
             //this.props.history.push('/myproperties');
-            alert("Property updated");
+            alert("Property created");
+        }).catch(error => {
+            console.log(error.response);
         });
     }
 
@@ -86,7 +100,7 @@ class UpdatePropertyPopUp extends Component {
             >
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Update Property
+                        Create Property
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -97,23 +111,23 @@ class UpdatePropertyPopUp extends Component {
                                 <Form onChange={this.handleChange}>
                                     <Form.Group controlId="title">
                                         <Form.Label>Title:</Form.Label>
-                                        <Form.Control type="text" name="title" defaultValue={this.state.property.title} />
+                                        <Form.Control type="text" name="title" />
                                     </Form.Group>
                                     <Form.Group controlId="description">
                                         <Form.Label>Description:</Form.Label>
-                                        <Form.Control as="textarea" rows={3} type="text" name="description" defaultValue={this.state.property.description} />
+                                        <Form.Control as="textarea" rows={3} type="text" name="description" />
                                     </Form.Group>
                                     <Form.Group controlId="address">
                                         <Form.Label>Address:</Form.Label>
-                                        <Form.Control type="text" name="address" defaultValue={this.state.property.address} />
+                                        <Form.Control type="text" name="address" />
                                     </Form.Group>
                                     <Form.Group controlId="city">
                                         <Form.Label>City:</Form.Label>
-                                        <Form.Control type="text" name="city" defaultValue={this.state.property.city} />
+                                        <Form.Control type="text" name="city" />
                                     </Form.Group>
                                     <Form.Group controlId="total_occupancy">
                                         <Form.Label>Total occupancy:</Form.Label>
-                                        <Form.Control type="text" name="total_occupancy" defaultValue={this.state.property.total_occupancy} />
+                                        <Form.Control type="text" name="total_occupancy" />
                                     </Form.Group>
                                 </Form>
                             </div>
@@ -185,10 +199,11 @@ class UpdatePropertyPopUp extends Component {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.onHide}> <XCircle /> Close</Button>
-                    <Button variant="primary" onClick={this.handleSubmit}> <Pencil /> Update</Button>
+                    <Button variant="primary" onClick={this.handleSubmit}> <PlusCircle /> Add</Button>
                 </Modal.Footer>
             </Modal>
 
         );
     }
-} export default UpdatePropertyPopUp;
+}
+export default UpdatePropertyPopUp;

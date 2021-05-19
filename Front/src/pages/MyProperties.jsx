@@ -2,10 +2,11 @@
 import React, { Component } from 'react';
 import PropertyService from '../services/PropertyService';
 import '../css/App.scss';
-import { Container, Row, Col, Card, Button, Dropdown, DropdownButton, Form, Accordion } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Form, Accordion } from 'react-bootstrap';
 import photo from '../images/banner/banner2.jpg';
 import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
 import UpdatePropertyPopUp from '../components/UpdatePropertyPopUp';
+import CreatePropertyPopUp from '../components/CreatePropertyPopUp';
 
 class MyProperties extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ class MyProperties extends Component {
         this.state = {
             ownerId: localStorage.userId,
             properties: [],
-            addModalShow: false
+            addModalShow1: false,
+            addModalShow2: false
         }
     }
 
@@ -27,12 +29,22 @@ class MyProperties extends Component {
 
     render() {
 
-        let addModalClose = () => this.setState({ addModalShow: false });
+        let addModalClose1 = () => this.setState({ addModalShow1: false });
+        let addModalClose2 = () => this.setState({ addModalShow2: false });
         return (
 
             < div >
                 <h1 className="center">My Properties</h1>
-                <div className="div-center-content"><Button variant="primary"><PlusCircle />Add a property</Button></div>
+                <div className="div-center-content">
+
+                    <Button variant="primary" onClick={() => this.setState({ addModalShow1: true })}> <PlusCircle />Add a property</Button>
+                    <CreatePropertyPopUp
+                        show={this.state.addModalShow1}
+                        onHide={addModalClose1}
+                    />
+
+                </div>
+
                 {
                     this.state.properties.map(
                         property => <div className="div-center-content" style={{ marginTop: '30px' }}><Card style={{ width: '70%' }}> <Card.Header>{property.title}</Card.Header>
@@ -41,12 +53,12 @@ class MyProperties extends Component {
                                     <Col style={{ textAlign: 'center' }}>
                                         <Card.Title>{property.title}</Card.Title>
                                         <Card.Img variant="top" src={photo} />
-                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => this.setState({ addModalShow: true })}> <Pencil /> Update</Button>
+                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => this.setState({ addModalShow2: true })}> <Pencil /> Update</Button>
 
                                         <UpdatePropertyPopUp
-                                            show={this.state.addModalShow}
-                                            onHide={addModalClose}
-                                        />
+                                            show={this.state.addModalShow2}
+                                            onHide={addModalClose2}
+                                        >{property.id}</UpdatePropertyPopUp>
 
                                         <Button variant="primary" style={{ margin: '3px' }}> <Trash />Delete</Button>
                                     </Col>
