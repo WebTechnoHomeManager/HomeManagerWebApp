@@ -66,7 +66,7 @@ class UpdatePropertyPopUp extends Component {
         e.preventDefault();
         let property = this.state.property;
         console.log('property => ' + JSON.stringify(property));
-        PropertyService.createProperty(JSON.stringify(property)).then(res => {
+        PropertyService.createProperty(property).then(res => {
             //this.props.history.push('/myproperties');
             alert("Property created");
         }).catch(error => {
