@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,18 +14,18 @@ import javax.persistence.Table;
 public class Chat {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
   	private Integer id;
-	@Column(name = "id_user1")
-	private Integer id_user1;
-	@Column(name = "id_user2")
-	private Integer id_user2;
+	@Column(name = "id_sender")
+	private Integer idSender;
+	@Column(name = "id_recipient")
+	private Integer idRecipient;
 	@Column(name = "message")
 	private String message;
 	@Column(name = "datetime")
 	private LocalDateTime datetime;
 	@Column(name = "read_or_not")
-	private Boolean read_or_not;
+	private boolean read_or_not = false;
 
 	public Integer getId() {
 		return id;
@@ -32,17 +33,17 @@ public class Chat {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getId_user1() {
-		return id_user1;
+	public Integer getIdSender() {
+		return idSender;
 	}
-	public void setId_user1(Integer id_user1) {
-		this.id_user1 = id_user1;
+	public void setIdSender(Integer idSender) {
+		this.idSender = idSender;
 	}
-	public Integer getId_user2() {
-		return id_user2;
+	public Integer getIdRecipient() {
+		return idRecipient;
 	}
-	public void setId_user2(Integer id_user2) {
-		this.id_user2 = id_user2;
+	public void setIdRecipient(Integer idRecipient) {
+		this.idRecipient = idRecipient;
 	}
 	public String getMessage() {
 		return message;

@@ -1,4 +1,4 @@
-#messaging [class*="col"]{
+.col-messaging, #message-view, #messaging-user-list > div{
     border: 1px solid $light;
     background-color: white;
 }
@@ -9,13 +9,32 @@
     flex-flow: column;
     height: 100%;
 }
-#messaging .row{
+#messaging > .row{
     flex: 1 1 auto;
+}
+// To make the messaging-view take all the left space of the messaging-chat
+#messaging-chat{
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    width: auto;
+}
+#messaging-chat #message-view{
+    flex: 1 1 auto;
+}
+
+#message-view, #message-input{
+    box-sizing: border-box;
+    width: auto;
 }
 
 .col-messaging{
     margin: 1rem;
+    height: auto;
 }
 #messaging-user-list div{
     //margin: auto;
+}
+#messaging-chat div{
+    
 }

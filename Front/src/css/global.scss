@@ -60,11 +60,15 @@ body, html{
     border-color: $dark !important;
 }
 
-button, input[type="button"]{
+button, 
+input[type="button"], 
+input[type="submit"]{
     border-radius: 2rem !important;
 }
 
-button, input[type="button"]:focus{
+button:focus,
+input[type="button"]:focus, 
+input[type="submit"]:focus{
     //box-shadow: 0 0 0 0.25rem rgb(245, 129, 122, 0.5) !important;
     box-shadow: none !important;
 }
