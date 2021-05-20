@@ -13,8 +13,11 @@ import com.homemanager.springboot.model.Chat;
 import com.homemanager.springboot.model.User;
 import com.homemanager.springboot.repository.ChatRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,10 +39,17 @@ public class ChatController {
 		return chatRepository.save(chat);
 	}
 	
-	@GetMapping("/{idSender}/{idRecipient}")
-	public List<Chat> getMessagesBySenderAndRecipient(@PathVariable Integer idSender, @PathVariable Integer idRecipient) {
-		List<Chat> messages = chatRepository.findByIdSenderAndIdRecipient(idSender, idRecipient);
-		return messages;
+	@GetMapping("/{id1}/{id2}")
+	public List<Chat> getMessagesBetweenTwoUsers(@PathVariable Integer id1, @PathVariable Integer id2) {
+		List<Chat> messagesFromUser1 = chatRepository.findByIdSenderAndIdRecipient(id1, id2);
+		List<Chat> messagesFromUser2 = chatRepository.findByIdSenderAndIdRecipient(id2, id1);
+		
+		List<Chat> messagesSortedByDate = Stream
+				.concat(messagesFromUser1.stream(), messagesFromUser2.stream())
+				.sorted(Comparator.comparing(Chat::getDatetime))
+				.collect(Collectors.toList());
+		
+		return messagesSortedByDate;
 	}
 
 }

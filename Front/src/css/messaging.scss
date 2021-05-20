@@ -8,6 +8,7 @@
     display: flex;
     flex-flow: column;
     height: 100%;
+    min-height: 300px;
 }
 #messaging > .row{
     flex: 1 1 auto;
@@ -17,24 +18,55 @@
     display: flex;
     flex-flow: column;
     height: 100%;
-    width: auto;
+    width: 100%;
+    position: absolute;
 }
 #messaging-chat #message-view{
     flex: 1 1 auto;
 }
 
+#message-view{
+    overflow: auto;
+    //height: 800px;
+    position: relative;
+}
+
+
 #message-view, #message-input{
-    box-sizing: border-box;
+    //box-sizing: border-box;
     width: auto;
+    padding-top: 5px;
+    padding-bottom: 10px;
 }
 
 .col-messaging{
     margin: 1rem;
-    height: auto;
 }
 #messaging-user-list div{
     //margin: auto;
 }
 #messaging-chat div{
     
+}
+div{
+    box-sizing: border-box;
+}
+
+
+.message{
+    display: inline-block;
+    border-radius: 30px;
+    padding: 5px 15px 5px 15px;
+    max-width: 60%;
+    margin: 5px 0;
+    text-align: left;
+}
+
+.sentMessage{
+    background-color: $dark;
+    color: white;
+}
+
+.receivedMessage{
+    background-color: $gray;
 }

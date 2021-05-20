@@ -8,8 +8,8 @@ class ChatService {
         return axios.post(MESSAGING_API_BASE_URL + '/add', data);
     }
 
-    getMessagesBySenderAndRecipient(idSender, idRecipient) {
-        return axios.get(MESSAGING_API_BASE_URL + '/' + idSender + '/' + idRecipient);
+    getMessagesBetweenTwoUsers(id1, id2) {
+        return axios.get(MESSAGING_API_BASE_URL + '/' + id1 + '/' + id2);
     }
 
     /*createProperty(property) {

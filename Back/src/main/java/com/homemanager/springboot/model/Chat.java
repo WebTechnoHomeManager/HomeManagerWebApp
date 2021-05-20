@@ -1,6 +1,6 @@
 package com.homemanager.springboot.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +23,7 @@ public class Chat {
 	@Column(name = "message")
 	private String message;
 	@Column(name = "datetime")
-	private LocalDateTime datetime;
+	private Date datetime;
 	@Column(name = "read_or_not")
 	private boolean read_or_not = false;
 
@@ -51,10 +51,10 @@ public class Chat {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public LocalDateTime getDatetime() {
+	public Date getDatetime() {
 		return datetime;
 	}
-	public void setDatetime(LocalDateTime datetime) {
+	public void setDatetime(Date datetime) {
 		this.datetime = datetime;
 	}
 	public Boolean getRead_or_not() {
