@@ -3,6 +3,7 @@ import UserService from '../services/UserService';
 import '../css/App.scss';
 import { Button, Form } from 'react-bootstrap';
 import { Pencil, Trash } from 'react-bootstrap-icons';
+import { Redirect } from "react-router-dom"
 
 class Profile extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class Profile extends Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     handleSubmit = (e) => {
@@ -33,6 +35,9 @@ class Profile extends Component {
     }
 
     render() {
+        if(JSON.parse(localStorage.getItem('user')).type != "Member") {
+            return <Redirect to='/'/>;
+        }
         return (<div>
             <h1 style={{ textAlign: 'center' }}>My profile</h1>
             <br></br>

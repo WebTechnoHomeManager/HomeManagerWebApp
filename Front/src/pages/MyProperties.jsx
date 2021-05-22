@@ -6,6 +6,7 @@ import { Container, Row, Col, Card, Button, Dropdown, DropdownButton, Form, Acco
 import photo from '../images/banner/banner2.jpg';
 import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
 import UpdatePropertyPopUp from '../components/UpdatePropertyPopUp';
+import { Redirect } from "react-router-dom"
 
 class MyProperties extends Component {
     constructor(props) {
@@ -26,7 +27,9 @@ class MyProperties extends Component {
     }
 
     render() {
-
+        if(JSON.parse(localStorage.getItem('user')).type != "Member") {
+            return <Redirect to='/'/>;
+        }
         let addModalClose = () => this.setState({ addModalShow: false });
         return (
 
