@@ -12,6 +12,10 @@ class ChatService {
         return axios.get(MESSAGING_API_BASE_URL + '/' + id1 + '/' + id2);
     }
 
+    getIntercutorsWith(idUser) {
+        return axios.get(MESSAGING_API_BASE_URL + '/interlocutors/' + idUser);
+    }
+
     /*createProperty(property) {
         return axios.post(PROPERTY_API_BASE_URL, property);
     }

@@ -91,4 +91,12 @@ public class User {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	@Override
+	public String toString() {
+		return "{\"id\": \"" + id + "\", \"email\": \"" + email + "\", \"password\": \"" + password
+				+ "\", \"first_name\": \"" + first_name + "\", \"last_name\": \"" + last_name + "\", \"type\": \""
+				+ type + "\", \"profile_picture_path\": \"" + profile_picture_path + "\", \"reservations\": \""
+				+ reservations + "\"}";
+	}
 }	

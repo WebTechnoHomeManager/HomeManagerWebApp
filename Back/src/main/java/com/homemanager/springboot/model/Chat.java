@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,10 +18,15 @@ public class Chat {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
   	private Integer id;
-	@Column(name = "id_sender")
-	private Integer idSender;
-	@Column(name = "id_recipient")
-	private Integer idRecipient;
+
+	@ManyToOne
+    @JoinColumn(name="id_sender")
+    private User sender;
+
+	@ManyToOne
+    @JoinColumn(name="id_recipient")
+    private User recipient;
+	
 	@Column(name = "message")
 	private String message;
 	@Column(name = "datetime")
@@ -33,17 +40,17 @@ public class Chat {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getIdSender() {
-		return idSender;
+	public User getSender() {
+		return sender;
 	}
-	public void setIdSender(Integer idSender) {
-		this.idSender = idSender;
+	public void setSender(User sender) {
+		this.sender = sender;
 	}
-	public Integer getIdRecipient() {
-		return idRecipient;
+	public User getRecipient() {
+		return recipient;
 	}
-	public void setIdRecipient(Integer idRecipient) {
-		this.idRecipient = idRecipient;
+	public void setRecipient(User recipient) {
+		this.recipient = recipient;
 	}
 	public String getMessage() {
 		return message;

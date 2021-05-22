@@ -78,10 +78,10 @@ public class UserController {
 		User user = userRepository.findByEmail(email);
 		if (user == null) {
 			response.put("error", "UserNotFound");
-		} else {
-			response.put("result", user.isPasswordRight(password));
-			response.put("userId", user.getId());
-			response.put("userType", user.getType());
+		} else if (!user.isPasswordRight(password)){
+			response.put("error", "WrongPassword");
+		} else if (user.isPasswordRight(password)) {
+			response.put("user", user);
 		}
 		return response.toString();
 	}

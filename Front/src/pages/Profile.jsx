@@ -9,25 +9,18 @@ class Profile extends Component {
         super(props)
 
         this.state = {
-            id: localStorage.userId,
-            user: {}
+            user: JSON.parse(localStorage.getItem('user'))
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        UserService.getUserById(this.state.id).then((res) => {
-            this.setState({ user: res.data });
-        });
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         let user = this.state.user;
         console.log('user => ' + JSON.stringify(user));
-        console.log('id => ' + JSON.stringify(this.state.id));
-        UserService.updateUser(user, this.state.id).then(res => {
+
+        UserService.updateUser(user, this.state.user.id).then(res => {
             this.props.history.push('/profile');
             alert("Profile updated");
         });

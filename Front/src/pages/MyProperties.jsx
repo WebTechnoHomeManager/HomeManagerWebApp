@@ -12,7 +12,7 @@ class MyProperties extends Component {
         super(props)
 
         this.state = {
-            ownerId: localStorage.userId,
+            user: JSON.parse(localStorage.getItem('user')),
             properties: [],
             addModalShow: false
         }
@@ -20,7 +20,7 @@ class MyProperties extends Component {
 
 
     componentDidMount() {
-        PropertyService.getPropertiesByOwnerId(this.state.ownerId).then((res) => {
+        PropertyService.getPropertiesByOwnerId(this.state.user.id).then((res) => {
             this.setState({ properties: res.data });
         });
     }

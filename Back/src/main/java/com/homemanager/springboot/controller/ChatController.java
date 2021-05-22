@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.homemanager.springboot.model.Chat;
 import com.homemanager.springboot.model.User;
 import com.homemanager.springboot.repository.ChatRepository;
+import com.homemanager.springboot.repository.UserRepository;
 
 import java.util.Comparator;
 import java.util.List;
@@ -41,8 +42,8 @@ public class ChatController {
 	
 	@GetMapping("/{id1}/{id2}")
 	public List<Chat> getMessagesBetweenTwoUsers(@PathVariable Integer id1, @PathVariable Integer id2) {
-		List<Chat> messagesFromUser1 = chatRepository.findByIdSenderAndIdRecipient(id1, id2);
-		List<Chat> messagesFromUser2 = chatRepository.findByIdSenderAndIdRecipient(id2, id1);
+		List<Chat> messagesFromUser1 = chatRepository.findBySender_IdAndRecipient_Id(id1, id2);
+		List<Chat> messagesFromUser2 = chatRepository.findBySender_IdAndRecipient_Id(id2, id1);
 		
 		List<Chat> messagesSortedByDate = Stream
 				.concat(messagesFromUser1.stream(), messagesFromUser2.stream())
@@ -50,6 +51,25 @@ public class ChatController {
 				.collect(Collectors.toList());
 		
 		return messagesSortedByDate;
+	}
+	
+	@GetMapping("/interlocutors/{idUser}")
+	public List<User> getIntercutorsWith(@PathVariable Integer idUser) {
+		
+		List<User> messagesFromUser = chatRepository.findBySender_Id(idUser).stream()
+				.map(x -> x.getRecipient())
+				.collect(Collectors.toList());
+		
+		List<User> messagesToUser = chatRepository.findByRecipient_Id(idUser).stream()
+				.map(x -> x.getSender())
+				.collect(Collectors.toList());
+		
+		List<User> interlocutors = Stream
+				.concat(messagesFromUser.stream(), messagesToUser.stream())
+				.distinct()
+				.collect(Collectors.toList());
+		
+		return interlocutors;
 	}
 
 }

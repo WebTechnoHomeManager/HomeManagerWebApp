@@ -16,10 +16,7 @@ class LogInPopUp extends Component {
         this.tryToLogIn = this.tryToLogIn.bind(this);
         this.resetDisplayedErrors = this.resetDisplayedErrors.bind(this);
         this.displayError = this.displayError.bind(this);
-        this.checkPassword = this.checkPassword.bind(this);
     }
-
-
 
     tryToLogIn(e){
         e.preventDefault();
@@ -37,8 +34,8 @@ class LogInPopUp extends Component {
 
             if (resp.data.error){
                 this.displayError(resp.data.error);
-            } else if (resp.data.result != undefined){
-                this.checkPassword(resp.data)
+            } else if (resp.data.user != undefined){
+                this.props.logIn(resp.data)
             }            
         });
         
@@ -52,16 +49,11 @@ class LogInPopUp extends Component {
     displayError(error){
         if (error == "UserNotFound"){
             this.setState({ errorUser: "User not found" });
-        }
-    }
-
-    checkPassword(data){
-        if(data.result){
-            this.props.logIn(data);
-        } else {
+        } else if (error == "WrongPassword"){
             this.setState({ errorPassword: "Wrong password" });
         }
     }
+
 
     render() {
         return (

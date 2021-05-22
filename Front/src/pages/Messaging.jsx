@@ -10,15 +10,20 @@ class Messaging extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            idUser: 2,
-            idRecipient: 1,
+            user: localStorage.getItem('user'),
+            recipient: 3,
             message: "",
-            sentMessages: []
+            sentMessagesBetweenTheTwo: [],
+            interlocutorsList: []
         }
+
+
+
         this.sendMessage = this.sendMessage.bind(this); 
         this.handleChangeMessage = this.handleChangeMessage.bind(this); 
         this.handleEnterMessage = this.handleEnterMessage.bind(this);
         this.getSentMessages = this.getSentMessages.bind(this); 
+        this.getInterlocutors = this.getInterlocutors.bind(this); 
     }
 
     sendMessage(){
@@ -29,8 +34,8 @@ class Messaging extends Component {
             var nowDateWithoutTimeZone = nowDate.setTime(nowDate.getTime() - new Date().getTimezoneOffset()*60*1000)
     
             var newMessage = {
-                idSender: this.state.idUser, 
-                idRecipient: this.state.idRecipient, 
+                sender: this.state.user, 
+                recipient: this.state.recipient, 
                 message: message,
                 datetime: nowDateWithoutTimeZone
             };
@@ -59,6 +64,7 @@ class Messaging extends Component {
 
     componentDidMount(){
         this.getSentMessages();
+        this.getInterlocutors();
     }
 
     scrollBarToBottom(){
@@ -67,10 +73,19 @@ class Messaging extends Component {
     }
 
     getSentMessages(){
-        ChatService.getMessagesBetweenTwoUsers(this.state.idUser, this.state.idRecipient).then((resp) => {
+        //changer ici
+        ChatService.getMessagesBetweenTwoUsers(this.state.user.id, this.state.recipient.id).then((resp) => {
             console.log(resp.data)
-            this.setState({sentMessages: resp.data});
+            this.setState({sentMessagesBetweenTheTwo: resp.data});
             this.scrollBarToBottom();
+        });
+    }
+
+    getInterlocutors(){
+        //changer ici
+        ChatService.getIntercutorsWith(this.state.user.id).then((resp) => {
+            console.log(resp.data)
+            this.setState({interlocutorsList: resp.data});
         });
     }
 
@@ -82,33 +97,26 @@ class Messaging extends Component {
                     <Row>
                         <Col sm={3} className="col-messaging">
                             <Row id="messaging-user-list">
-                                <Col sm={12}>cd</Col>
-                                <Col sm={12}>cd</Col>
-                                <Col sm={12}>cd</Col>
+                                {this.state.interlocutorsList.map(message => 
+
+                                    <Col sm={12} key={message.id}>
+                                        cd
+                                    </Col>
+                                )}
                             </Row>
                         </Col>
                         <Col className="col-messaging">
                             <Row id="messaging-chat">
                             <div id="message-view" className="m-2">
-                                {this.state.sentMessages.map(message => 
+                                {this.state.sentMessagesBetweenTheTwo.map(message => 
 
-                                    <div>
-                                    {message.idSender == this.state.idUser ?
+                                    <Col key={message.id} 
+                                         className={"p-0 " + (message.sender.id == this.state.idUser ? "sentMessage-parent" : "")}>
 
-                                        (<Col key={message.id} style={{padding:0, "text-align":"right"}}>
-                                            <div className="message sentMessage">
-                                                {message.message}
-                                            </div>
-                                        </Col>)
-                                        :
-                                        (<Col key={message.id} style={{padding:0}}>
-                                            <div className="message receivedMessage">
-                                                {message.message}
-                                            </div>
-                                        </Col>)
-                                    }
-                                    </div>
-
+                                        <div className={"message " + (message.sender.id == this.state.idUser ? "sentMessage" : "receivedMessage")}>
+                                            {message.message}
+                                        </div>
+                                    </Col>
                                     
                                 )}
                                 </div>
