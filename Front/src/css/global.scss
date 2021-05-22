@@ -8,6 +8,8 @@ $darkHighlight: #ff4034;
 
 $primary: #FF584D;
 $gray: #e3e3e3;
+$gray2: #b5b5b5;
+$gray3: #8d8d8d;
 
 [class*="col"] {
     /*border: 1px solid black;*/
@@ -16,6 +18,7 @@ $gray: #e3e3e3;
 body, html{
     background-color: $verylight !important;
     height: 100%;
+    font-family: "Roboto" !important;
 }
 
 // To stick footer at the bottom of the page + make content take the left space

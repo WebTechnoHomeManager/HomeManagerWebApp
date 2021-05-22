@@ -10,20 +10,24 @@ class Messaging extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: localStorage.getItem('user'),
-            recipient: 3,
+            user: JSON.parse(localStorage.getItem('user')),
+            recipient: {},
             message: "",
             sentMessagesBetweenTheTwo: [],
+            distinctDatesMessages: [],
             interlocutorsList: []
         }
-
-
 
         this.sendMessage = this.sendMessage.bind(this); 
         this.handleChangeMessage = this.handleChangeMessage.bind(this); 
         this.handleEnterMessage = this.handleEnterMessage.bind(this);
         this.getSentMessages = this.getSentMessages.bind(this); 
         this.getInterlocutors = this.getInterlocutors.bind(this); 
+        this.handleClickInterlocutor = this.handleClickInterlocutor.bind(this);
+        this.groupMessagesByDate = this.groupMessagesByDate.bind(this); 
+        this.formatTime = this.formatTime.bind(this); 
+
+        this.getInterlocutors();
     }
 
     sendMessage(){
@@ -40,14 +44,12 @@ class Messaging extends Component {
                 datetime: nowDateWithoutTimeZone
             };
     
-    
             this.setState({ message: "" }); // not in the then so the input is cleared with no delay
     
             ChatService.sendMessage(newMessage).then((resp) => {
-                
+                this.getSentMessages();
             });
         }
-        
     }
 
     handleChangeMessage(e){
@@ -62,31 +64,55 @@ class Messaging extends Component {
         }
     }
 
-    componentDidMount(){
-        this.getSentMessages();
-        this.getInterlocutors();
-    }
-
     scrollBarToBottom(){
         var scrollDiv = document.getElementById("message-view");
         scrollDiv.scrollTop = scrollDiv.scrollHeight;
     }
 
     getSentMessages(){
-        //changer ici
         ChatService.getMessagesBetweenTwoUsers(this.state.user.id, this.state.recipient.id).then((resp) => {
             console.log(resp.data)
-            this.setState({sentMessagesBetweenTheTwo: resp.data});
+            this.groupMessagesByDate(resp.data);
             this.scrollBarToBottom();
         });
     }
 
+    groupMessagesByDate(messages){
+
+        var messagesListByDate = messages.reduce(
+            function (result, message) {
+                var date = new Date(message.datetime);
+                var formattedDate = date.getDate() + "-" + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + date.getFullYear();
+                result[formattedDate] = result[formattedDate] || [];
+                result[formattedDate].push(message);
+                return result;
+            }, Object.create(null));
+
+        this.setState({sentMessagesBetweenTheTwo: messagesListByDate});
+        console.log(messagesListByDate);
+    }
+
+    formatTime(datetime){
+        var date = new Date(datetime);
+        var hours = date.getUTCHours() < 10 ? ("0" + date.getUTCHours()) : date.getUTCHours();
+        var minutes = date.getMinutes() < 10 ? ("0" + date.getMinutes()) : date.getMinutes();
+
+        return hours + ":" + minutes;
+    }
+
     getInterlocutors(){
-        //changer ici
         ChatService.getIntercutorsWith(this.state.user.id).then((resp) => {
             console.log(resp.data)
             this.setState({interlocutorsList: resp.data});
+            this.setState({recipient: resp.data[0]});
+            this.getSentMessages();
         });
+    }
+
+    handleClickInterlocutor(interlocutor){
+        this.setState({recipient: interlocutor}, this.getSentMessages);
+        // callback : permet d'attendre que le setState soit fait pour appeler la fonction
+
     }
 
     render(){
@@ -94,13 +120,15 @@ class Messaging extends Component {
             <div>
                 <Container id="messaging">
                     <h1 className="center">My messaging</h1>
-                    <Row>
-                        <Col sm={3} className="col-messaging">
+                    <Row id="messaging-row">
+                        <Col md={3} sm={2} className="col-messaging" style={{padding: 0}}>
                             <Row id="messaging-user-list">
-                                {this.state.interlocutorsList.map(message => 
+                                {this.state.interlocutorsList.map(interlocutor => 
 
-                                    <Col sm={12} key={message.id}>
-                                        cd
+                                    <Col sm={12} key={interlocutor.id} 
+                                         className={"interlocutor " + (interlocutor.id == this.state.recipient.id ? "interlocutor-active" : "")}
+                                         onClick={() => this.handleClickInterlocutor(interlocutor)}>
+                                        {interlocutor.first_name} {interlocutor.last_name} 
                                     </Col>
                                 )}
                             </Row>
@@ -108,16 +136,23 @@ class Messaging extends Component {
                         <Col className="col-messaging">
                             <Row id="messaging-chat">
                             <div id="message-view" className="m-2">
-                                {this.state.sentMessagesBetweenTheTwo.map(message => 
+                                
+                                {Object.keys(this.state.sentMessagesBetweenTheTwo).map(date => 
+                                    <>
+                                        <Col className="messages-date">{date}</Col>
+                                        {this.state.sentMessagesBetweenTheTwo[date].map(message => 
 
-                                    <Col key={message.id} 
-                                         className={"p-0 " + (message.sender.id == this.state.idUser ? "sentMessage-parent" : "")}>
-
-                                        <div className={"message " + (message.sender.id == this.state.idUser ? "sentMessage" : "receivedMessage")}>
-                                            {message.message}
-                                        </div>
-                                    </Col>
-                                    
+                                            <Col key={message.id} 
+                                                className={"p-0 " + (message.sender.id == this.state.user.id ? "sentMessage-parent" : "")}>
+                                                <div className="messages-time">{this.formatTime(message.datetime)}</div>
+                                                <div className={"message " + (message.sender.id == this.state.user.id ? "sentMessage" : "receivedMessage")}>
+                                                    {message.message}
+                                                </div>
+                                            
+                                            </Col>
+                                        )}
+                                    </>
+                                        
                                 )}
                                 </div>
                                 <div id="message-input" className="m-2">

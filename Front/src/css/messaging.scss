@@ -1,4 +1,6 @@
-.col-messaging, #message-view, #messaging-user-list > div{
+.col-messaging, 
+#message-view, 
+.interlocutor{
     border: 1px solid $light;
     background-color: white;
 }
@@ -9,10 +11,12 @@
     flex-flow: column;
     height: 100%;
     min-height: 350px;
+
+    #messaging-row{
+        flex: 1 1 auto;
+    }
 }
-#messaging > .row{
-    flex: 1 1 auto;
-}
+
 // To make the messaging-view take all the left space of the messaging-chat
 #messaging-chat{
     display: flex;
@@ -20,9 +24,18 @@
     height: 100%;
     width: 100%;
     position: absolute;
+
+    #message-view{
+        flex: 1 1 auto;
+    }
 }
-#messaging-chat #message-view{
-    flex: 1 1 auto;
+
+// So the list of users won't resize the page
+#messaging-user-list{
+    display: flex;
+    //height: calc(100% + 2px);
+    max-height: 100%;
+    position: absolute;
 }
 
 #message-view{
@@ -30,7 +43,6 @@
     //height: 800px;
     position: relative;
 }
-
 
 #message-view, #message-input{
     //box-sizing: border-box;
@@ -41,36 +53,55 @@
 
 .col-messaging{
     margin: 1rem;
+    padding: 0;
 }
-#messaging-user-list div{
-    //margin: auto;
-}
-#messaging-chat div{
-    
-}
-div{
-    box-sizing: border-box;
-}
-
 
 .message{
     display: inline-block;
     border-radius: 30px;
     padding: 5px 15px 5px 15px;
     max-width: 60%;
-    margin: 5px 0;
+    margin-bottom: 5px;
     text-align: left;
 }
 
-.sentMessage{
-    background-color: $dark;
-    color: white;
+.sentMessage-parent{
+    text-align: right;
+    .sentMessage{
+        background-color: $dark;
+        color: white;
+    }
 }
 
 .receivedMessage{
     background-color: $gray;
 }
 
-.sentMessage-parent{
-    text-align: right;
+#messaging-user-list{
+    margin: -1px;
+    overflow: auto;
+    width: calc(100% + 2px);
+    .interlocutor{
+        //margin-bottom: -1px; // permet d'enlever la double bordure entre les users, mais mets un scroll...
+        font-size: 1.2rem;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        cursor: pointer;
+    }
+    .interlocutor-active{
+        background-color: $gray;
+        border: 2px solid $gray2;
+    }
+}
+
+.messages-date{
+    text-align: center;
+    font-size: 0.7rem;
+    color: $gray3;
+}
+
+.messages-time{
+    font-size: 0.6rem;
+    color: $gray3;
+    margin: 0 10px 0 10px;
 }
