@@ -24,7 +24,7 @@ class UpdatePropertyPopUp extends Component {
                 totalOccupancy: "",
                 latitude: 0,
                 longitude: 0,
-                owner: {},
+                owner: JSON.parse(localStorage.getItem('user')),
                 propertyType: { id: "1", name: "House" },
                 reservations: [],
                 propertyServices: [],
@@ -39,13 +39,6 @@ class UpdatePropertyPopUp extends Component {
     }
 
     componentDidMount() {
-        UserService.getUserById(localStorage.userId).then((res) => {
-            let property = { ...this.state.property };
-            property["owner"] = res.data;
-            this.setState({
-                property: property
-            });
-        });
         ServiceService.getServices().then((res) => {
             this.setState({
                 allServices: res.data
