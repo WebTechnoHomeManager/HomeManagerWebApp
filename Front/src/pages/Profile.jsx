@@ -14,7 +14,7 @@ class Profile extends Component {
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        this.deleteProfile = this.deleteProfile.bind(this);
     }
 
     handleSubmit = (e) => {
@@ -34,9 +34,20 @@ class Profile extends Component {
         this.setState({ user });
     }
 
+
+    deleteProfile(userId) {
+        UserService.deleteUser(userId).then((res) => {
+            localStorage.setItem('user', '');
+            this.setState({ user: {} });
+            this.props.history.push("/");
+        }).catch(error => {
+            console.log(error.response);
+        });
+    }
+
     render() {
-        if(JSON.parse(localStorage.getItem('user')).type != "Member") {
-            return <Redirect to='/'/>;
+        if (JSON.parse(localStorage.getItem('user')).type != "Member") {
+            return <Redirect to='/' />;
         }
         return (<div>
             <h1 style={{ textAlign: 'center' }}>My profile</h1>
@@ -70,7 +81,7 @@ class Profile extends Component {
             </div>
             <br></br>
             <div className="div-center-content">
-                <Button variant="primary"> <Trash />Delete my profile</Button>
+                <Button variant="primary" onClick={() => { if (window.confirm('Are you sure you wish to delete your profile?')) this.deleteProfile(this.state.user.id) }} href="/"> <Trash />Delete my profile</Button>
             </div>
 
 

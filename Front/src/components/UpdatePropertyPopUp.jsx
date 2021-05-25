@@ -59,8 +59,6 @@ class UpdatePropertyPopUp extends Component {
         PropertyService.updateProperty(property, this.state.id).then(res => {
             //this.props.history.push('/myproperties');
             alert("Property updated");
-        }).catch(error => {
-            console.log(error.response);
         });
     }
 
@@ -108,8 +106,6 @@ class UpdatePropertyPopUp extends Component {
             this.setState({ property });
         }
     }
-
-
 
     render() {
         return (
