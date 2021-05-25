@@ -32,6 +32,7 @@ class UpdatePropertyPopUp extends Component {
             }
         }
         this.handleChange = this.handleChange.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
