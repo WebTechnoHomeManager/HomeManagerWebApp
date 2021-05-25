@@ -13,48 +13,48 @@ class Property extends Component {
         this.state = {
             id: this.props.match.params.id,
             property: {
-                property_services: [],
-                property_restrictions: [],
-                property_type: {},
+                propertyServices: [],
+                propertyRestrictions: [],
+                propertyType: {},
                 owner: {}
             }
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         PropertyService.getPropertyById(this.state.id).then(res => {
-            this.setState({property: res.data});
+            this.setState({ property: res.data });
         })
     }
 
     render() {
         return (
-            
+
             <div>
                 <Container className="my-5">
                     <h3 className="center">{this.state.property.title}</h3>
                     <Row>
-                        <Image src={photo} className="my-3 img-fluid mx-auto d-block banner" style={{width: "30%"}}/>
+                        <Image src={photo} className="my-3 img-fluid mx-auto d-block banner" style={{ width: "30%" }} />
                     </Row>
                     <Row>
                         <Col sm={6}>
                             <Card className="my-3">
                                 <Card.Body>
                                     <Row>
-                                        <Card.Title>{this.state.property.property_type.name} for {this.state.property.total_occupancy} occupant(s)</Card.Title>
+                                        <Card.Title>{this.state.property.propertyType.name} for {this.state.property.totalOccupancy} occupant(s)</Card.Title>
                                         <Card.Text>{this.state.property.description}</Card.Text>
                                         <Card.Text>Address: {this.state.property.address}, {this.state.property.city}</Card.Text>
-                                        
+
                                         <Card.Text>Required services:
                                             <ul>
-                                                {this.state.property.property_services.map(service => 
+                                                {this.state.property.propertyServices.map(service =>
                                                     <li key={service.id} className="card-list-items">{service.name}</li>
                                                 )}
                                             </ul>
                                         </Card.Text>
                                         <Card.Text>Constraints to respect:
                                             <ul>
-                                                {this.state.property.property_restrictions.map(restriction => 
+                                                {this.state.property.propertyRestrictions.map(restriction =>
                                                     <li key={restriction.id} className="card-list-items">{restriction.name}</li>
                                                 )}
                                             </ul>
@@ -67,10 +67,10 @@ class Property extends Component {
                             <Card className="my-3">
                                 <Card.Body>
                                     <Card.Title>Owner</Card.Title>
-                                    <Image src={userIcon} className="my-3 d-block" style={{width: "65px"}}/>
+                                    <Image src={userIcon} className="my-3 d-block" style={{ width: "65px" }} />
                                     <Card.Text>{this.state.property.owner.first_name} {this.state.property.owner.last_name}</Card.Text>
-                                    <Button as="input" type="button" value="More information"/>
-                                    <Button as="input" type="button" value="Contact the owner"/>
+                                    <Button as="input" type="button" value="More information" />
+                                    <Button as="input" type="button" value="Contact the owner" />
                                 </Card.Body>
                             </Card>
                         </Col>
