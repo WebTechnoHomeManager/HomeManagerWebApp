@@ -68,10 +68,12 @@ public class PropertyController {
 		property.setDescription(propertyDetails.getDescription());
 		property.setAddress(propertyDetails.getAddress());
 		property.setCity(propertyDetails.getCity());
-		property.setTotal_occupancy(propertyDetails.getTotal_occupancy());
-		property.setProperty_type(propertyDetails.getProperty_type());
-		property.setProperty_services(propertyDetails.getProperty_services());
-		property.setProperty_restrictions(property.getProperty_restrictions());
+		property.setTotalOccupancy(propertyDetails.getTotalOccupancy());
+		property.setLatitude(propertyDetails.getLatitude());
+		property.setLongitude(propertyDetails.getLongitude());
+		property.setPropertyType(propertyDetails.getPropertyType());
+		property.setPropertyServices(propertyDetails.getPropertyServices());
+		property.setPropertyRestrictions(property.getPropertyRestrictions());
 		
 		Property updatedProperty = propertyRepository.save(property);
 		return ResponseEntity.ok(updatedProperty);

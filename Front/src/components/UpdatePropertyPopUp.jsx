@@ -17,9 +17,9 @@ class UpdatePropertyPopUp extends Component {
             allRestrictions: [],
             allPropertyTypes: [],
             property: {
-                property_services: [],
-                property_restrictions: [],
-                property_type: {},
+                propertyServices: [],
+                propertyRestrictions: [],
+                propertyType: {},
                 owner: {}
             }
         }
@@ -69,9 +69,9 @@ class UpdatePropertyPopUp extends Component {
     handleTypeChange = (event) => {
         let property = { ...this.state.property };
         const [id, name] = event.target.value.split(',');
-        property.property_type["id"] = id;
-        property.property_type["name"] = name;
-        console.log(property.property_type);
+        property.propertyType["id"] = id;
+        property.propertyType["name"] = name;
+        console.log(property.propertyType);
         this.setState({ property });
         console.log(this.state)
     }
@@ -111,27 +111,27 @@ class UpdatePropertyPopUp extends Component {
                                         <Form.Label>City:</Form.Label>
                                         <Form.Control type="text" name="city" defaultValue={this.state.property.city} />
                                     </Form.Group>
-                                    <Form.Group controlId="total_occupancy">
+                                    <Form.Group controlId="totalOccupancy">
                                         <Form.Label>Total occupancy:</Form.Label>
-                                        <Form.Control type="text" name="total_occupancy" defaultValue={this.state.property.total_occupancy} />
+                                        <Form.Control type="text" name="totalOccupancy" defaultValue={this.state.property.totalOccupancy} />
                                     </Form.Group>
                                 </Form>
                             </div>
                         </Col>
                         <Col>
 
-                            <Form.Group controlId="property_type" onChange={this.handleTypeChange}>
+                            <Form.Group controlId="propertyType" onChange={this.handleTypeChange}>
                                 <Form.Label>Property type:</Form.Label>
-                                <Form.Control as="select" name="property_type">
+                                <Form.Control as="select" name="propertyType">
                                     {
                                         this.state.allPropertyTypes.map(
-                                            type => <option key={type.id} value={[type.id, type.name]} selected={type.name === this.state.property.property_type.name} > {type.name} </option>
+                                            type => <option key={type.id} value={[type.id, type.name]} selected={type.name === this.state.property.propertyType.name} > {type.name} </option>
                                         )
                                     }
                                 </Form.Control>
                             </Form.Group>
 
-                            <Form.Group controlId="property_services">
+                            <Form.Group controlId="propertyServices">
                                 <Accordion className="col-auto">
                                     <Card>
                                         <Accordion.Toggle as={Card.Header} eventKey="0">
@@ -155,7 +155,7 @@ class UpdatePropertyPopUp extends Component {
                                     </Card>
                                 </Accordion>
                             </Form.Group>
-                            <Form.Group controlId="property_restrictions">
+                            <Form.Group controlId="propertyRestrictions">
                                 <Accordion className="col-auto">
                                     <Card>
                                         <Accordion.Toggle as={Card.Header} eventKey="0">

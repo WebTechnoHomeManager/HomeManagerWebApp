@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class Property {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "title")
 	private String title;
@@ -33,7 +34,7 @@ public class Property {
 	@Column(name = "city")
 	private String city;
 	@Column(name = "total_occupancy")
-	private Integer total_occupancy;
+	private Integer totalOccupancy;
 	@Column(name = "latitude")
 	private double latitude;
 	@Column(name = "longitude")
@@ -45,7 +46,7 @@ public class Property {
 
 	@ManyToOne
     @JoinColumn(name="property_type_id")
-    private Property_type property_type;
+    private Property_type propertyType;
 	
 	@OneToMany(mappedBy = "property_reservation")
     private Set<Reservation> reservations;
@@ -59,14 +60,14 @@ public class Property {
 			  name = "property_services", 
 			  joinColumns = @JoinColumn(name = "property_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "service_id"))
-    Set<Service> property_services;
+    Set<Service> propertyServices;
 	
 	@ManyToMany
 	@JoinTable(
 			  name = "property_restrictions", // = nom de la table dans la base
 			  joinColumns = @JoinColumn(name = "property_id"), // champ dans la base
 			  inverseJoinColumns = @JoinColumn(name = "restriction_id")) // champ dans la base
-    Set<Restriction> property_restrictions;
+    Set<Restriction> propertyRestrictions;
 	
 	
 	public Set<Reservation> getReservations() {
@@ -76,17 +77,31 @@ public class Property {
 		this.reservations = reservations;
 	}
 	
-	public Set<Service> getProperty_services() {
-		return property_services;
+	
+	public Integer getTotalOccupancy() {
+		return totalOccupancy;
 	}
-	public void setProperty_services(Set<Service> property_services) {
-		this.property_services = property_services;
+	public void setTotalOccupancy(Integer totalOccupancy) {
+		this.totalOccupancy = totalOccupancy;
 	}
-	public Property_type getProperty_type() {
-		return property_type;
+	public Property_type getPropertyType() {
+		return propertyType;
 	}
-	public void setProperty_type(Property_type property_type_id) {
-		this.property_type = property_type_id;
+	public void setPropertyType(Property_type propertyType) {
+		this.propertyType = propertyType;
+	}
+	public Set<Service> getPropertyServices() {
+		return propertyServices;
+	}
+	public void setPropertyServices(Set<Service> propertyServices) {
+		this.propertyServices = propertyServices;
+	}
+	
+	public Set<Restriction> getPropertyRestrictions() {
+		return propertyRestrictions;
+	}
+	public void setPropertyRestrictions(Set<Restriction> propertyRestrictions) {
+		this.propertyRestrictions = propertyRestrictions;
 	}
 	public Integer getId() {
 		return id;
@@ -119,12 +134,7 @@ public class Property {
 	public void setCity(String city) {
 		this.city = city;
 	}
-	public Integer getTotal_occupancy() {
-		return total_occupancy;
-	}
-	public void setTotal_occupancy(Integer total_occupancy) {
-		this.total_occupancy = total_occupancy;
-	}
+	
 	public double getLatitude() {
 		return latitude;
 	}
@@ -143,10 +153,5 @@ public class Property {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	public Set<Restriction> getProperty_restrictions() {
-		return property_restrictions;
-	}
-	public void setProperty_restrictions(Set<Restriction> property_restrictions) {
-		this.property_restrictions = property_restrictions;
-	}
+	
 }

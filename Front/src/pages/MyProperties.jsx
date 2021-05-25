@@ -35,7 +35,6 @@ class MyProperties extends Component {
         if (JSON.parse(localStorage.getItem('user')).type != "Member") {
             return <Redirect to='/' />;
         }
-        let addModalClose = () => this.setState({ addModalShow: false });
         return (
 
             < div >
@@ -68,14 +67,14 @@ class MyProperties extends Component {
                                         <Button variant="primary" style={{ margin: '3px' }}> <Trash />Delete</Button>
                                     </Col>
                                     <Col>
-                                        <Card.Text>Type: {property.property_type.name}</Card.Text>
-                                        <Card.Text>Total occupancy: {property.total_occupancy}</Card.Text>
+                                        <Card.Text>Type: {property.propertyType.name}</Card.Text>
+                                        <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
                                         <Card.Text>Address: {property.address}</Card.Text>
                                         <Card.Text>City: {property.city}</Card.Text>
-                                        <Card.Text>Services: {property.property_services.map(function (d, idx) {
+                                        <Card.Text>Services: {property.propertyServices.map(function (d, idx) {
                                             return (<li key={idx}>{d.name}</li>)
                                         })}</Card.Text>
-                                        <Card.Text>Constraints: {property.property_restrictions.map(function (d, idx) {
+                                        <Card.Text>Constraints: {property.propertyRestrictions.map(function (d, idx) {
                                             return (<li key={idx}>{d.name}</li>)
                                         })}</Card.Text>
                                     </Col>
@@ -89,17 +88,11 @@ class MyProperties extends Component {
                                                 <Accordion.Collapse eventKey="0">
                                                     <Card.Body>
                                                         <Form.Check
-                                                            name={"something"}
-                                                            label={"something"}></Form.Check>
+                                                            name={"upcoming"}
+                                                            label={"Upcoming Reservations"}></Form.Check>
                                                         <Form.Check
-                                                            name={"something"}
-                                                            label={"something"}></Form.Check>
-                                                        <Form.Check
-                                                            name={"something"}
-                                                            label={"something"}></Form.Check>
-                                                        <Form.Check
-                                                            name={"something"}
-                                                            label={"something"}></Form.Check>
+                                                            name={"previous"}
+                                                            label={"Previous Reservations"}></Form.Check>
                                                     </Card.Body>
                                                 </Accordion.Collapse>
                                             </Card>
