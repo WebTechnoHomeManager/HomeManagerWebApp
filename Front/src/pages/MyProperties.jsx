@@ -7,13 +7,14 @@ import photo from '../images/banner/banner2.jpg';
 import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
 import UpdatePropertyPopUp from '../components/UpdatePropertyPopUp';
 import CreatePropertyPopUp from '../components/CreatePropertyPopUp';
+import { Redirect } from "react-router-dom"
 
 class MyProperties extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            ownerId: localStorage.userId,
+            user: JSON.parse(localStorage.getItem('user')),
             properties: [],
             addModalShow1: false,
             addModalShow2: false
@@ -22,7 +23,7 @@ class MyProperties extends Component {
 
 
     componentDidMount() {
-        PropertyService.getPropertiesByOwnerId(this.state.ownerId).then((res) => {
+        PropertyService.getPropertiesByOwnerId(this.state.user.id).then((res) => {
             this.setState({ properties: res.data });
         });
     }
@@ -31,6 +32,10 @@ class MyProperties extends Component {
 
         let addModalClose1 = () => this.setState({ addModalShow1: false });
         let addModalClose2 = () => this.setState({ addModalShow2: false });
+        if (JSON.parse(localStorage.getItem('user')).type != "Member") {
+            return <Redirect to='/' />;
+        }
+        let addModalClose = () => this.setState({ addModalShow: false });
         return (
 
             < div >

@@ -3,31 +3,26 @@ import UserService from '../services/UserService';
 import '../css/App.scss';
 import { Button, Form } from 'react-bootstrap';
 import { Pencil, Trash } from 'react-bootstrap-icons';
+import { Redirect } from "react-router-dom"
 
 class Profile extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            id: localStorage.userId,
-            user: {}
+            user: JSON.parse(localStorage.getItem('user'))
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
 
-    componentDidMount() {
-        UserService.getUserById(this.state.id).then((res) => {
-            this.setState({ user: res.data });
-        });
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
         let user = this.state.user;
         console.log('user => ' + JSON.stringify(user));
-        console.log('id => ' + JSON.stringify(this.state.id));
-        UserService.updateUser(user, this.state.id).then(res => {
+
+        UserService.updateUser(user, this.state.user.id).then(res => {
             this.props.history.push('/profile');
             alert("Profile updated");
         });
@@ -40,6 +35,9 @@ class Profile extends Component {
     }
 
     render() {
+        if(JSON.parse(localStorage.getItem('user')).type != "Member") {
+            return <Redirect to='/'/>;
+        }
         return (<div>
             <h1 style={{ textAlign: 'center' }}>My profile</h1>
             <br></br>

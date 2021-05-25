@@ -1,11 +1,14 @@
 package com.homemanager.springboot.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -13,18 +16,23 @@ import javax.persistence.Table;
 public class Chat {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
   	private Integer id;
-	@Column(name = "id_user1")
-	private Integer id_user1;
-	@Column(name = "id_user2")
-	private Integer id_user2;
+
+	@ManyToOne
+    @JoinColumn(name="id_sender")
+    private User sender;
+
+	@ManyToOne
+    @JoinColumn(name="id_recipient")
+    private User recipient;
+	
 	@Column(name = "message")
 	private String message;
 	@Column(name = "datetime")
-	private LocalDateTime datetime;
+	private Date datetime;
 	@Column(name = "read_or_not")
-	private Boolean read_or_not;
+	private boolean read_or_not = false;
 
 	public Integer getId() {
 		return id;
@@ -32,17 +40,17 @@ public class Chat {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getId_user1() {
-		return id_user1;
+	public User getSender() {
+		return sender;
 	}
-	public void setId_user1(Integer id_user1) {
-		this.id_user1 = id_user1;
+	public void setSender(User sender) {
+		this.sender = sender;
 	}
-	public Integer getId_user2() {
-		return id_user2;
+	public User getRecipient() {
+		return recipient;
 	}
-	public void setId_user2(Integer id_user2) {
-		this.id_user2 = id_user2;
+	public void setRecipient(User recipient) {
+		this.recipient = recipient;
 	}
 	public String getMessage() {
 		return message;
@@ -50,10 +58,10 @@ public class Chat {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public LocalDateTime getDatetime() {
+	public Date getDatetime() {
 		return datetime;
 	}
-	public void setDatetime(LocalDateTime datetime) {
+	public void setDatetime(Date datetime) {
 		this.datetime = datetime;
 	}
 	public Boolean getRead_or_not() {

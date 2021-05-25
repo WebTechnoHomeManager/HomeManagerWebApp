@@ -7,6 +7,9 @@ $highlight: #FF584D;
 $darkHighlight: #ff4034;
 
 $primary: #FF584D;
+$gray: #e3e3e3;
+$gray2: #b5b5b5;
+$gray3: #8d8d8d;
 
 [class*="col"] {
     /*border: 1px solid black;*/
@@ -15,6 +18,7 @@ $primary: #FF584D;
 body, html{
     background-color: $verylight !important;
     height: 100%;
+    font-family: "Roboto" !important;
 }
 
 // To stick footer at the bottom of the page + make content take the left space
@@ -60,11 +64,15 @@ body, html{
     border-color: $dark !important;
 }
 
-button, input[type="button"]{
+button, 
+input[type="button"], 
+input[type="submit"]{
     border-radius: 2rem !important;
 }
 
-button, input[type="button"]:focus{
+button:focus,
+input[type="button"]:focus, 
+input[type="submit"]:focus{
     //box-shadow: 0 0 0 0.25rem rgb(245, 129, 122, 0.5) !important;
     box-shadow: none !important;
 }

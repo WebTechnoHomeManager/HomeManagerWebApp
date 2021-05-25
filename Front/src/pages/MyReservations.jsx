@@ -5,6 +5,7 @@ import { Container, Row, Col, Card, Button, Dropdown, DropdownButton } from 'rea
 import photo from '../images/banner/banner2.jpg';
 import { Trash, PersonLinesFill } from 'react-bootstrap-icons';
 import Moment from 'moment';
+import { Redirect } from "react-router-dom"
 
 class MyReservations extends Component {
     constructor(props) {
@@ -22,6 +23,9 @@ class MyReservations extends Component {
     }
 
     render() {
+        if(JSON.parse(localStorage.getItem('user')).type != "Member") {
+            return <Redirect to='/'/>;
+        }
         return (
             <div>
                 <h1 style={{ textAlign: 'center', margin: '20px' }}>My reservations</h1>
