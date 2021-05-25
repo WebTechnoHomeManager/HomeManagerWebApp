@@ -23,16 +23,16 @@ class MyReservations extends Component {
     }
 
     render() {
-        if(JSON.parse(localStorage.getItem('user')).type != "Member") {
-            return <Redirect to='/'/>;
+        if (JSON.parse(localStorage.getItem('user')).type != "Member") {
+            return <Redirect to='/' />;
         }
         return (
             <div>
                 <h1 style={{ textAlign: 'center', margin: '20px' }}>My reservations</h1>
 
                 {
-                    this.state.reservations.map(reservation => 
-                        <div className="div-center-content" style={{marginTop: '30px' }}>
+                    this.state.reservations.map(reservation =>
+                        <div className="div-center-content" style={{ marginTop: '30px' }}>
                             <Card style={{ width: '70%' }}>
                                 <Card.Header>
                                     From&nbsp;
@@ -47,13 +47,13 @@ class MyReservations extends Component {
                                             </Col>
                                             <Col>
                                                 <Card.Text>Title : {reservation.property_reservation.title}</Card.Text>
-                                                <Card.Text>Total occupancy: {reservation.total_occupancy}</Card.Text>
+                                                <Card.Text>Total occupancy: {reservation.totalOccupancy}</Card.Text>
                                                 <Card.Text>Address: {reservation.property_reservation.address}</Card.Text>
                                                 <Card.Text>City: {reservation.property_reservation.city}</Card.Text>
-                                                <Card.Text>Services: {reservation.property_reservation.property_services.map(function (d, idx) {
+                                                <Card.Text>Services: {reservation.property_reservation.propertyServices.map(function (d, idx) {
                                                     return (<li key={idx}>{d.name}</li>)
                                                 })}</Card.Text>
-                                                <Card.Text>Constraints: {reservation.property_reservation.property_restrictions.map(function (d, idx) {
+                                                <Card.Text>Constraints: {reservation.property_reservation.propertyRestrictions.map(function (d, idx) {
                                                     return (<li key={idx}>{d.name}</li>)
                                                 })}</Card.Text>
                                             </Col>
