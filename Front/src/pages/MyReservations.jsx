@@ -35,10 +35,7 @@ class MyReservations extends Component {
                         <div className="div-center-content" style={{ marginTop: '30px' }}>
                             <Card style={{ width: '70%' }}>
                                 <Card.Header>
-                                    From&nbsp;
-                                    {Moment(reservation.start_date).format('DD MMMM YYYY')}
-                                    &nbsp;to&nbsp;
-                                    {Moment(reservation.end_date).format('DD MMMM YYYY')}</Card.Header>
+                                    From {Moment(reservation.start_date).format('DD MMMM YYYY')} to {Moment(reservation.end_date).format('DD MMMM YYYY')}</Card.Header>
                                 <Card.Body>
                                     <Container>
                                         <Row>

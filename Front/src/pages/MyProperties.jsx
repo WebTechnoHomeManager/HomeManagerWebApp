@@ -8,6 +8,7 @@ import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
 import UpdatePropertyPopUp from '../components/UpdatePropertyPopUp';
 import CreatePropertyPopUp from '../components/CreatePropertyPopUp';
 import { Redirect } from "react-router-dom"
+import Moment from 'moment';
 
 class MyProperties extends Component {
     constructor(props) {
@@ -101,7 +102,7 @@ class MyProperties extends Component {
 
 
                                         <Card.Text>{property.reservations.map(function (d, idx) {
-                                            return (<li key={idx}> From {d.start_date} to {d.end_date} - by {d.reservation_user.first_name} {d.reservation_user.last_name}</li>)
+                                            return (<li key={idx}> From {Moment(d.start_date).format('DD MMMM YYYY')} to {Moment(d.end_date).format('DD MMMM YYYY')} {d.reservation_user.last_name}</li>)
                                         })}</Card.Text></Col>
                                 </Row>
                                 </Container>
