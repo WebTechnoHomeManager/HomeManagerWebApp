@@ -20,12 +20,20 @@ class MyProperties extends Component {
             addModalShow1: false,
             addModalShow2: false
         }
+
+        this.deleteProperty = this.deleteProperty.bind(this);
     }
 
 
     componentDidMount() {
         PropertyService.getPropertiesByOwnerId(this.state.user.id).then((res) => {
             this.setState({ properties: res.data });
+        });
+    }
+
+    deleteProperty(propertyId) {
+        PropertyService.deleteProperty(propertyId).then((res) => {
+            this.props.history.push('/myproperties');
         });
     }
 
@@ -65,7 +73,7 @@ class MyProperties extends Component {
                                             onHide={addModalClose2}
                                         >{property.id}</UpdatePropertyPopUp>
 
-                                        <Button variant="primary" style={{ margin: '3px' }}> <Trash />Delete</Button>
+                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}> <Trash />Delete</Button>
                                     </Col>
                                     <Col>
                                         <Card.Text>Type: {property.propertyType.name}</Card.Text>

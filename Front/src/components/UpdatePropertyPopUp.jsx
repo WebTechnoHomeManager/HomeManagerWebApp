@@ -23,12 +23,14 @@ class UpdatePropertyPopUp extends Component {
                 owner: {}
             }
         }
+        this.handleClickService = this.handleClickService.bind(this);
+        this.handleClickRestriction = this.handleClickRestriction.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        console.log(this.props.children);
         PropertyService.getPropertyById(this.state.id).then(res => {
             this.setState({ property: res.data });
         })
@@ -74,6 +76,35 @@ class UpdatePropertyPopUp extends Component {
         console.log(property.propertyType);
         this.setState({ property });
         console.log(this.state)
+    }
+
+
+    handleClickService(e, service) {
+        var checked = e.target.checked;
+        let property = { ...this.state.property };
+        const services = this.state.property.propertyServices.slice();
+
+        if (checked) {
+            property.propertyServices = services.concat([service]);
+            this.setState({ property });
+        } else {
+            property.propertyServices = services.splice(services.indexOf(service), 1)
+            this.setState({ property });
+        }
+    }
+
+    handleClickRestriction(e, restriction) {
+        var checked = e.target.checked;
+        let property = { ...this.state.property };
+        const restrictions = this.state.property.propertyRestrictions.slice();
+
+        if (checked) {
+            property.propertyRestrictions = restrictions.concat([restriction]);
+            this.setState({ property });
+        } else {
+            property.propertyRestrictions = restrictions.splice(restrictions.indexOf(restriction), 1)
+            this.setState({ property });
+        }
     }
 
     render() {
@@ -143,10 +174,10 @@ class UpdatePropertyPopUp extends Component {
                                                     this.state.allServices.map(
                                                         service =>
                                                             <Form.Check key={"service" + service.id}
-                                                                defaultChecked={service.name}
+                                                                defaultChecked={this.state.property.propertyServices.some(item => service.name === item.name)}
                                                                 name={"service" + service.id}
                                                                 label={service.name}
-                                                                id={"service" + service.id} onClick={(e) => { }}
+                                                                id={"service" + service.id} onClick={(e) => { this.handleClickService(e, service) }}
                                                             />
                                                     )
                                                 }
@@ -167,10 +198,10 @@ class UpdatePropertyPopUp extends Component {
                                                     this.state.allRestrictions.map(
                                                         restriction =>
                                                             <Form.Check key={"restriction" + restriction.id}
-                                                                defaultChecked={restriction.name}
-                                                                name={"service" + restriction.id}
+                                                                defaultChecked={this.state.property.propertyRestrictions.some(item => restriction.name === item.name)}
+                                                                name={"restriction" + restriction.id}
                                                                 label={restriction.name}
-                                                                id={"service" + restriction.id} onClick={(e) => { }}
+                                                                id={"restriction" + restriction.id} onClick={(e) => { this.handleClickRestriction(e, restriction) }}
                                                             />
                                                     )
                                                 }
