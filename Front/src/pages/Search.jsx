@@ -15,9 +15,7 @@ class Search extends Component {
 
         this.launchSearch = this.launchSearch.bind(this);
         this.viewProperty = this.viewProperty.bind(this);
-    }
 
-    componentDidMount() {
         var dataFromSearch = this.props.location.state;
         if (dataFromSearch) {
             this.launchSearch(dataFromSearch);
@@ -67,14 +65,18 @@ class Search extends Component {
                                                     <Card.Text>For {property.totalOccupancy} occupant(s)</Card.Text>
                                                     <Card.Text>Required services:
                                                         <ul>
-                                                            {property.propertyServices.map(service =>
+                                                            {property.propertyServices
+                                                                .sort((a, b) => a.id > b.id ? 1 : -1)
+                                                                .map(service =>
                                                                 <li key={service.id} className="card-list-items">{service.name}</li>
                                                             )}
                                                         </ul>
                                                     </Card.Text>
                                                     <Card.Text>Constraints to respect:
                                                         <ul>
-                                                            {property.propertyRestrictions.map(restriction =>
+                                                            {property.propertyRestrictions
+                                                                .sort((a, b) => a.id > b.id ? 1 : -1)
+                                                                .map(restriction =>
                                                                 <li key={restriction.id} className="card-list-items">{restriction.name}</li>
                                                             )}
                                                         </ul>

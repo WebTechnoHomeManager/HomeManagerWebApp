@@ -82,7 +82,9 @@ class Messaging extends Component {
         var messagesListByDate = messages.reduce(
             function (result, message) {
                 var date = new Date(message.datetime);
-                var formattedDate = date.getDate() + "-" + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + date.getFullYear();
+                var formattedDate = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + "-"
+                                    + (date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" 
+                                    + date.getFullYear();
                 result[formattedDate] = result[formattedDate] || [];
                 result[formattedDate].push(message);
                 return result;

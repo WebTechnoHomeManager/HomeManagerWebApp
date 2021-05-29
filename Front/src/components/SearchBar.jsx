@@ -204,10 +204,10 @@ class SearchBar extends Component {
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
                                         <Row>
-                                            <Col sm={6}>
+                                            <Col style={{marginBottom: "10px"}}>
                                                 <Form.Control type="date" onChange={this.handleChangeDateFrom}/>
                                             </Col>
-                                            <Col sm={6}>
+                                            <Col>
                                                 <Form.Control type="date" onChange={this.handleChangeDateTo}/>
                                             </Col>
                                         </Row>
