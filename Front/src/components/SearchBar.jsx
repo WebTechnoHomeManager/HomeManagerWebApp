@@ -3,15 +3,13 @@ import { Form, Button, Row, Col, Accordion, Card } from 'react-bootstrap';
 import moment from 'moment';
 import ServiceService from '../services/ServiceService';
 import RestrictionService from '../services/RestrictionService';
-import PropertyService from '../services/PropertyService';
-import { useLocation } from 'react-router-dom'
 
 class SearchBar extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            locations: ["paris"],
+            locations: [],
             services: [],
             restrictions: [],
             dateFrom: '',
@@ -26,6 +24,7 @@ class SearchBar extends Component {
         this.handleChangeDateFrom = this.handleChangeDateFrom.bind(this); 
         this.handleChangeDateTo = this.handleChangeDateTo.bind(this); 
         this.handleEnterLocation = this.handleEnterLocation.bind(this); 
+        this.handleRemoveLocation = this.handleRemoveLocation.bind(this);
 
         this.displayDateValue = this.displayDateValue.bind(this); 
         this.displayLocationValue = this.displayLocationValue.bind(this); 
@@ -38,23 +37,28 @@ class SearchBar extends Component {
         
         console.log(this.props);
         
-      }
+    }
 
 
     handleEnterLocation(e) {
-
-        var value = e.target.value;
+        var value = e.target.value.trim();
 
         if (e.key === 'Enter') {
             e.preventDefault(); // So the page won't refresh after hitting enter
-            console.log("ok");
-            const locations = this.state.locations.slice();
-    
-            this.setState({locations: locations.concat([value])});
-
-            // TODO : remove location
-            e.target.value = "";
+            if (value != ""){
+                const locations = this.state.locations.slice();
+                if (!locations.includes(value)){
+                   this.setState({locations: locations.concat([value])}); 
+                }
+                e.target.value = "";
+            }
         }
+    }
+
+    handleRemoveLocation(city){
+        const locations = this.state.locations.slice();
+        locations.splice(locations.indexOf(city), 1);
+        this.setState({locations: locations});
     }
 
     handleClickService(e, service) {
@@ -96,8 +100,9 @@ class SearchBar extends Component {
         const to = this.state.dateTo;
 
         if (from != '' && to != ''){
-            var fromFormat = moment(from).format('ddd, MMM Do YYYY');
-            var toFormat = moment(to).format('ddd, MMM Do YYYY');
+            //moment(from).format('ddd, MMM Do YYYY');
+            var fromFormat = moment(from).format('DD/MM/YYYY');
+            var toFormat = moment(to).format('DD/MM/YYYY');
             return "From " + fromFormat + " to " + toFormat;
         }
         
@@ -108,9 +113,11 @@ class SearchBar extends Component {
 
         const locations = this.state.locations;
 
-        if (locations.length != 0){
-            var stringLocations = locations.map((obj) => obj).join(', ');
-            return stringLocations;
+        if (locations.length == 1){
+            // var stringLocations = locations.map((obj) => obj).join(', ');
+            return locations.length + " selected city";
+        } else if (locations.length != 0){
+            return locations.length + " selected cities";
         }
         return "Locations...";
     }
@@ -123,7 +130,13 @@ class SearchBar extends Component {
             return stringServices;
         }
         return "Services...";*/
-        return services.length + " possible service(s)";
+
+        if (services.length == 1){
+            return services.length + " possible service";
+        } else if (services.length != 0){
+            return services.length + " possible services";
+        }
+        return "Services...";
     }
 
     displayRestrictionsValue(){
@@ -134,7 +147,12 @@ class SearchBar extends Component {
             return stringRestrictions;
         }
         return "Constraints...";*/
-        return restrictions.length + " possible constraint(s)";
+        if (restrictions.length == 1){
+            return restrictions.length + " possible constraint";
+        } else if (restrictions.length != 0){
+            return restrictions.length + " possible constraints";
+        }
+        return "Constraints...";
     }
 
     searchProperties(e){
@@ -189,7 +207,19 @@ class SearchBar extends Component {
                                 </Accordion.Toggle>
                                 <Accordion.Collapse eventKey="0">
                                     <Card.Body>
-                                        <Form.Control onKeyDown={this.handleEnterLocation}/>
+                                        <Form.Control onKeyDown={this.handleEnterLocation}
+                                                      style={{marginBottom: "10px"}}/>
+                                        {this.state.locations.map(
+                                            city => 
+                                            <div key={city} className="tag-input">
+                                                {city}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16"
+                                                className="tag-input-close-button"
+                                                onClick={() => this.handleRemoveLocation(city)}>
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                                </svg>
+                                            </div>  
+                                        )}
                                     </Card.Body>
                                 </Accordion.Collapse>
                             </Card>

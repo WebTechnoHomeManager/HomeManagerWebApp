@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,22 @@ public class PropertyController {
 		return Property.get();
 	}
 	
+	@GetMapping("/properties/recent")
+	public @ResponseBody Iterable<Property> getFourMostRecentProperties() {
+		
+		List<Property> propertiesList = (List<Property>) propertyRepository.findAll();
+		int propertiesListLength = propertiesList.size();
+		
+		List<Property> recentPropertiesList = new ArrayList<Property>();
+		
+		recentPropertiesList.add(propertiesList.get(propertiesListLength-1));
+		recentPropertiesList.add(propertiesList.get(propertiesListLength-2));
+		recentPropertiesList.add(propertiesList.get(propertiesListLength-3));
+		recentPropertiesList.add(propertiesList.get(propertiesListLength-4));
+		
+		return recentPropertiesList;
+	}
+	
 	@GetMapping("/properties/owner/{id}")
 	public List<Property> findByOwner_Id(@PathVariable Integer id) {
 		return propertyRepository.findByOwner_Id(id);
@@ -111,12 +128,18 @@ public class PropertyController {
 		Date dateFrom = !data.get("dateFrom").equals("") ? new SimpleDateFormat("yyyy-MM-dd").parse(data.get("dateFrom").toString()) : null;
 		Date dateTo = !data.get("dateTo").equals("") ? new SimpleDateFormat("yyyy-MM-dd").parse(data.get("dateTo").toString()) : null;
 		
-		List<Property> listPropertyLocation = propertyRepository.getPropertyBy(locationsList);
+		List<Property> listPropertyLocation = new ArrayList<>();
+		if (locationsList.size() > 0) {
+			listPropertyLocation = propertyRepository.getPropertyBy(locationsList);
+		} else {
+			listPropertyLocation = (List<Property>) propertyRepository.findAll();
+		}
 				
 		List<Property> listProperty = listPropertyLocation.stream()
 				.filter(x -> areEveryServicesInList(x.getPropertyServices(), servicesIdList)
 						&& areEveryRestrictionsInList(x.getPropertyRestrictions(), restrictionsIdList)
 						&& !areDatesRangesOverlap(x.getReservations(), dateFrom, dateTo))
+				.sorted(Comparator.comparing(Property::getId).reversed())
 				.collect(Collectors.toList());
 
 		return listProperty;
