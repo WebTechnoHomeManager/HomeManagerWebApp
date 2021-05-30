@@ -25,6 +25,12 @@ public class User {
   	private String first_name;
 	@Column(name = "last_name")
   	private String last_name;
+	@Column(name = "tel")
+	private String tel;
+	@Column(name = "date_birth")
+	private String dateBirth;
+	@Column(name = "date_inscription")
+	private String dateInscription;
 	@Column(name = "type")
 	private String type;
 	@Column(name = "profile_picture_path")
@@ -75,6 +81,30 @@ public class User {
 	
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
+	}
+	
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getDateBirth() {
+		return dateBirth;
+	}
+
+	public void setDateBirth(String dateBirth) {
+		this.dateBirth = dateBirth;
+	}
+
+	public String getDateInscription() {
+		return dateInscription;
+	}
+
+	public void setDateInscription(String dateInscription) {
+		this.dateInscription = dateInscription;
 	}
 	
 	public String getProfile_picture_path() {
