@@ -77,11 +77,11 @@ class Profile extends Component {
                 )
 
             <div className="div-center-content">
-                <Button variant="primary" onClick={this.handleSubmit}> <Pencil /> Update</Button>
+                <Button className="strong-button" variant="primary" onClick={this.handleSubmit}> <Pencil /> Update</Button>
             </div>
             <br></br>
             <div className="div-center-content">
-                <Button variant="primary" onClick={() => { if (window.confirm('Are you sure you wish to delete your profile?')) this.deleteProfile(this.state.user.id) }} href="/"> <Trash />Delete my profile</Button>
+                <Button className="strong-button" variant="primary" onClick={() => { if (window.confirm('Are you sure you wish to delete your profile?')) this.deleteProfile(this.state.user.id) }} href="/"> <Trash />Delete my profile</Button>
             </div>
 
 

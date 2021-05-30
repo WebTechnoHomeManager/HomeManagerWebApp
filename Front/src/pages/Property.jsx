@@ -4,6 +4,7 @@ import SearchBar from '../components/SearchBar';
 import PropertyService from '../services/PropertyService';
 import photo from '../images/houses/house1.jpg';
 import userIcon from '../images/icons/user.png';
+import { Envelope, EnvelopeFill, InfoCircle, InfoCircleFill } from 'react-bootstrap-icons';
 
 class Property extends Component {
 
@@ -19,12 +20,26 @@ class Property extends Component {
                 owner: {}
             }
         }
+
+        this.showPublicProfilePopUp = this.showPublicProfilePopUp.bind(this);
+        this.goToMessagingPage = this.goToMessagingPage.bind(this);
     }
 
     componentDidMount() {
         PropertyService.getPropertyById(this.state.id).then(res => {
             this.setState({ property: res.data });
         })
+    }
+
+    showPublicProfilePopUp(){
+        alert("TODO: Public profile popup");
+    }
+
+    goToMessagingPage(){
+        this.props.history.push({
+            pathname: '/messaging',
+            state: {newInterlocutor: this.state.property.owner}
+        });
     }
 
     render() {
@@ -67,10 +82,30 @@ class Property extends Component {
                             <Card className="my-3">
                                 <Card.Body>
                                     <Card.Title>Owner</Card.Title>
-                                    <Image src={userIcon} className="my-3 d-block" style={{ width: "65px" }} />
-                                    <Card.Text>{this.state.property.owner.first_name} {this.state.property.owner.last_name}</Card.Text>
-                                    <Button as="input" type="button" value="More information" />
-                                    <Button as="input" type="button" value="Contact the owner" />
+                                    <Row>
+                                        <Col sm={"auto"} style={{paddingRight: 0}}>
+                                            <Image style={{width: "50px"}} src={userIcon} className="my-3 d-block"/>
+                                        </Col>
+                                        <Col>
+                                            <Card.Text style={{marginBottom: "0.2rem"}}>
+                                                {this.state.property.owner.first_name} {(this.state.property.owner.last_name ? this.state.property.owner.last_name[0] : "") + "."}
+                                            </Card.Text>
+                                            <Button className="strong-button" style={{fontSize: "0.8rem"}}
+                                                    onClick={this.showPublicProfilePopUp} >
+                                                <InfoCircleFill/>
+                                                  More information
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col className="div-center-content">
+                                            <Button className="soft-button btn-secondary"
+                                                    onClick={() => this.goToMessagingPage()}>
+                                                <EnvelopeFill/>  Contact the owner
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                    
                                 </Card.Body>
                             </Card>
                         </Col>

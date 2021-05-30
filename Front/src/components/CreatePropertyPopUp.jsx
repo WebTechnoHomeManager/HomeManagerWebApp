@@ -220,8 +220,8 @@ class UpdatePropertyPopUp extends Component {
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.props.onHide}> <XCircle /> Close</Button>
-                    <Button variant="primary" onClick={this.handleSubmit}> <PlusCircle /> Add</Button>
+                    <Button className="strong-button" onClick={this.props.onHide}> <XCircle /> Close</Button>
+                    <Button className="strong-button" variant="primary" onClick={this.handleSubmit}> <PlusCircle /> Add</Button>
                 </Modal.Footer>
             </Modal>
 

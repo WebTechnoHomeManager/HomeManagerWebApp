@@ -79,7 +79,7 @@ class LogInPopUp extends Component {
                             <Form.Text className="text-muted">{this.state.errorPassword}</Form.Text>
                         </Form.Group>
                         <div className="div-center-content">
-                            <Button className="center" type="submit">Log in</Button>
+                            <Button className="center strong-button" type="submit">Log in</Button>
                         </div>
                     </Form>
                 </Modal.Body>

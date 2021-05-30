@@ -49,7 +49,7 @@ class MyProperties extends Component {
                 <h1 className="center">My Properties</h1>
                 <div className="div-center-content">
 
-                    <Button variant="primary" onClick={() => this.setState({ addModalShow1: true })}> <PlusCircle />Add a property</Button>
+                    <Button className="strong-button" variant="primary" onClick={() => this.setState({ addModalShow1: true })}> <PlusCircle />Add a property</Button>
                     <CreatePropertyPopUp
                         show={this.state.addModalShow1}
                         onHide={addModalClose1}
@@ -65,14 +65,14 @@ class MyProperties extends Component {
                                     <Col style={{ textAlign: 'center' }}>
                                         <Card.Title>{property.title}</Card.Title>
                                         <Card.Img variant="top" src={photo} />
-                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => this.setState({ addModalShow2: true })}> <Pencil /> Update</Button>
+                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => this.setState({ addModalShow2: true })}> <Pencil /> Update</Button>
 
                                         <UpdatePropertyPopUp
                                             show={this.state.addModalShow2}
                                             onHide={addModalClose2}
                                         >{property.id}</UpdatePropertyPopUp>
 
-                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}> <Trash />Delete</Button>
+                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}> <Trash />Delete</Button>
                                     </Col>
                                     <Col>
                                         <Card.Text>Type: {property.propertyType.name}</Card.Text>

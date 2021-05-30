@@ -15,7 +15,8 @@ class Messaging extends Component {
             message: "",
             sentMessagesBetweenTheTwo: [],
             distinctDatesMessages: [],
-            interlocutorsList: []
+            interlocutorsList: [],
+            newContact: this.props.location.state ? this.props.location.state.newInterlocutor : {}
         }
 
         this.sendMessage = this.sendMessage.bind(this); 
@@ -25,10 +26,11 @@ class Messaging extends Component {
         this.getInterlocutors = this.getInterlocutors.bind(this); 
         this.handleClickInterlocutor = this.handleClickInterlocutor.bind(this);
         this.groupMessagesByDate = this.groupMessagesByDate.bind(this); 
-        this.formatTime = this.formatTime.bind(this); 
+        this.formatTime = this.formatTime.bind(this);
 
         this.getInterlocutors();
     }
+
 
     sendMessage(){
         var message = this.state.message.trim();
@@ -71,7 +73,6 @@ class Messaging extends Component {
 
     getSentMessages(){
         ChatService.getMessagesBetweenTwoUsers(this.state.user.id, this.state.recipient.id).then((resp) => {
-            console.log(resp.data)
             this.groupMessagesByDate(resp.data);
             this.scrollBarToBottom();
         });
@@ -91,7 +92,6 @@ class Messaging extends Component {
             }, Object.create(null));
 
         this.setState({sentMessagesBetweenTheTwo: messagesListByDate});
-        console.log(messagesListByDate);
     }
 
     formatTime(datetime){
@@ -104,10 +104,23 @@ class Messaging extends Component {
 
     getInterlocutors(){
         ChatService.getIntercutorsWith(this.state.user.id).then((resp) => {
-            console.log(resp.data)
-            this.setState({interlocutorsList: resp.data});
-            this.setState({recipient: resp.data[0]});
-            this.getSentMessages();
+            var interlocutorsList = resp.data;
+            var indexToSelect = 0;
+
+            if (this.state.newContact.id != undefined){
+                var indexNewContactIndexInInterlocutorsList = resp.data.findIndex(x => x.id === this.state.newContact.id);
+                if (indexNewContactIndexInInterlocutorsList == -1){
+                    interlocutorsList.unshift(this.state.newContact); // unshift = push at the beginning
+                } else {
+                    indexToSelect = indexNewContactIndexInInterlocutorsList
+                }
+            }
+            this.setState({interlocutorsList: interlocutorsList});
+            if (interlocutorsList.length > 0){
+                this.setState({recipient: this.state.interlocutorsList[indexToSelect]});
+                this.getSentMessages();
+            }
+            
         });
     }
 
@@ -166,7 +179,7 @@ class Messaging extends Component {
                                                               onKeyDown={this.handleEnterMessage}/>
                                             </Col>
                                             <Col sm="auto" className="ps-0">
-                                                <Button as="input" type="button" value="↑"
+                                                <Button className="strong-button" as="input" type="button" value="↑"
                                                         onClick={this.sendMessage} />
                                                 
                                             </Col>

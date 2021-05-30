@@ -62,8 +62,8 @@ class MyReservations extends Component {
                                                     Owner : {reservation.property_reservation.owner.first_name} {reservation.property_reservation.owner.last_name}
                                                 </Card.Text>
                                                 <div style={{ textAlign: 'center' }}>
-                                                    <Button variant="primary" style={{ margin: '3px' }}> <PersonLinesFill /> Contact</Button>
-                                                    <Button variant="primary" style={{ margin: '3px' }}> <Trash />Cancel</Button>
+                                                    <Button className="strong-button" variant="primary" style={{ margin: '3px' }}> <PersonLinesFill /> Contact</Button>
+                                                    <Button className="strong-button" variant="primary" style={{ margin: '3px' }}> <Trash />Cancel</Button>
                                                 </div>
                                             </Col>
                                         </Row>
