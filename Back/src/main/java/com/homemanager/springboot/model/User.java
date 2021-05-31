@@ -37,7 +37,7 @@ public class User {
 	@Column(name = "profile_picture_path")
   	private String profilePicturePath;
 	
-	@OneToMany(mappedBy = "reservation_user")
+	@OneToMany(mappedBy = "reservationUser")
     private Set<Reservation> reservations;
 
 	public boolean isPasswordRight(String inputPassword) {

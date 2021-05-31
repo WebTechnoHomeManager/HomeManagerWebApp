@@ -26,7 +26,7 @@ public class Reservation {
 
 	@ManyToOne
     @JoinColumn(name="user_id")
-    private User reservation_user;
+    private User reservationUser;
 	
 	@ManyToOne
     @JoinColumn(name="property_id")
@@ -49,11 +49,12 @@ public class Reservation {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public User getReservation_user() {
-		return reservation_user;
+	
+	public User getReservationUser() {
+		return reservationUser;
 	}
-	public void setReservation_user(User reservation_user) {
-		this.reservation_user = reservation_user;
+	public void setReservationUser(User reservationUser) {
+		this.reservationUser = reservationUser;
 	}
 	public Date getStart_date() {
 		return start_date;

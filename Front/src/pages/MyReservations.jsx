@@ -12,12 +12,13 @@ class MyReservations extends Component {
         super(props)
 
         this.state = {
+            user: JSON.parse(localStorage.getItem('user')),
             reservations: []
         }
     }
 
     componentDidMount() {
-        ReservationService.getReservations().then((res) => {
+        ReservationService.getReservationsByReservationUserId(this.state.user.id).then((res) => {
             this.setState({ reservations: res.data });
         });
     }
