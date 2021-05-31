@@ -4,7 +4,6 @@ import PropertyService from '../services/PropertyService';
 import RestrictionService from '../services/RestrictionService';
 import ServiceService from '../services/ServiceService';
 import TypeService from '../services/TypeService';
-import UserService from '../services/UserService';
 import { PlusCircle, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
 
 
@@ -58,7 +57,7 @@ class UpdatePropertyPopUp extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let property = this.state.property;
+        let property = { ...this.state.property };
         console.log('property => ' + JSON.stringify(property));
         PropertyService.createProperty(property).then(res => {
             //this.props.history.push('/myproperties');
@@ -87,7 +86,7 @@ class UpdatePropertyPopUp extends Component {
     handleClickService(e, service) {
         var checked = e.target.checked;
         let property = { ...this.state.property };
-        const services = this.state.property.propertyServices.slice();
+        const services = property.propertyServices.slice();
 
         if (checked) {
             property.propertyServices = services.concat([service]);
@@ -101,7 +100,7 @@ class UpdatePropertyPopUp extends Component {
     handleClickRestriction(e, restriction) {
         var checked = e.target.checked;
         let property = { ...this.state.property };
-        const restrictions = this.state.property.propertyRestrictions.slice();
+        const restrictions = property.propertyRestrictions.slice();
 
         if (checked) {
             property.propertyRestrictions = restrictions.concat([restriction]);
