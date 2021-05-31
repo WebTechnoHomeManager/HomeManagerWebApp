@@ -12,7 +12,7 @@ class UpdatePropertyPopUp extends Component {
         super(props);
 
         this.state = {
-            id: this.props.children,
+            id: this.props.propertyId,
             allServices: [],
             allRestrictions: [],
             allPropertyTypes: [],
@@ -53,12 +53,12 @@ class UpdatePropertyPopUp extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        let property = this.state.property;
-        console.log('property => ' + JSON.stringify(property));
-        console.log('id => ' + JSON.stringify(this.state.id));
+        let property = { ...this.state.property };
         PropertyService.updateProperty(property, this.state.id).then(res => {
             //this.props.history.push('/myproperties');
             alert("Property updated");
+            console.log('property => ' + JSON.stringify(property));
+            console.log('id => ' + JSON.stringify(this.state.id));
         });
     }
 
@@ -82,7 +82,7 @@ class UpdatePropertyPopUp extends Component {
     handleClickService(e, service) {
         var checked = e.target.checked;
         let property = { ...this.state.property };
-        const services = this.state.property.propertyServices.slice();
+        const services = property.propertyServices.slice();
 
         if (checked) {
             property.propertyServices = services.concat([service]);
@@ -96,7 +96,7 @@ class UpdatePropertyPopUp extends Component {
     handleClickRestriction(e, restriction) {
         var checked = e.target.checked;
         let property = { ...this.state.property };
-        const restrictions = this.state.property.propertyRestrictions.slice();
+        const restrictions = property.propertyRestrictions.slice();
 
         if (checked) {
             property.propertyRestrictions = restrictions.concat([restriction]);

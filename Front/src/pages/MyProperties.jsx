@@ -17,9 +17,9 @@ class MyProperties extends Component {
             user: JSON.parse(localStorage.getItem('user')),
             properties: [],
             addModalShow1: false,
-            addModalShow2: false
+            addModalShow2: false,
+            propertyID: 3
         }
-
         this.deleteProperty = this.deleteProperty.bind(this);
     }
 
@@ -34,6 +34,9 @@ class MyProperties extends Component {
         PropertyService.deleteProperty(propertyId).then((res) => {
             this.props.history.push('/myproperties');
         });
+    }
+    updateProperty = propertyId => {
+        this.setState({ propertyID: propertyId, addModalShow2: true });
     }
 
     render() {
@@ -57,6 +60,12 @@ class MyProperties extends Component {
 
                 </div>
 
+                <UpdatePropertyPopUp
+                    show={this.state.addModalShow2}
+                    onHide={addModalClose2}
+                    propertyId={this.state.propertyID}
+                ></UpdatePropertyPopUp>
+
                 {
                     this.state.properties.map(
                         property => <div className="div-center-content" style={{ marginTop: '30px' }}><Card style={{ width: '70%' }}> <Card.Header>{property.title}</Card.Header>
@@ -65,13 +74,7 @@ class MyProperties extends Component {
                                     <Col style={{ textAlign: 'center' }}>
                                         <Card.Title>{property.title}</Card.Title>
                                         <Card.Img variant="top" src={photo} />
-                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => this.setState({ addModalShow2: true })}> <Pencil /> Update</Button>
-
-                                        <UpdatePropertyPopUp
-                                            show={this.state.addModalShow2}
-                                            onHide={addModalClose2}
-                                        >{property.id}</UpdatePropertyPopUp>
-
+                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => this.updateProperty(property.id)}> <Pencil /> Update</Button>
                                         <Button variant="primary" style={{ margin: '3px' }} onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}> <Trash />Delete</Button>
                                     </Col>
                                     <Col>
