@@ -38,13 +38,11 @@ class Navbar extends Component {
     }
 
     
-    logIn(data) {
-        var user = data.user;
-        
+    logIn(user) {
         this.setState({ logInPopUp: false });
-        this.setState({ user: JSON.parse(user) });
+        this.setState({ user: user });
 
-        localStorage.setItem('user', user);
+        localStorage.setItem('user', JSON.stringify(user));
     }
 
     logOut() {

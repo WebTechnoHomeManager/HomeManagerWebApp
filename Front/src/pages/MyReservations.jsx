@@ -59,7 +59,7 @@ class MyReservations extends Component {
                                             </Col>
                                             <Col>
                                                 <Card.Text style={{ textAlign: 'center' }}>
-                                                    Owner : {reservation.property_reservation.owner.first_name} {reservation.property_reservation.owner.last_name}
+                                                    Owner : {reservation.property_reservation.owner.firstName} {reservation.property_reservation.owner.lastName}
                                                 </Card.Text>
                                                 <div style={{ textAlign: 'center' }}>
                                                     <Button className="strong-button" variant="primary" style={{ margin: '3px' }}> <PersonLinesFill /> Contact</Button>

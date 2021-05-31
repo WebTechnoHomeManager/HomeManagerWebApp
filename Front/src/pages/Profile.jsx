@@ -56,13 +56,13 @@ class Profile extends Component {
             <div className="div-center-content">
 
                 <Form onChange={this.handleChange}>
-                    <Form.Group controlId="last_name">
+                    <Form.Group controlId="lastName">
                         <Form.Label>Last name:</Form.Label>
-                        <Form.Control type="text" name="last_name" defaultValue={this.state.user.last_name} />
+                        <Form.Control type="text" name="lastName" defaultValue={this.state.user.lastName} />
                     </Form.Group>
-                    <Form.Group controlId="first_name">
+                    <Form.Group controlId="firstName">
                         <Form.Label>First name:</Form.Label>
-                        <Form.Control type="text" name="first_name" defaultValue={this.state.user.first_name} />
+                        <Form.Control type="text" name="firstName" defaultValue={this.state.user.firstName} />
                     </Form.Group>
                     <Form.Group controlId="email">
                         <Form.Label>Email:</Form.Label>

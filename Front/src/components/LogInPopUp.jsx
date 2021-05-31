@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Accordion, Card, Modal } from 'react-bootstrap';
 import LogInPopUpContent from './LogInPopUpContent';
+import SignUpPopUpContent from './SignUpPopUpContent';
 
 class LogInPopUp extends Component {
 
@@ -23,11 +24,14 @@ class LogInPopUp extends Component {
 
         var contentToDisplay = ""; 
         if (this.state.needToSignUp) {
-            
+            contentToDisplay = <SignUpPopUpContent 
+                                    displaySignUpPopUp={this.displaySignUpPopUp}
+                                    logIn={this.props.logIn}/>
         } else {
             contentToDisplay = <LogInPopUpContent 
                                     displaySignUpPopUp={this.displaySignUpPopUp}
                                     logIn={this.props.logIn}/>
+            
         }
 
         return (

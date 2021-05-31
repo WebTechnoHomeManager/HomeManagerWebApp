@@ -143,7 +143,7 @@ class Messaging extends Component {
                                     <Col sm={12} key={interlocutor.id} 
                                          className={"interlocutor " + (interlocutor.id == this.state.recipient.id ? "interlocutor-active" : "")}
                                          onClick={() => this.handleClickInterlocutor(interlocutor)}>
-                                        {interlocutor.first_name} {interlocutor.last_name} 
+                                        {interlocutor.firstName} {interlocutor.lastName} 
                                     </Col>
                                 )}
                             </Row>

@@ -88,7 +88,7 @@ class Property extends Component {
                                         </Col>
                                         <Col>
                                             <Card.Text style={{marginBottom: "0.2rem"}}>
-                                                {this.state.property.owner.first_name} {(this.state.property.owner.last_name ? this.state.property.owner.last_name[0] : "") + "."}
+                                                {this.state.property.owner.firstName} {(this.state.property.owner.lastName ? this.state.property.owner.lastName[0] : "") + "."}
                                             </Card.Text>
                                             <Button className="strong-button" style={{fontSize: "0.8rem"}}
                                                     onClick={this.showPublicProfilePopUp} >

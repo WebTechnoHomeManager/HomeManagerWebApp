@@ -48,7 +48,7 @@ class LogInPopUpContent extends Component {
             if (resp.data.error){
                 this.displayError(resp.data.error);
             } else if (resp.data.user != undefined){
-                this.props.logIn(resp.data)
+                this.props.logIn(JSON.parse(resp.data.user))
             }            
         });
         
@@ -57,7 +57,7 @@ class LogInPopUpContent extends Component {
     render() {
         return (
             <>
-            <Modal.Header closeButton className="text-center d-block">
+                <Modal.Header closeButton className="text-center d-block">
                     <Modal.Title id="contained-modal-title-vcenter" className="d-inline-block">
                         Log in</Modal.Title>
                 </Modal.Header>
@@ -66,12 +66,12 @@ class LogInPopUpContent extends Component {
                         <Form.Group>
                             <Form.Label>Email address</Form.Label>
                             <Form.Control type="email" placeholder="" name="email"/>
-                            <Form.Text className="text-muted">{this.state.errorUser}</Form.Text>
+                            <Form.Text className="error-form">{this.state.errorUser}</Form.Text>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Password</Form.Label>
                             <Form.Control type="password" placeholder="" name="password"/>
-                            <Form.Text className="text-muted">{this.state.errorPassword}</Form.Text>
+                            <Form.Text className="error-form">{this.state.errorPassword}</Form.Text>
                         </Form.Group>
                         <div className="div-center-content">
                             <Button className="center strong-button" type="submit">Log in</Button>

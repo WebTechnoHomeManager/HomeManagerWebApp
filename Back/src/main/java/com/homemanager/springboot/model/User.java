@@ -1,5 +1,6 @@
 package com.homemanager.springboot.model;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -22,19 +23,19 @@ public class User {
 	@Column(name = "password")
   	private String password;
 	@Column(name = "first_name")
-  	private String first_name;
+  	private String firstName;
 	@Column(name = "last_name")
-  	private String last_name;
+  	private String lastName;
 	@Column(name = "tel")
 	private String tel;
 	@Column(name = "date_birth")
-	private String dateBirth;
-	@Column(name = "date_inscription")
-	private String dateInscription;
+	private Date dateBirth;
+	@Column(name = "date_registration")
+	private Date dateRegistration;
 	@Column(name = "type")
 	private String type;
 	@Column(name = "profile_picture_path")
-  	private String profile_picture_path;
+  	private String profilePicturePath;
 	
 	@OneToMany(mappedBy = "reservation_user")
     private Set<Reservation> reservations;
@@ -67,20 +68,20 @@ public class User {
 		this.password = password;
 	}
 	
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 	
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 	
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return lastName;
 	}
 	
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	
 	public String getTel() {
@@ -91,28 +92,28 @@ public class User {
 		this.tel = tel;
 	}
 
-	public String getDateBirth() {
+	public Date getDateBirth() {
 		return dateBirth;
 	}
 
-	public void setDateBirth(String dateBirth) {
+	public void setDateBirth(Date dateBirth) {
 		this.dateBirth = dateBirth;
 	}
 
-	public String getDateInscription() {
-		return dateInscription;
+	public Date getDateRegistration() {
+		return dateRegistration;
 	}
 
-	public void setDateInscription(String dateInscription) {
-		this.dateInscription = dateInscription;
+	public void setDateRegistration(Date dateRegistration) {
+		this.dateRegistration = dateRegistration;
 	}
 	
-	public String getProfile_picture_path() {
-		return profile_picture_path;
+	public String getProfilePicturePath() {
+		return profilePicturePath;
 	}
 	
-	public void setProfile_picture_path(String profile_picture_path) {
-		this.profile_picture_path = profile_picture_path;
+	public void setProfilePicturePath(String profilePicturePath) {
+		this.profilePicturePath = profilePicturePath;
 	}
 
 	public String getType() {
@@ -126,8 +127,10 @@ public class User {
 	@Override
 	public String toString() {
 		return "{\"id\": \"" + id + "\", \"email\": \"" + email + "\", \"password\": \"" + password
-				+ "\", \"first_name\": \"" + first_name + "\", \"last_name\": \"" + last_name + "\", \"type\": \""
-				+ type + "\", \"profile_picture_path\": \"" + profile_picture_path + "\", \"reservations\": \""
-				+ reservations + "\"}";
+				+ "\", \"firstName\": \"" + firstName + "\", \"lastName\": \"" + lastName + "\", \"tel\": \"" + tel
+				+ "\", \"dateBirth\": \"" + dateBirth + "\", \"dateRegistration\": \"" + dateRegistration
+				+ "\", \"type\": \"" + type + "\", \"profilePicturePath\": \"" + profilePicturePath
+				+ "\", \"reservations\": \"" + reservations + "\"}";
 	}
+	
 }	

@@ -109,7 +109,7 @@ class MyProperties extends Component {
 
 
                                         <Card.Text>{property.reservations.map(function (d, idx) {
-                                            return (<li key={idx}> From {d.start_date} to {d.end_date} - by {d.reservation_user.first_name} {d.reservation_user.last_name}</li>)
+                                            return (<li key={idx}> From {d.start_date} to {d.end_date} - by {d.reservation_user.firstName} {d.reservation_user.lastName}</li>)
                                         })}</Card.Text></Col>
                                 </Row>
                                 </Container>

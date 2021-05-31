@@ -9,86 +9,139 @@ class SignUpPopUpContent extends Component {
 
         this.state = {
             showModal: this.props.show,
-            errorUser: '',
-            errorPassword: ''
+            errorEmail: '',
+            errorPassword: '',
+            errorFirstName: '',
+            errorLastName: '',
+            errorTel: ''
         };
 
-        this.tryToLogIn = this.tryToLogIn.bind(this);
+        this.tryToSignUp = this.tryToSignUp.bind(this);
         this.resetDisplayedErrors = this.resetDisplayedErrors.bind(this);
-        this.displayError = this.displayError.bind(this);
+        this.isPasswordValid = this.isPasswordValid.bind(this);
+        this.isNameValid = this.isNameValid.bind(this);
+        this.isTelValid = this.isTelValid.bind(this);
+        this.createAccount = this.createAccount.bind(this);
     }
 
-    
-    tryToLogIn(e){
-        /*e.preventDefault();
-        const formData = new FormData(e.target);
-        
-        var data = {
-            email: formData.get("email"),
-            password: formData.get("password")
-        }
-        
+    tryToSignUp(e){
+        e.preventDefault();
         this.resetDisplayedErrors();
 
-        UserService.checkAuthentication(data).then((resp) => {
-            console.log(resp.data);
+        const formData = new FormData(e.target);
 
-            if (resp.data.error){
-                this.displayError(resp.data.error);
-            } else if (resp.data.user != undefined){
-                this.props.logIn(resp.data)
-            }            
-        });*/
-        
+        if(!this.isPasswordValid(formData.get("password"))){
+            this.setState({ errorPassword: "Your password must have between 8 and 32 characters, " + 
+            "including at least 1 lowercase letter, 1 uppercase letter, 1 digit and 1 special character" });
+        } else if (!this.isNameValid(formData.get("firstName"))){
+            this.setState({ errorFirstName: "Please enter a valid first name" });
+        } else if (!this.isNameValid(formData.get("lastName"))){
+            this.setState({ errorLastName: "Please enter a valid last name" });
+        } else if (!this.isTelValid(formData.get("tel"))){
+            this.setState({ errorTel: "Pattern: 555-____" });
+        } else {
+            this.createAccount(formData);
+        }
+    }
+
+    resetDisplayedErrors(){
+        this.setState({ errorEmail: '' });
+        this.setState({ errorPassword: '' });
+        this.setState({ errorFirstName: '' });
+        this.setState({ errorLastName: '' });
+        this.setState({ errorTel: '' });
+    }
+
+    isPasswordValid(password){
+        var regex = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$");
+        return regex.test(password);
+    }
+
+    isNameValid(name){
+        var regex = new RegExp("^[^0-9]{2,}$");
+        return regex.test(name);
+    }
+
+    isTelValid(telNumber){
+        var regex = new RegExp("^555-[0-9]{4}$");
+        return regex.test(telNumber);
+    }
+
+    createAccount(formData){
+        var nowDate = new Date();
+        var nowDateWithoutTimeZone = nowDate.setTime(nowDate.getTime() - new Date().getTimezoneOffset()*60*1000)
+
+        var data = {
+            email: formData.get("email"),
+            password: formData.get("password"),
+            firstName: formData.get("firstName"),
+            lastName: formData.get("lastName"),
+            tel: formData.get("tel"),
+            dateBirth: formData.get("dateBirth"),
+            dateRegistration: nowDateWithoutTimeZone,
+            type: "Member"
+        }
+
+        UserService.createUser(data).then((resp) => {
+            var createdUser = resp.data;
+
+            if (createdUser == ""){
+                this.setState({ errorEmail: "Email address already used" });
+            } else {
+                this.props.logIn(createdUser);
+            }         
+        });
     };
     
-    resetDisplayedErrors(){
-       /* this.setState({ errorUser: '' });
-        this.setState({ errorPassword: '' });*/
-    }
-
-    displayError(error){
-        /*if (error == "UserNotFound"){
-            this.setState({ errorUser: "User not found" });
-        } else if (error == "WrongPassword"){
-            this.setState({ errorPassword: "Wrong password" });
-        }*/
-    }
 
 
     render() {
         
         return (
-            <Modal aria-labelledby="contained-modal-title-vcenter" centered 
-                   show={this.state.showModal}
-                   onHide={this.props.onHide}>
-
+            <>
                 <Modal.Header closeButton className="text-center d-block">
                     <Modal.Title id="contained-modal-title-vcenter" className="d-inline-block">
-                        Log in</Modal.Title>
+                        Sign up
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form onSubmit={this.tryToLogIn}>
+                    <Form onSubmit={this.tryToSignUp}>
                         <Form.Group>
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control type="email" placeholder="" name="email"/>
-                            <Form.Text className="text-muted">{this.state.errorUser}</Form.Text>
+                            <Form.Control type="email" name="email" required/>
+                            <Form.Text className="error-form">{this.state.errorEmail}</Form.Text>
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Password</Form.Label>
-                            <Form.Control type="password" placeholder="" name="password"/>
-                            <Form.Text className="text-muted">{this.state.errorPassword}</Form.Text>
+                            <Form.Control type="password" name="password" required/>
+                            <Form.Text className="error-form">{this.state.errorPassword}</Form.Text>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>First name</Form.Label>
+                            <Form.Control name="firstName" required/>
+                            <Form.Text className="error-form">{this.state.errorFirstName}</Form.Text>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Last name</Form.Label>
+                            <Form.Control name="lastName" required/>
+                            <Form.Text className="error-form">{this.state.errorLastName}</Form.Text>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Birth date</Form.Label>
+                            <Form.Control type="date" name="dateBirth" required/>
+                            <Form.Text className="error-form"></Form.Text>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Tel</Form.Label>
+                            <Form.Control type="tel" name="tel" defaultValue="555-" maxlength="8" required/>
+                            <Form.Text className="error-form">{this.state.errorTel}</Form.Text>
                         </Form.Group>
                         <div className="div-center-content">
-                            <Button className="center strong-button" type="submit">Log in</Button>
+                            <Button className="center strong-button" type="submit">Sign up</Button>
                         </div>
-                        <div style={{textAlign: "center", cursor: "pointer", fontSize: "0.9rem"}} onClick={()=> alert('ok')}>
-                            No account yet? Click here to register!
-                        </div>
-                        
                     </Form>
                 </Modal.Body>
-            </Modal>
+            </>
         );
     }
-} export default SignUpPopUp;
+} export default SignUpPopUpContent;
