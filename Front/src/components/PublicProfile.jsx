@@ -39,7 +39,7 @@ class PublicProfile extends Component {
                     <Row>
                         <Col>
                             <div style={{ textAlign: 'center' }}>
-                                <h1>{this.state.user.last_name} {this.state.user.first_name} </h1>
+                                <h1>{this.state.user.lastName} {this.state.user.firstName} </h1>
                                 <Image src={userIcon} className="d-block mx-auto img-fluid w-3" style={{ width: "65px" }} />
                                 <p>{this.state.user.email}</p>
                                 <br></br>
