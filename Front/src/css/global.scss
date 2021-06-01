@@ -11,6 +11,7 @@ $darkHighlight: #ff4034;
 $primary: $highlight;
 $secondary: $medium;
 $gray: #e3e3e3;
+$gray1: #CCCCCC;
 $gray2: #b5b5b5;
 $gray3: #8d8d8d;
 
@@ -49,12 +50,12 @@ body, html{
 
 
 .strong-button, 
-.dropdown-toggle{
+.dropdown-navbar .dropdown-toggle{
     border-radius: 2rem !important;
     color: white;
 }
 .strong-button:hover,
-.dropdown-toggle:hover{
+.dropdown-navbar .dropdown-toggle:hover{
     background-color: $darkHighlight !important;
     border-color: $darkHighlight !important;
 }
@@ -63,7 +64,7 @@ body, html{
     border-color: $highlight !important; 
 }
 .strong-button:not(:active),
-.dropdown-toggle:not(:active){
+.dropdown-navbar .dropdown-toggle:not(:active){
     box-shadow: none !important;
 }
 
@@ -84,13 +85,37 @@ body, html{
     box-shadow: none !important;
 }
 
+.dropdown-filter {
+    text-align: right !important;
+    .dropdown-toggle{
+        background-color: $gray !important;
+        border-color: $gray !important;
+        color: black !important;
+        font-size: 0.8rem !important;
+    }
+    .dropdown-item{
+        font-size: 0.8rem !important;
+    }
+    .dropdown-item:active {
+        background-color: $gray1 !important;
+        border-color: $gray1 !important;
+        color: black !important;
+    }
+    .dropdown-item.active {
+        background-color: $gray !important;
+        border-color: $gray !important;
+        color: black !important;
+    }
+    .dropdown-toggle{
+        box-shadow: none !important;
+    }
+}
 
-
-
-
-.dropdown-item:active {
-    background-color: $dark !important;
-    border-color: $dark !important;
+.dropdown-navbar {
+    .dropdown-item:active {
+        background-color: $dark !important;
+        border-color: $dark !important;
+    }
 }
 
 #header{
@@ -134,4 +159,14 @@ body, html{
 .error-form{
     color: red;
     font-size: 0.8rem;
+}
+
+/*li:before {
+    content: "-";
+    padding-right: 5px;
+}*/
+
+ul {
+    //list-style: none;
+    padding-left: 15px;
 }

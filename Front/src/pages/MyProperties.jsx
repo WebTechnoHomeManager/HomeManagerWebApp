@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import PropertyService from '../services/PropertyService';
 import '../css/App.scss';
-import { Container, Row, Col, Card, Button, Form, Accordion } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Form, Accordion, DropdownButton, Dropdown, } from 'react-bootstrap';
 import photo from '../images/houses/house1.jpg';
 import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
 import UpdatePropertyPopUp from '../components/PopUp/UpdatePropertyPopUp';
@@ -19,7 +19,8 @@ class MyProperties extends Component {
             properties: [],
             showCreatePopUp: false,
             showUpdateModal: false,
-            propertyID: null
+            propertyID: null,
+            selectedOptionByPropertyId: {}
         }
         this.deleteProperty = this.deleteProperty.bind(this);
         this.showUpdatePopUp = this.showUpdatePopUp.bind(this);
@@ -27,6 +28,9 @@ class MyProperties extends Component {
         this.createDone = this.createDone.bind(this);
         this.hideCreatePopUp = this.hideCreatePopUp.bind(this);
         this.hideUpdatePopUp = this.hideUpdatePopUp.bind(this);
+        this.displayPastReservations = this.displayPastReservations.bind(this);
+        this.displayReservationsToCome = this.displayReservationsToCome.bind(this);
+        
     }
 
 
@@ -73,7 +77,25 @@ class MyProperties extends Component {
         this.setState({ showCreatePopUp: false });
     }
 
+    displayPastReservations(propertyId){
+        var newSelectedOptionByPropertyId = this.state.selectedOptionByPropertyId;
+        newSelectedOptionByPropertyId[propertyId] = 0;
+        this.setState({selectedOptionByPropertyId: newSelectedOptionByPropertyId});
+    }
 
+    displayReservationsToCome(propertyId){
+        var newSelectedOptionByPropertyId = this.state.selectedOptionByPropertyId;
+        newSelectedOptionByPropertyId[propertyId] = 1;
+        this.setState({selectedOptionByPropertyId: newSelectedOptionByPropertyId});
+    }
+
+    getFilterTitle(propertyId){
+        var selectedOption = this.state.selectedOptionByPropertyId[propertyId];
+        if (selectedOption == 0){
+            return "Past reservations";
+        }
+        return "Reservations to come";
+    }
 
     render() {
 
@@ -81,7 +103,6 @@ class MyProperties extends Component {
             return <Redirect to='/' />;
         }
         return (
-
             <div>
                 <h1 className="center">My Properties</h1>
                 <div className="div-center-content">
@@ -96,8 +117,7 @@ class MyProperties extends Component {
                 </div>
                 <Container className="my-5">
                     <Row>
-                        <Col sm={1}></Col>
-                        <Col sm={10}>
+                        <Col>
                             <h4>{this.state.properties.length + (this.state.properties.length > 1 ? " properties" : " property")}</h4>
                             {this.state.properties.map(property => 
                                 <Card className="my-3">
@@ -127,26 +147,44 @@ class MyProperties extends Component {
                                                 })}</Card.Text>
                                             </Col>
                                             <Col style={{borderLeft: "1px solid #d8d8d8"}}>
-                                                <Accordion style={{ color: "white" }} className="col-auto">
-                                                    <Card style={{ backgroundColor: "#FF584D" }}>
-                                                        <Accordion.Toggle as={Card.Header} eventKey="0">
-                                                            <ArrowDown/> Upcoming reservations
-                                                        </Accordion.Toggle>
-                                                        <Accordion.Collapse eventKey="0">
-                                                            <Card.Body>
-                                                                <Form.Check
-                                                                    name={"upcoming"}
-                                                                    label={"Upcoming Reservations"}></Form.Check>
-                                                                <Form.Check
-                                                                    name={"previous"}
-                                                                    label={"Previous Reservations"}></Form.Check>
-                                                            </Card.Body>
-                                                        </Accordion.Collapse>
-                                                    </Card>
-                                                </Accordion>
-                                                <Card.Text>{property.reservations.map(function (d, idx) {
-                                                    return (<li key={idx}> From {Moment(d.start_date).format('DD-MM-YYYY')} to {Moment(d.end_date).format('DD-MM-YYYY')} - by {d.reservationUser.firstName} {d.reservationUser.lastName}</li>)
-                                                })}</Card.Text></Col>
+                                                <DropdownButton className="col-auto dropdown-filter" style={{marginBottom: "10px"}}
+                                                                title={this.getFilterTitle(property.id)} >
+                                                    <Dropdown.Item onClick={() => this.displayReservationsToCome(property.id)}
+                                                                active={this.state.selectedOptionByPropertyId[property.id] == 1 || this.state.selectedOptionByPropertyId[property.id] == undefined}>
+                                                        Reservations to come
+                                                    </Dropdown.Item>
+                                                    <Dropdown.Item onClick={() => this.displayPastReservations(property.id)}
+                                                                active={this.state.selectedOptionByPropertyId[property.id] == 0}>
+                                                        Past reservations
+                                                    </Dropdown.Item>
+                                                </DropdownButton>
+
+                                                <Card.Text>
+                                                    <ul>
+                                                        {this.state.selectedOptionByPropertyId[property.id] == 0 &&
+                                                        property.reservations
+                                                        .filter(reservation => new Date(reservation.end_date) < new Date())
+                                                        .sort((a, b) => a.start_date < b.start_date ? 1 : -1)
+                                                        .map(pastReservation =>
+                                                            <li key={pastReservation.id}> 
+                                                                From {Moment(pastReservation.start_date).format('DD-MM-YYYY')} to {Moment(pastReservation.end_date).format('DD-MM-YYYY')} 
+                                                                <p style={{textAlign: "right"}}>by {pastReservation.reservationUser.firstName} {pastReservation.reservationUser.lastName}</p>
+                                                            </li>
+                                                        )}
+
+                                                        {(this.state.selectedOptionByPropertyId[property.id] == 1 || this.state.selectedOptionByPropertyId[property.id] == undefined) &&
+                                                        property.reservations
+                                                        .filter(reservation => new Date(reservation.start_date) > new Date() || (new Date(reservation.start_date) <= new Date() && new Date(reservation.end_date) >= new Date()))
+                                                        .sort((a, b) => a.start_date > b.start_date ? 1 : -1)
+                                                        .map(pastReservation =>
+                                                            <li key={pastReservation.id}> 
+                                                                From {Moment(pastReservation.start_date).format('DD-MM-YYYY')} to {Moment(pastReservation.end_date).format('DD-MM-YYYY')} 
+                                                                <p style={{textAlign: "right"}}>by {pastReservation.reservationUser.firstName} {pastReservation.reservationUser.lastName}</p>
+                                                            </li>
+                                                        )}
+                                                    </ul>
+                                                </Card.Text>
+                                            </Col>
                                         </Row>
                                     </Card.Body>
                                 </Card>
@@ -163,9 +201,7 @@ class MyProperties extends Component {
                         propertyId={this.state.propertyID} key={this.state.propertyID}>
                     </UpdatePropertyPopUp>
                 }
-            </div >
-
-
+            </div>
         )
     }
 }

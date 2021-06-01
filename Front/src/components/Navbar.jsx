@@ -62,7 +62,7 @@ class Navbar extends Component {
         var userType = this.state.user.type;
         if (userType != undefined){ 
             if (userType.toLowerCase() == 'member') {
-                dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="My space" >
+                dropDownItems = <DropdownButton className="col-auto dropdown-navbar" title="My space" >
                     <Dropdown.Item href="/profile">Profile</Dropdown.Item>
                     <Dropdown.Item href="/messaging">Messaging</Dropdown.Item>
                     <Dropdown.Item href="/myreservations">My reservations</Dropdown.Item>
