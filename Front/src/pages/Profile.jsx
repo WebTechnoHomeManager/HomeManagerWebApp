@@ -16,6 +16,7 @@ class Profile extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.deleteProfile = this.deleteProfile.bind(this);
+        this.askForDelete = this.askForDelete.bind(this);
     }
 
     handleSubmit = (e) => {
@@ -44,6 +45,13 @@ class Profile extends Component {
         }).catch(error => {
             console.log(error.response);
         });
+    }
+
+    askForDelete(e){
+        e.preventDefault();
+        if (window.confirm('Are you sure you wish to delete your profile?')){
+            this.deleteProfile(this.state.user.id);
+        } 
     }
 
     render() {
@@ -90,7 +98,8 @@ class Profile extends Component {
             </div>
             <br></br>
             <div className="div-center-content">
-                <Button className="strong-button" variant="primary" onClick={() => { if (window.confirm('Are you sure you wish to delete your profile?')) this.deleteProfile(this.state.user.id) }} href="/"> <Trash />Delete my profile</Button>
+                <Button className="strong-button" 
+                    onClick={this.askForDelete} href="/"> <Trash />Delete my profile</Button>
             </div>
 
 
