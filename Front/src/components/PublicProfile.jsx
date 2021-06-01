@@ -3,9 +3,10 @@ import PropertyService from '../services/PropertyService';
 import UserService from '../services/UserService';
 import '../css/App.scss';
 import { Button, Modal, Row, Col, Image, Card, Container } from 'react-bootstrap';
-import { XCircle } from 'react-bootstrap-icons';
+import { XCircle, Telephone, Envelope, CalendarCheck } from 'react-bootstrap-icons';
 import userIcon from '../images/icons/user.png';
 import photo from '../images/banner/banner2.jpg';
+import Moment from 'moment';
 
 class PublicProfile extends Component {
     constructor(props) {
@@ -45,8 +46,16 @@ class PublicProfile extends Component {
                         <Col>
                             <div style={{ textAlign: 'center' }}>
                                 <h1>{this.state.user.lastName} {this.state.user.firstName} </h1>
-                                <Image src={userIcon} className="d-block mx-auto img-fluid w-3" style={{ width: "65px" }} />
-                                <p>{this.state.user.email}</p>
+
+                                <Card>
+                                    <Card.Body>
+                                        <Image src={userIcon} className="d-block mx-auto img-fluid w-3" style={{ width: "65px" }} />
+                                        <Card.Text><Envelope></Envelope>Email: {this.state.user.email}</Card.Text>
+                                        <Card.Text> <Telephone></Telephone>Tel: {this.state.user.tel}</Card.Text>
+                                        <Card.Text><CalendarCheck></CalendarCheck>Member since: {Moment(this.state.user.dateRegistration).format('DD-MM-YYYY')}</Card.Text>
+                                    </Card.Body>
+                                </Card>
+
                                 <br></br>
 
                                 <div className="div-center-content">

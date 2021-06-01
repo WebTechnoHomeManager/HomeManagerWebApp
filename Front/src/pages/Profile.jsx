@@ -3,7 +3,8 @@ import UserService from '../services/UserService';
 import '../css/App.scss';
 import { Button, Form } from 'react-bootstrap';
 import { Pencil, Trash } from 'react-bootstrap-icons';
-import { Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom";
+import Moment from 'moment';
 
 class Profile extends Component {
     constructor(props) {
@@ -64,9 +65,17 @@ class Profile extends Component {
                         <Form.Label>First name:</Form.Label>
                         <Form.Control type="text" name="firstName" defaultValue={this.state.user.firstName} />
                     </Form.Group>
+                    <Form.Group controlId="dateBirth">
+                        <Form.Label>Date of Birth:</Form.Label>
+                        <Form.Control type="text" name="dateBirth" defaultValue={Moment(this.state.user.dateBirth).format('DD-MM-YYYY')} />
+                    </Form.Group>
                     <Form.Group controlId="email">
                         <Form.Label>Email:</Form.Label>
                         <Form.Control type="email" name="email" defaultValue={this.state.user.email} />
+                    </Form.Group>
+                    <Form.Group controlId="tel">
+                        <Form.Label>Tel:</Form.Label>
+                        <Form.Control type="text" name="tel" defaultValue={this.state.user.tel} />
                     </Form.Group>
                     <Form.Group controlId="password">
                         <Form.Label>Password:</Form.Label>
