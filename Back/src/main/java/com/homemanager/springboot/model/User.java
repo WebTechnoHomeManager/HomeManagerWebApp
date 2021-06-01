@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -28,8 +30,10 @@ public class User {
   	private String lastName;
 	@Column(name = "tel")
 	private String tel;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
 	@Column(name = "date_birth")
 	private Date dateBirth;
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss.SSS")
 	@Column(name = "date_registration")
 	private Date dateRegistration;
 	@Column(name = "type")
