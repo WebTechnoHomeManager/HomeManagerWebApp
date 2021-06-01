@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropertyService from '../services/PropertyService';
+import UserService from '../services/UserService';
 import '../css/App.scss';
 import { Button, Modal, Row, Col, Image, Card, Container } from 'react-bootstrap';
 import { XCircle } from 'react-bootstrap-icons';
@@ -11,13 +12,17 @@ class PublicProfile extends Component {
         super(props)
 
         this.state = {
-            user: JSON.parse(localStorage.getItem('user')),
+            userId: this.props.userId,
+            user: {},
             properties: []
         }
     }
 
     componentDidMount() {
-        PropertyService.getPropertiesByOwnerId(this.state.user.id).then((res) => {
+        UserService.getUserById(this.state.userId).then((res) => {
+            this.setState({ user: res.data });
+        })
+        PropertyService.getPropertiesByOwnerId(this.state.userId).then((res) => {
             this.setState({ properties: res.data });
         });
     }

@@ -20,7 +20,8 @@ class Property extends Component {
                 propertyType: {},
                 owner: {}
             },
-            addModalShow: false
+            addModalShow: false,
+            userID: null
         }
 
         //this.showPublicProfilePopUp = this.showPublicProfilePopUp.bind(this);
@@ -95,7 +96,7 @@ class Property extends Component {
                                                     {this.state.property.owner.firstName} {(this.state.property.owner.lastName ? this.state.property.owner.lastName[0] : "") + "."}
                                                 </Card.Text>
                                                 <Button className="strong-button" style={{ fontSize: "0.8rem" }}
-                                                    onClick={() => this.setState({ addModalShow: true })} >
+                                                    onClick={() => this.setState({ userID: this.state.property.owner.id, addModalShow: true })} >
                                                     <InfoCircleFill />
                                                   More information
                                             </Button>
@@ -117,10 +118,14 @@ class Property extends Component {
                     </Container>
                     {/* <pre>{JSON.stringify(this.state.property, null, 2)}</pre> */}
                 </div>
-                <PublicProfile
-                    show={this.state.addModalShow}
-                    onHide={addModalClose}
-                />
+
+                {this.state.userID != null &&
+                    <PublicProfile
+                        show={this.state.addModalShow}
+                        onHide={addModalClose}
+                        userId={this.state.userID} key={this.state.userID}
+                    />
+                }
             </>
         )
     }
