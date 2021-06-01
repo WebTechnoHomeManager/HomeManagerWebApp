@@ -108,14 +108,15 @@ public class PropertyController {
 	}
 		
 	@DeleteMapping("/properties/{id}")
-	public ResponseEntity<Map<String, Boolean>> deleteProperty(@PathVariable Integer id){
+	public String deleteProperty(@PathVariable Integer id) throws JSONException{
 		Property property = propertyRepository.findById(id)
 				.orElseThrow();
 		
 		propertyRepository.delete(property);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", Boolean.TRUE);
-		return ResponseEntity.ok(response);
+		
+		JSONObject response = new JSONObject();
+		response.put("deletedId", id);
+		return response.toString();
 	}
 	
 	@PostMapping("/properties/search")
