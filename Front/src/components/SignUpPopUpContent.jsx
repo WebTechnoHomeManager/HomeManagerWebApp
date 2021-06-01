@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Accordion, Card, Modal } from 'react-bootstrap';
 import UserService from '../services/UserService';
+import Moment from 'moment';
 
 class SignUpPopUpContent extends Component {
 
@@ -77,7 +78,7 @@ class SignUpPopUpContent extends Component {
             firstName: formData.get("firstName"),
             lastName: formData.get("lastName"),
             tel: formData.get("tel"),
-            dateBirth: formData.get("dateBirth"),
+            dateBirth: Moment(formData.get("dateBirth")).format('YYYY-MM-DD'),
             dateRegistration: nowDateWithoutTimeZone,
             type: "Member"
         }

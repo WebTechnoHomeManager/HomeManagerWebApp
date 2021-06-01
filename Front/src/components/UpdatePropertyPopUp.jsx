@@ -55,10 +55,10 @@ class UpdatePropertyPopUp extends Component {
         e.preventDefault();
         let property = { ...this.state.property };
         PropertyService.updateProperty(property, this.state.id).then(res => {
-            //this.props.history.push('/myproperties');
             alert("Property updated");
             console.log('property => ' + JSON.stringify(property));
             console.log('id => ' + JSON.stringify(this.state.id));
+            this.props.onUpdateDone(res.data);
         });
     }
 

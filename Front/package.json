@@ -10,6 +10,7 @@
     "bootstrap": "^4.6.0",
     "bootstrap-sass": "^3.4.1",
     "moment": "^2.29.1",
+    "ol": "^6.5.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-bootstrap-icons": "^1.4.0",
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/parser": "^7.13.16"
+    "@babel/parser": "^7.13.16",
+    "react-openlayers": "^0.3.0"
   }
 }

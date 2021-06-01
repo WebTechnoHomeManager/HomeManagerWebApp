@@ -6,7 +6,6 @@ import ServiceService from '../services/ServiceService';
 import TypeService from '../services/TypeService';
 import { PlusCircle, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
 
-
 class UpdatePropertyPopUp extends Component {
     constructor(props) {
         super(props);
@@ -60,8 +59,8 @@ class UpdatePropertyPopUp extends Component {
         let property = { ...this.state.property };
         console.log('property => ' + JSON.stringify(property));
         PropertyService.createProperty(property).then(res => {
-            //this.props.history.push('/myproperties');
             alert("Property created");
+            this.props.onCreateDone(res.data);
         }).catch(error => {
             console.log(error.response);
         });
@@ -132,23 +131,23 @@ class UpdatePropertyPopUp extends Component {
                                 <Form onChange={this.handleChange}>
                                     <Form.Group controlId="title">
                                         <Form.Label>Title:</Form.Label>
-                                        <Form.Control type="text" name="title" />
+                                        <Form.Control type="text" name="title" required/>
                                     </Form.Group>
                                     <Form.Group controlId="description">
                                         <Form.Label>Description:</Form.Label>
-                                        <Form.Control as="textarea" rows={3} type="text" name="description" />
+                                        <Form.Control as="textarea" rows={3} type="text" name="description" required/>
                                     </Form.Group>
                                     <Form.Group controlId="address">
                                         <Form.Label>Address:</Form.Label>
-                                        <Form.Control type="text" name="address" />
+                                        <Form.Control type="text" name="address" required/>
                                     </Form.Group>
                                     <Form.Group controlId="city">
                                         <Form.Label>City:</Form.Label>
-                                        <Form.Control type="text" name="city" />
+                                        <Form.Control type="text" name="city" required/>
                                     </Form.Group>
                                     <Form.Group controlId="totalOccupancy">
                                         <Form.Label>Total occupancy:</Form.Label>
-                                        <Form.Control type="text" name="totalOccupancy" />
+                                        <Form.Control type="number" name="totalOccupancy" required/>
                                     </Form.Group>
                                 </Form>
                             </div>
@@ -219,8 +218,12 @@ class UpdatePropertyPopUp extends Component {
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="strong-button" onClick={this.props.onHide}> <XCircle /> Close</Button>
-                    <Button className="strong-button" variant="primary" onClick={this.handleSubmit}> <PlusCircle /> Add</Button>
+                    <Button className="strong-button" onClick={this.props.onHide}>
+                        <XCircle /> Close
+                    </Button>
+                    <Button className="strong-button" variant="primary" onClick={this.handleSubmit}>
+                        <PlusCircle /> Add
+                    </Button>
                 </Modal.Footer>
             </Modal>
 
