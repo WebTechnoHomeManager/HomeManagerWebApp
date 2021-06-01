@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'react-bootstrap';
 import { Form, Button, Row, Col, Accordion, Card, Modal } from 'react-bootstrap';
-import UserService from '../services/UserService';
+import UserService from '../../services/UserService';
 
 class LogInPopUpContent extends Component {
 

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Button, Modal, Row, Col, Accordion, Card } from 'react-bootstrap';
-import PropertyService from '../services/PropertyService';
-import RestrictionService from '../services/RestrictionService';
-import ServiceService from '../services/ServiceService';
-import TypeService from '../services/TypeService';
+import PropertyService from '../../services/PropertyService';
+import RestrictionService from '../../services/RestrictionService';
+import ServiceService from '../../services/ServiceService';
+import TypeService from '../../services/TypeService';
 import { Pencil, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
 
 class UpdatePropertyPopUp extends Component {

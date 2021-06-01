@@ -2,7 +2,7 @@ import logo from '../images/logo.png';
 import React, { Component } from 'react';
 import { Container, Row, Col, Image, DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import LogInPopUp from '../components/LogInPopUp';
+import LogInPopUp from '../components/PopUp/LogInPopUp';
 
 class Navbar extends Component {
 

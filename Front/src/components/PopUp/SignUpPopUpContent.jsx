@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Accordion, Card, Modal } from 'react-bootstrap';
-import UserService from '../services/UserService';
+import UserService from '../../services/UserService';
 import Moment from 'moment';
 
 class SignUpPopUpContent extends Component {

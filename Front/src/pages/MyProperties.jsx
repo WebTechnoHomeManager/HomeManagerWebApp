@@ -5,8 +5,8 @@ import '../css/App.scss';
 import { Container, Row, Col, Card, Button, Form, Accordion } from 'react-bootstrap';
 import photo from '../images/houses/house1.jpg';
 import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
-import UpdatePropertyPopUp from '../components/UpdatePropertyPopUp';
-import CreatePropertyPopUp from '../components/CreatePropertyPopUp';
+import UpdatePropertyPopUp from '../components/PopUp/UpdatePropertyPopUp';
+import CreatePropertyPopUp from '../components/PopUp/CreatePropertyPopUp';
 import { Redirect } from "react-router-dom";
 import Moment from 'moment';
 
