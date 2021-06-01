@@ -17,14 +17,16 @@ class MyProperties extends Component {
         this.state = {
             user: JSON.parse(localStorage.getItem('user')),
             properties: [],
-            addModalShow1: false,
-            addModalShow2: false,
+            showCreatePopUp: false,
+            showUpdateModal: false,
             propertyID: null
         }
         this.deleteProperty = this.deleteProperty.bind(this);
         this.showUpdatePopUp = this.showUpdatePopUp.bind(this);
         this.updateDone = this.updateDone.bind(this);
         this.createDone = this.createDone.bind(this);
+        this.hideCreatePopUp = this.hideCreatePopUp.bind(this);
+        this.hideUpdatePopUp = this.hideUpdatePopUp.bind(this);
     }
 
 
@@ -41,11 +43,14 @@ class MyProperties extends Component {
     }
 
     showUpdatePopUp(propertyId) {
-        this.setState({ propertyID: propertyId, addModalShow2: true });
+        this.setState({ 
+            propertyID: propertyId, 
+            showUpdateModal: true 
+        });
     }
 
     updateDone(updatedProperty){
-        this.setState({ addModalShow2: false });
+        this.hideUpdatePopUp();
 
         const properties = this.state.properties.slice();
         var index = this.state.properties.findIndex(property => property.id == this.state.propertyID)
@@ -53,14 +58,22 @@ class MyProperties extends Component {
         properties[index] = updatedProperty;
         this.setState({ properties: properties });
     }
+    hideUpdatePopUp(){
+        this.setState({ showUpdateModal: false });
+    }
 
     createDone(createdProperty){
-        this.setState({ addModalShow1: false });
+        this.hideCreatePopUp();
 
         var properties = this.state.properties;
         properties.unshift(createdProperty);
         this.setState({ properties: properties });
     }
+    hideCreatePopUp(){
+        this.setState({ showCreatePopUp: false });
+    }
+
+
 
     render() {
 
@@ -72,12 +85,13 @@ class MyProperties extends Component {
             <div>
                 <h1 className="center">My Properties</h1>
                 <div className="div-center-content">
-                    <Button className="strong-button" variant="primary" onClick={() => this.setState({ addModalShow1: true })}>
+                    <Button className="strong-button" variant="primary" onClick={() => this.setState({ showCreatePopUp: true })}>
                         <PlusCircle /> Add a property
                     </Button>
                     <CreatePropertyPopUp
-                        show={this.state.addModalShow1}
+                        show={this.state.showCreatePopUp} key={this.state.showCreatePopUp}
                         onCreateDone={this.createDone}
+                        onHide={this.hideCreatePopUp} 
                     />
                 </div>
                 <Container className="my-5">
@@ -143,8 +157,9 @@ class MyProperties extends Component {
 
                 {this.state.propertyID != null &&
                     <UpdatePropertyPopUp
-                        show={this.state.addModalShow2}
+                        show={this.state.showUpdateModal} 
                         onUpdateDone={this.updateDone}
+                        onHide={this.hideUpdatePopUp} 
                         propertyId={this.state.propertyID} key={this.state.propertyID}>
                     </UpdatePropertyPopUp>
                 }

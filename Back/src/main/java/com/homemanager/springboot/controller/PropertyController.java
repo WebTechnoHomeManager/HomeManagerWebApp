@@ -101,7 +101,9 @@ public class PropertyController {
 		property.setLongitude(propertyDetails.getLongitude());
 		property.setPropertyType(propertyDetails.getPropertyType());
 		property.setPropertyServices(propertyDetails.getPropertyServices());
-		property.setPropertyRestrictions(property.getPropertyRestrictions());
+		Set<Service> test = property.getPropertyServices();
+		property.setPropertyRestrictions(propertyDetails.getPropertyRestrictions());
+		Set<Restriction> test2 = property.getPropertyRestrictions();
 		
 		Property updatedProperty = propertyRepository.save(property);
 		return ResponseEntity.ok(updatedProperty);
