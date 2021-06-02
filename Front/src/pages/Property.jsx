@@ -24,7 +24,6 @@ class Property extends Component {
             userID: null
         }
 
-        //this.showPublicProfilePopUp = this.showPublicProfilePopUp.bind(this);
         this.goToMessagingPage = this.goToMessagingPage.bind(this);
     }
 
@@ -33,10 +32,6 @@ class Property extends Component {
             this.setState({ property: res.data });
         })
     }
-
-    /*showPublicProfilePopUp() {
-        alert("TODO: Public profile popup");
-    }*/
 
     goToMessagingPage() {
         this.props.history.push({

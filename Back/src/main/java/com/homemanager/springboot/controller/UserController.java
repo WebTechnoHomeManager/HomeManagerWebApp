@@ -61,6 +61,8 @@ public class UserController {
 		user.setLastName(userDetails.getLastName());
 		user.setEmail(userDetails.getEmail());
 		user.setPassword(userDetails.getPassword());
+		user.setDateBirth(userDetails.getDateBirth());
+		user.setTel(userDetails.getTel());
 
 		userRepository.save(user);
 		return ResponseEntity.noContent().build();

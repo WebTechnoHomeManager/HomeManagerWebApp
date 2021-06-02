@@ -4,7 +4,6 @@ import '../css/App.scss';
 import { Button, Form } from 'react-bootstrap';
 import { Pencil, Trash } from 'react-bootstrap-icons';
 import { Redirect } from "react-router-dom";
-import Moment from 'moment';
 
 class Profile extends Component {
     constructor(props) {
@@ -47,11 +46,11 @@ class Profile extends Component {
         });
     }
 
-    askForDelete(e){
+    askForDelete(e) {
         e.preventDefault();
-        if (window.confirm('Are you sure you wish to delete your profile?')){
+        if (window.confirm('Are you sure you wish to delete your profile?')) {
             this.deleteProfile(this.state.user.id);
-        } 
+        }
     }
 
     render() {
@@ -75,7 +74,7 @@ class Profile extends Component {
                     </Form.Group>
                     <Form.Group controlId="dateBirth">
                         <Form.Label>Date of Birth:</Form.Label>
-                        <Form.Control type="text" name="dateBirth" defaultValue={Moment(this.state.user.dateBirth).format('DD-MM-YYYY')} />
+                        <Form.Control type="text" name="dateBirth" defaultValue={this.state.user.dateBirth} />
                     </Form.Group>
                     <Form.Group controlId="email">
                         <Form.Label>Email:</Form.Label>
@@ -98,7 +97,7 @@ class Profile extends Component {
             </div>
             <br></br>
             <div className="div-center-content">
-                <Button className="strong-button" 
+                <Button className="strong-button"
                     onClick={this.askForDelete} href="/"> <Trash />Delete my profile</Button>
             </div>
 
