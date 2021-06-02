@@ -6,6 +6,7 @@ import photo from '../images/houses/house1.jpg';
 import userIcon from '../images/icons/user.png';
 import { Envelope, EnvelopeFill, InfoCircle, InfoCircleFill } from 'react-bootstrap-icons';
 import PublicProfile from '../components/PublicProfile';
+import BookingPopUp from '../components/PopUp/BookingPopUp';
 
 class Property extends Component {
 
@@ -20,10 +21,14 @@ class Property extends Component {
                 propertyType: {},
                 owner: {}
             },
-            addModalShow: false,
+            showPublicProfilePopUp: false,
+            showBookingPopUp: false,
             userID: null
         }
-
+        this.showPublicProfile = this.showPublicProfile.bind(this);
+        this.hidePublicProfile = this.hidePublicProfile.bind(this);
+        this.showBookingPopUp = this.showBookingPopUp.bind(this);
+        this.hideBookingPopUp = this.hideBookingPopUp.bind(this);
         this.goToMessagingPage = this.goToMessagingPage.bind(this);
     }
 
@@ -40,9 +45,24 @@ class Property extends Component {
         });
     }
 
+    showPublicProfile(ownerId) {
+        this.setState({ userID: ownerId, showPublicProfilePopUp: true });
+    }
+
+    hidePublicProfile() {
+        this.setState({ showPublicProfilePopUp: false });
+    }
+
+    showBookingPopUp() {
+        this.setState({ showBookingPopUp: true });
+    }
+
+    hideBookingPopUp() {
+        this.setState({ showBookingPopUp: false });
+    }
+
     render() {
 
-        let addModalClose = () => this.setState({ addModalShow: false });
         return (
             <>
                 <div>
@@ -91,7 +111,7 @@ class Property extends Component {
                                                     {this.state.property.owner.firstName} {(this.state.property.owner.lastName ? this.state.property.owner.lastName[0] : "") + "."}
                                                 </Card.Text>
                                                 <Button className="strong-button" style={{ fontSize: "0.8rem" }}
-                                                    onClick={() => this.setState({ userID: this.state.property.owner.id, addModalShow: true })} >
+                                                    onClick={() => this.showPublicProfile(this.state.property.owner.id)} >
                                                     <InfoCircleFill />
                                                   More information
                                             </Button>
@@ -110,17 +130,25 @@ class Property extends Component {
                                 </Card>
                             </Col>
                         </Row>
+                        <Row>
+                            <Button onClick={() => this.showBookingPopUp()}>Book this property</Button>
+                        </Row>
                     </Container>
                     {/* <pre>{JSON.stringify(this.state.property, null, 2)}</pre> */}
                 </div>
 
                 {this.state.userID != null &&
                     <PublicProfile
-                        show={this.state.addModalShow}
-                        onHide={addModalClose}
+                        show={this.state.showPublicProfilePopUp}
+                        onHide={this.hidePublicProfile}
                         userId={this.state.userID} key={this.state.userID}
                     />
                 }
+                <BookingPopUp
+                    show={this.state.showBookingPopUp}
+                    onHide={this.hideBookingPopUp}
+                    propertyId={this.state.id} key={this.state.id}
+                />
             </>
         )
     }

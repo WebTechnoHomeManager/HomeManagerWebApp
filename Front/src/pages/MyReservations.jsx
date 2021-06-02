@@ -130,7 +130,7 @@ class MyReservations extends Component {
 
                 {this.state.selectedOption === 1 &&
                     this.state.reservations
-                        .filter(reservation => new Date(reservation.end_date) > new Date())
+                        .filter(reservation => new Date(reservation.start_date) > new Date() || (new Date(reservation.start_date) <= new Date() && new Date(reservation.end_date) >= new Date()))
                         .sort((a, b) => a.start_date < b.start_date ? 1 : -1)
                         .map(upcomingReservation =>
                             <div className="div-center-content" style={{ marginTop: '30px' }}>

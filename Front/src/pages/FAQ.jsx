@@ -28,11 +28,11 @@ class FAQ extends Component {
                         this.state.faq.map(faq =>
                             <Card>
                                 <Card.Header>
-                                    <Accordion.Toggle as={Card.Header} eventKey="0">
+                                    <Accordion.Toggle as={Card.Header} key={faq.id} eventKey={faq.id}>
                                         <ArrowDownCircle></ArrowDownCircle>  {faq.question}
                                     </Accordion.Toggle>
                                 </Card.Header>
-                                <Accordion.Collapse eventKey="0">
+                                <Accordion.Collapse key={faq.id} eventKey={faq.id}>
                                     <Card.Body>{faq.answer}</Card.Body>
                                 </Accordion.Collapse>
                             </Card>
