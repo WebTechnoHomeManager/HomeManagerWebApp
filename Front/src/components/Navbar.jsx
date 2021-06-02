@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Image, DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import LogInPopUp from '../components/PopUp/LogInPopUp';
+import { AlignCenter } from 'react-bootstrap-icons';
 
 class Navbar extends Component {
 
@@ -14,7 +15,7 @@ class Navbar extends Component {
             logInPopUp: false
         }
 
-        if (localStorage.getItem('user') == null){
+        if (localStorage.getItem('user') == null) {
             localStorage.setItem('user', '');
         }
 
@@ -28,7 +29,7 @@ class Navbar extends Component {
 
     componentDidMount() {
         var user = localStorage.getItem('user');
-        if (user != ""){
+        if (user != "") {
             this.setState({ user: JSON.parse(user) });
         }
     }
@@ -37,7 +38,7 @@ class Navbar extends Component {
         this.setState({ logInPopUp: true });
     }
 
-    
+
     logIn(user) {
         this.setState({ logInPopUp: false });
         this.setState({ user: user });
@@ -50,17 +51,19 @@ class Navbar extends Component {
         this.setState({ user: {} });
     }
 
-    onHidePopUp(){
+    onHidePopUp() {
         this.setState({ logInPopUp: false });
     };
 
     render() {
         var dropDownItems = <Col sm="auto">
             <Button className="strong-button" as="input" type="button" value="Log in" onClick={this.showLogInPopUp} />
-            </Col>
+        </Col>
+
+        var title = "";
 
         var userType = this.state.user.type;
-        if (userType != undefined){ 
+        if (userType != undefined) {
             if (userType.toLowerCase() == 'member') {
                 dropDownItems = <DropdownButton className="col-auto dropdown-navbar" title="My space" >
                     <Dropdown.Item href="/profile">Profile</Dropdown.Item>
@@ -75,7 +78,8 @@ class Navbar extends Component {
                     <Dropdown.Item href="">Members</Dropdown.Item>
                     <Dropdown.Item href="">Offers</Dropdown.Item>
                     <Dropdown.Item onClick={this.logOut} href="/">Log out</Dropdown.Item>
-                </DropdownButton>
+                </DropdownButton>;
+                title = <h3>Back Office Account</h3>
             }
         }
 
@@ -87,17 +91,17 @@ class Navbar extends Component {
                     <Link to="/" className="col-auto" >
                         <Image src={logo} alt="logo" id="logo" />
                     </Link>
-                    <Col></Col>
+                    <Col>{title}</Col>
 
-                    <Col sm="auto">FAQ</Col>
+                    <Col sm="auto"><Button variant="outline-light" href="/faq">FAQ</Button></Col>
                     {dropDownItems}
 
                     {/* key: to rerender when the key change */}
-                    <LogInPopUp container={this.state.container} 
-                                show={this.state.logInPopUp} key={this.state.logInPopUp}
-                                logIn={this.logIn}
-                                onHide={this.onHidePopUp}/>
-                 
+                    <LogInPopUp container={this.state.container}
+                        show={this.state.logInPopUp} key={this.state.logInPopUp}
+                        logIn={this.logIn}
+                        onHide={this.onHidePopUp} />
+
                 </Row>
             </Container>
 
