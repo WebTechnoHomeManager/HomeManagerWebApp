@@ -12,6 +12,7 @@ import Profile from './pages/Profile';
 import Messaging from './pages/Messaging';
 import FAQ from './pages/FAQ';
 import Members from './pages/Members';
+import Offers from './pages/Offers';
 
 
 function App() {
@@ -24,7 +25,8 @@ function App() {
                     <Route exact path='/' component={Home}></Route>
                     <Route exact path='/search' component={Search}></Route>
                     <Route exact path='/property/:id' component={Property}></Route>
-                    <Route exact path='/members/' component={Members}></Route>
+                    <Route exact path='/members' component={Members}></Route>
+                    <Route exact path='/offers' component={Offers}></Route>
 
                     {localStorage.getItem('user') &&
                         <>

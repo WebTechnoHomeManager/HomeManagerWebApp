@@ -76,7 +76,7 @@ class Navbar extends Component {
                 dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="My space" >
                     <Dropdown.Item href="/messaging">Messaging</Dropdown.Item>
                     <Dropdown.Item href="/members">Members</Dropdown.Item>
-                    <Dropdown.Item href="">Offers</Dropdown.Item>
+                    <Dropdown.Item href="/offers">Offers</Dropdown.Item>
                     <Dropdown.Item onClick={this.logOut} href="/">Log out</Dropdown.Item>
                 </DropdownButton>;
                 title = <h3>Back Office Account</h3>

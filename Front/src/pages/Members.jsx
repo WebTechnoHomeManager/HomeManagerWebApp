@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Row } from 'react-bootstrap';
 import UserService from '../services/UserService';
-
+import { Pencil, Trash, Eye } from 'react-bootstrap-icons';
 
 class Members extends Component {
 
@@ -56,9 +56,9 @@ class Members extends Component {
                                             <td> {user.lastName}</td>
                                             <td> {user.email}</td>
                                             <td>
-                                                <Button className="btn btn-info">Update </Button>
-                                                <Button style={{ marginLeft: "10px" }} onClick={() => { if (window.confirm('Are you sure you wish to delete ' + user.firstName + ' ' + user.lastName + '\'s profile?')) this.deleteMember(user.id) }} className="btn btn-danger">Delete </Button>
-                                                <Button style={{ marginLeft: "10px" }} className="btn btn-info">View </Button>
+                                                <Button className="btn btn-info"> <Pencil></Pencil>Update </Button>
+                                                <Button style={{ marginLeft: "10px" }} onClick={() => { if (window.confirm('Are you sure you wish to delete ' + user.firstName + ' ' + user.lastName + '\'s profile?')) this.deleteMember(user.id) }} className="btn btn-danger"> <Trash></Trash>Delete </Button>
+                                                <Button style={{ marginLeft: "10px" }} className="btn btn-info"> <Eye></Eye>View </Button>
                                             </td>
                                         </tr>
                                 )
