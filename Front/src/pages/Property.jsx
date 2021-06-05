@@ -30,12 +30,14 @@ class Property extends Component {
         this.showBookingPopUp = this.showBookingPopUp.bind(this);
         this.hideBookingPopUp = this.hideBookingPopUp.bind(this);
         this.goToMessagingPage = this.goToMessagingPage.bind(this);
+        this.createDone = this.createDone.bind(this);
     }
 
     componentDidMount() {
         PropertyService.getPropertyById(this.state.id).then(res => {
             this.setState({ property: res.data });
         })
+        console.log(this.props.location.state);
     }
 
     goToMessagingPage() {
@@ -59,6 +61,14 @@ class Property extends Component {
 
     hideBookingPopUp() {
         this.setState({ showBookingPopUp: false });
+    }
+
+    createDone() {
+        this.hideBookingPopUp();
+
+        this.props.history.push({
+            pathname: '/myreservations'
+        });
     }
 
     render() {
@@ -148,6 +158,9 @@ class Property extends Component {
                     show={this.state.showBookingPopUp}
                     onHide={this.hideBookingPopUp}
                     propertyId={this.state.id} key={this.state.id}
+                    dateFrom={this.props.location.state.dateFrom}
+                    dateTo={this.props.location.state.dateTo}
+                    onCreateDone={this.createDone}
                 />
             </>
         )

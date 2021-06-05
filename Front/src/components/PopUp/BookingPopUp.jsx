@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
 import { PlusCircle, XCircle } from 'react-bootstrap-icons';
 import PropertyService from '../../services/PropertyService';
+import ReservationService from '../../services/ReservationService';
 
 class BookingPopUp extends Component {
     constructor(props) {
@@ -15,10 +16,12 @@ class BookingPopUp extends Component {
                     propertyServices: [],
                     propertyRestrictions: []
                 },
-                start_date: null,
-                end_date: null
+                start_date: this.props.dateFrom,
+                end_date: this.props.dateTo
             }
         }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -26,8 +29,25 @@ class BookingPopUp extends Component {
         PropertyService.getPropertyById(this.props.propertyId).then(res => {
             reservation.property_reservation = res.data;
             this.setState({ reservation });
-            console.log(this.state.reservation.property_reservation);
         })
+    }
+
+    handleChange = (event) => {
+        let reservation = { ...this.state.reservation };
+        reservation[event.target.name] = event.target.value;
+        this.setState({ reservation });
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        let reservation = { ...this.state.reservation };
+        console.log('reservation => ' + JSON.stringify(reservation));
+        ReservationService.createReservation(reservation).then(res => {
+            alert("Reservation made with success!");
+            this.props.onCreateDone();
+        }).catch(error => {
+            console.log(error.response);
+        });
     }
 
     render() {
@@ -49,18 +69,18 @@ class BookingPopUp extends Component {
                             <Form onChange={this.handleChange}>
                                 <Form.Group controlId="start_date">
                                     <Form.Label>From:</Form.Label>
-                                    <Form.Control type="date" name="start_date" required />
+                                    <Form.Control type="date" name="start_date" defaultValue={this.props.dateFrom} required />
                                 </Form.Group>
                                 <Form.Group controlId="end_date">
                                     <Form.Label>To:</Form.Label>
-                                    <Form.Control type="date" name="end_date" required />
+                                    <Form.Control type="date" name="end_date" defaultValue={this.props.dateTo} required />
                                 </Form.Group>
                             </Form>
                         </div>
                     </Row>
                     <Row>
                         <p>I agree to respect the following services and constraints:</p>
-                        <Form onChange={this.handleChange}>
+                        <Form>
                             {
                                 this.state.reservation.property_reservation.propertyServices.map(
                                     service =>
@@ -68,7 +88,8 @@ class BookingPopUp extends Component {
                                             name={"service" + service.id}
                                             label={service.name}
                                             id={"service" + service.id}
-                                        />
+                                            type="checkbox"
+                                            required />
                                 )
                             }
                             {
@@ -78,7 +99,8 @@ class BookingPopUp extends Component {
                                             name={"restriction" + restriction.id}
                                             label={restriction.name}
                                             id={"restriction" + restriction.id}
-                                        />
+                                            type="checkbox"
+                                            required />
                                 )
                             }
                         </Form>
@@ -88,7 +110,7 @@ class BookingPopUp extends Component {
                     <Button className="strong-button" onClick={this.props.onHide}>
                         <XCircle /> Close
                     </Button>
-                    <Button className="strong-button" variant="primary">
+                    <Button className="strong-button" variant="primary" onClick={this.handleSubmit}>
                         <PlusCircle /> Make the reservation
                     </Button>
                 </Modal.Footer>

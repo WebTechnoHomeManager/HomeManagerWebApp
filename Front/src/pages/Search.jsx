@@ -34,7 +34,10 @@ class Search extends Component {
     }
 
     viewProperty(id) {
-        this.props.history.push(`/property/${id}`);
+        this.props.history.push({
+            pathname: `/property/${id}`,
+            state: this.props.location.state
+        })
     }
 
     render() {
@@ -88,8 +91,8 @@ class Search extends Component {
                                                             {property.propertyServices
                                                                 .sort((a, b) => a.id > b.id ? 1 : -1)
                                                                 .map(service =>
-                                                                <li key={service.id} className="card-list-items">{service.name}</li>
-                                                            )}
+                                                                    <li key={service.id} className="card-list-items">{service.name}</li>
+                                                                )}
                                                         </ul>
                                                     </Card.Text>
                                                     <Card.Text>Constraints to respect:
@@ -97,8 +100,8 @@ class Search extends Component {
                                                             {property.propertyRestrictions
                                                                 .sort((a, b) => a.id > b.id ? 1 : -1)
                                                                 .map(restriction =>
-                                                                <li key={restriction.id} className="card-list-items">{restriction.name}</li>
-                                                            )}
+                                                                    <li key={restriction.id} className="card-list-items">{restriction.name}</li>
+                                                                )}
                                                         </ul>
                                                     </Card.Text>
                                                     {/* <Card.Text>
