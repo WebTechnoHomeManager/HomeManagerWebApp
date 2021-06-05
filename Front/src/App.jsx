@@ -11,6 +11,7 @@ import MyReservations from './pages/MyReservations';
 import Profile from './pages/Profile';
 import Messaging from './pages/Messaging';
 import FAQ from './pages/FAQ';
+import Members from './pages/Members';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
                     <Route exact path='/' component={Home}></Route>
                     <Route exact path='/search' component={Search}></Route>
                     <Route exact path='/property/:id' component={Property}></Route>
+                    <Route exact path='/members/' component={Members}></Route>
 
                     {localStorage.getItem('user') &&
                         <>

@@ -75,7 +75,7 @@ class Navbar extends Component {
             } else if (userType.toLowerCase() == 'admin') {
                 dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="My space" >
                     <Dropdown.Item href="/messaging">Messaging</Dropdown.Item>
-                    <Dropdown.Item href="">Members</Dropdown.Item>
+                    <Dropdown.Item href="/members">Members</Dropdown.Item>
                     <Dropdown.Item href="">Offers</Dropdown.Item>
                     <Dropdown.Item onClick={this.logOut} href="/">Log out</Dropdown.Item>
                 </DropdownButton>;
