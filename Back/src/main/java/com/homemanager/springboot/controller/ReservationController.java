@@ -55,7 +55,7 @@ public class ReservationController {
 		
 		reservation.setStart_date(reservationDetails.getStart_date());
 		reservation.setEnd_date(reservationDetails.getEnd_date());
-		reservation.setProperty_reservation(reservationDetails.getProperty_reservation());
+		reservation.setProperty(reservationDetails.getProperty());
 		
 		Reservation updatedReservation = reservationRepository.save(reservation);
 		return ResponseEntity.ok(updatedReservation);

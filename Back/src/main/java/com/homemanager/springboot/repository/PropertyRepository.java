@@ -14,7 +14,7 @@ public interface PropertyRepository extends CrudRepository<Property, Integer> {
 
 	@Query("SELECT P "
 			+ "FROM Property P "
-			+ "LEFT JOIN Reservation R ON P.id = R.property_reservation "
+			+ "LEFT JOIN Reservation R ON P.id = R.property "
 			+ "WHERE P.city in (:loca)"
 			)
 	public List<Property> getPropertyBy(@Param("loca") List<String> locations);
