@@ -12,12 +12,13 @@ class MyReservations extends Component {
         super(props)
 
         this.state = {
+            user: JSON.parse(localStorage.getItem('user')),
             reservations: []
         }
     }
 
     componentDidMount() {
-        ReservationService.getReservations().then((res) => {
+        ReservationService.getReservationsByReservationUserId(this.state.user.id).then((res) => {
             this.setState({ reservations: res.data });
         });
     }
@@ -56,11 +57,11 @@ class MyReservations extends Component {
                                             </Col>
                                             <Col>
                                                 <Card.Text style={{ textAlign: 'center' }}>
-                                                    Owner : {reservation.property_reservation.owner.first_name} {reservation.property_reservation.owner.last_name}
+                                                    Owner : {reservation.property_reservation.owner.firstName} {reservation.property_reservation.owner.lastName}
                                                 </Card.Text>
                                                 <div style={{ textAlign: 'center' }}>
-                                                    <Button variant="primary" style={{ margin: '3px' }}> <PersonLinesFill /> Contact</Button>
-                                                    <Button variant="primary" style={{ margin: '3px' }}> <Trash />Cancel</Button>
+                                                    <Button className="strong-button" variant="primary" style={{ margin: '3px' }}> <PersonLinesFill /> Contact</Button>
+                                                    <Button className="strong-button" variant="primary" style={{ margin: '3px' }}> <Trash />Cancel</Button>
                                                 </div>
                                             </Col>
                                         </Row>

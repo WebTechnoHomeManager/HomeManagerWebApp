@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import PropertyService from '../services/PropertyService';
 import '../css/App.scss';
 import { Container, Row, Col, Card, Button, Form, Accordion } from 'react-bootstrap';
-import photo from '../images/banner/banner2.jpg';
+import photo from '../images/houses/house1.jpg';
 import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
-import UpdatePropertyPopUp from '../components/UpdatePropertyPopUp';
-import CreatePropertyPopUp from '../components/CreatePropertyPopUp';
-import { Redirect } from "react-router-dom"
+import UpdatePropertyPopUp from '../components/PopUp/UpdatePropertyPopUp';
+import CreatePropertyPopUp from '../components/PopUp/CreatePropertyPopUp';
+import { Redirect } from "react-router-dom";
 import Moment from 'moment';
 
 class MyProperties extends Component {
@@ -17,11 +17,16 @@ class MyProperties extends Component {
         this.state = {
             user: JSON.parse(localStorage.getItem('user')),
             properties: [],
-            addModalShow1: false,
-            addModalShow2: false
+            showCreatePopUp: false,
+            showUpdateModal: false,
+            propertyID: null
         }
-
         this.deleteProperty = this.deleteProperty.bind(this);
+        this.showUpdatePopUp = this.showUpdatePopUp.bind(this);
+        this.updateDone = this.updateDone.bind(this);
+        this.createDone = this.createDone.bind(this);
+        this.hideCreatePopUp = this.hideCreatePopUp.bind(this);
+        this.hideUpdatePopUp = this.hideUpdatePopUp.bind(this);
     }
 
 
@@ -33,91 +38,130 @@ class MyProperties extends Component {
 
     deleteProperty(propertyId) {
         PropertyService.deleteProperty(propertyId).then((res) => {
-            this.props.history.push('/myproperties');
+            this.setState({properties: this.state.properties.filter(property => property.id !== res.data.deletedId)});
         });
     }
 
+    showUpdatePopUp(propertyId) {
+        this.setState({ 
+            propertyID: propertyId, 
+            showUpdateModal: true 
+        });
+    }
+
+    updateDone(updatedProperty){
+        this.hideUpdatePopUp();
+
+        const properties = this.state.properties.slice();
+        var index = this.state.properties.findIndex(property => property.id == this.state.propertyID)
+
+        properties[index] = updatedProperty;
+        this.setState({ properties: properties });
+    }
+    hideUpdatePopUp(){
+        this.setState({ showUpdateModal: false });
+    }
+
+    createDone(createdProperty){
+        this.hideCreatePopUp();
+
+        var properties = this.state.properties;
+        properties.unshift(createdProperty);
+        this.setState({ properties: properties });
+    }
+    hideCreatePopUp(){
+        this.setState({ showCreatePopUp: false });
+    }
+
+
+
     render() {
 
-        let addModalClose1 = () => this.setState({ addModalShow1: false });
-        let addModalClose2 = () => this.setState({ addModalShow2: false });
         if (JSON.parse(localStorage.getItem('user')).type != "Member") {
             return <Redirect to='/' />;
         }
         return (
 
-            < div >
+            <div>
                 <h1 className="center">My Properties</h1>
                 <div className="div-center-content">
-
-                    <Button variant="primary" onClick={() => this.setState({ addModalShow1: true })}> <PlusCircle />Add a property</Button>
+                    <Button className="strong-button" variant="primary" onClick={() => this.setState({ showCreatePopUp: true })}>
+                        <PlusCircle /> Add a property
+                    </Button>
                     <CreatePropertyPopUp
-                        show={this.state.addModalShow1}
-                        onHide={addModalClose1}
+                        show={this.state.showCreatePopUp} key={this.state.showCreatePopUp}
+                        onCreateDone={this.createDone}
+                        onHide={this.hideCreatePopUp} 
                     />
-
                 </div>
+                <Container className="my-5">
+                    <Row>
+                        <Col sm={1}></Col>
+                        <Col sm={10}>
+                            <h4>{this.state.properties.length + (this.state.properties.length > 1 ? " properties" : " property")}</h4>
+                            {this.state.properties.map(property => 
+                                <Card className="my-3">
+                                    <Card.Header>
+                                        <Card.Title style={{marginBottom: 0}}>{property.title}</Card.Title>
+                                    </Card.Header>
+                                    <Card.Body>
+                                        <Row>
+                                            <Col style={{ textAlign: 'center' }}>
+                                                <Card.Img variant="top" src={photo} style={{marginBottom: "10px"}}/>
+                                                <Button className="soft-button" onClick={() => this.showUpdatePopUp(property.id)}>
+                                                    <Pencil /> Update
+                                                </Button>
+                                                <Button className="soft-button" onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}>
+                                                    <Trash /> Delete</Button>
+                                            </Col>
+                                            <Col>
+                                                <Card.Text>Type: {property.propertyType.name}</Card.Text>
+                                                <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
+                                                <Card.Text>Address: {property.address}</Card.Text>
+                                                <Card.Text>City: {property.city}</Card.Text>
+                                                <Card.Text>Services: {property.propertyServices.map(function (d, idx) {
+                                                    return (<li key={idx}>{d.name}</li>)
+                                                })}</Card.Text>
+                                                <Card.Text>Constraints: {property.propertyRestrictions.map(function (d, idx) {
+                                                    return (<li key={idx}>{d.name}</li>)
+                                                })}</Card.Text>
+                                            </Col>
+                                            <Col style={{borderLeft: "1px solid #d8d8d8"}}>
+                                                <Accordion style={{ color: "white" }} className="col-auto">
+                                                    <Card style={{ backgroundColor: "#FF584D" }}>
+                                                        <Accordion.Toggle as={Card.Header} eventKey="0">
+                                                            <ArrowDown/> Upcoming reservations
+                                                        </Accordion.Toggle>
+                                                        <Accordion.Collapse eventKey="0">
+                                                            <Card.Body>
+                                                                <Form.Check
+                                                                    name={"upcoming"}
+                                                                    label={"Upcoming Reservations"}></Form.Check>
+                                                                <Form.Check
+                                                                    name={"previous"}
+                                                                    label={"Previous Reservations"}></Form.Check>
+                                                            </Card.Body>
+                                                        </Accordion.Collapse>
+                                                    </Card>
+                                                </Accordion>
+                                                <Card.Text>{property.reservations.map(function (d, idx) {
+                                                    return (<li key={idx}> From {Moment(d.start_date).format('DD-MM-YYYY')} to {Moment(d.end_date).format('DD-MM-YYYY')} - by {d.reservationUser.firstName} {d.reservationUser.lastName}</li>)
+                                                })}</Card.Text></Col>
+                                        </Row>
+                                    </Card.Body>
+                                </Card>
+                            )}
+                        </Col>
+                    </Row>
+                </Container>
 
-                {
-                    this.state.properties.map(
-                        property => <div className="div-center-content" style={{ marginTop: '30px' }}><Card style={{ width: '70%' }}> <Card.Header>{property.title}</Card.Header>
-                            <Card.Body>
-                                <Container><Row>
-                                    <Col style={{ textAlign: 'center' }}>
-                                        <Card.Title>{property.title}</Card.Title>
-                                        <Card.Img variant="top" src={photo} />
-                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => this.setState({ addModalShow2: true })}> <Pencil /> Update</Button>
-
-                                        <UpdatePropertyPopUp
-                                            show={this.state.addModalShow2}
-                                            onHide={addModalClose2}
-                                        >{property.id}</UpdatePropertyPopUp>
-
-                                        <Button variant="primary" style={{ margin: '3px' }} onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}> <Trash />Delete</Button>
-                                    </Col>
-                                    <Col>
-                                        <Card.Text>Type: {property.propertyType.name}</Card.Text>
-                                        <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
-                                        <Card.Text>Address: {property.address}</Card.Text>
-                                        <Card.Text>City: {property.city}</Card.Text>
-                                        <Card.Text>Services: {property.propertyServices.map(function (d, idx) {
-                                            return (<li key={idx}>{d.name}</li>)
-                                        })}</Card.Text>
-                                        <Card.Text>Constraints: {property.propertyRestrictions.map(function (d, idx) {
-                                            return (<li key={idx}>{d.name}</li>)
-                                        })}</Card.Text>
-                                    </Col>
-                                    <Col>
-
-                                        <Accordion style={{ color: "white" }} className="col-auto">
-                                            <Card style={{ backgroundColor: "#FF584D" }}>
-                                                <Accordion.Toggle as={Card.Header} eventKey="0">
-                                                    <ArrowDown></ArrowDown>Upcoming reservations
-                                </Accordion.Toggle>
-                                                <Accordion.Collapse eventKey="0">
-                                                    <Card.Body>
-                                                        <Form.Check
-                                                            name={"upcoming"}
-                                                            label={"Upcoming Reservations"}></Form.Check>
-                                                        <Form.Check
-                                                            name={"previous"}
-                                                            label={"Previous Reservations"}></Form.Check>
-                                                    </Card.Body>
-                                                </Accordion.Collapse>
-                                            </Card>
-                                        </Accordion>
-
-
-
-                                        <Card.Text>{property.reservations.map(function (d, idx) {
-                                            return (<li key={idx}> From {Moment(d.start_date).format('DD MMMM YYYY')} to {Moment(d.end_date).format('DD MMMM YYYY')} {d.reservation_user.last_name}</li>)
-                                        })}</Card.Text></Col>
-                                </Row>
-                                </Container>
-                            </Card.Body >
-                        </Card >
-                        </div>
-                    )
+                {this.state.propertyID != null &&
+                    <UpdatePropertyPopUp
+                        show={this.state.showUpdateModal} 
+                        onUpdateDone={this.updateDone}
+                        onHide={this.hideUpdatePopUp} 
+                        propertyId={this.state.propertyID} key={this.state.propertyID}>
+                    </UpdatePropertyPopUp>
                 }
             </div >
 

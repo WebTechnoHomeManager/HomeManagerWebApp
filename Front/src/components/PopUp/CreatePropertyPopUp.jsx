@@ -1,26 +1,32 @@
 import React, { Component } from 'react';
 import { Form, Button, Modal, Row, Col, Accordion, Card } from 'react-bootstrap';
-import PropertyService from '../services/PropertyService';
-import RestrictionService from '../services/RestrictionService';
-import ServiceService from '../services/ServiceService';
-import TypeService from '../services/TypeService';
-import { Pencil, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
+import PropertyService from '../../services/PropertyService';
+import RestrictionService from '../../services/RestrictionService';
+import ServiceService from '../../services/ServiceService';
+import TypeService from '../../services/TypeService';
+import { PlusCircle, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
 
-class UpdatePropertyPopUp extends Component {
-
+class CreatePropertyPopUp extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            id: this.props.children,
             allServices: [],
             allRestrictions: [],
             allPropertyTypes: [],
             property: {
+                title: "",
+                description: "",
+                address: "",
+                city: "",
+                totalOccupancy: "",
+                latitude: 0,
+                longitude: 0,
+                owner: JSON.parse(localStorage.getItem('user')),
+                propertyType: { id: "1", name: "House" },
+                reservations: [],
                 propertyServices: [],
-                propertyRestrictions: [],
-                propertyType: {},
-                owner: {}
+                propertyRestrictions: []
             }
         }
         this.handleClickService = this.handleClickService.bind(this);
@@ -31,34 +37,14 @@ class UpdatePropertyPopUp extends Component {
     }
 
     componentDidMount() {
-        PropertyService.getPropertyById(this.state.id).then(res => {
-            this.setState({ property: res.data });
-        })
         ServiceService.getServices().then((res) => {
-            this.setState({
-                allServices: res.data
-            });
+            this.setState({ allServices: res.data });
         });
         RestrictionService.getRestrictions().then((res) => {
-            this.setState({
-                allRestrictions: res.data
-            });
+            this.setState({ allRestrictions: res.data });
         });
         TypeService.getPropertyTypes().then((res) => {
-            this.setState({
-                allPropertyTypes: res.data
-            });
-        });
-    }
-
-    handleSubmit = (e) => {
-        e.preventDefault();
-        let property = this.state.property;
-        console.log('property => ' + JSON.stringify(property));
-        console.log('id => ' + JSON.stringify(this.state.id));
-        PropertyService.updateProperty(property, this.state.id).then(res => {
-            //this.props.history.push('/myproperties');
-            alert("Property updated");
+            this.setState({ allPropertyTypes: res.data });
         });
     }
 
@@ -78,46 +64,78 @@ class UpdatePropertyPopUp extends Component {
         console.log(this.state)
     }
 
-
     handleClickService(e, service) {
-        var checked = e.target.checked;
-        let property = { ...this.state.property };
-        const services = this.state.property.propertyServices.slice();
+        let property = this.state.property;
 
+        var checked = e.target.checked;
         if (checked) {
-            property.propertyServices = services.concat([service]);
-            this.setState({ property });
+            var newPropertyServices = property.propertyServices.concat([service])
+            this.setState(prevState => ({
+                property: {
+                    ...prevState.property,
+                    propertyServices: newPropertyServices
+                }
+            }))
         } else {
-            property.propertyServices = services.splice(services.indexOf(service), 1)
-            this.setState({ property });
+            var indexServiceToRemove = property.propertyServices.findIndex(serv => serv.id == service.id);
+            var newPropertyServices = property.propertyServices;
+            newPropertyServices.splice(indexServiceToRemove, 1);
+            this.setState(prevState => ({
+                property: {
+                    ...prevState.property,
+                    propertyServices: newPropertyServices
+                }
+            }))
         }
     }
 
     handleClickRestriction(e, restriction) {
+        let property = this.state.property;
+        
         var checked = e.target.checked;
-        let property = { ...this.state.property };
-        const restrictions = this.state.property.propertyRestrictions.slice();
-
         if (checked) {
-            property.propertyRestrictions = restrictions.concat([restriction]);
-            this.setState({ property });
+            var newPropertyRestrictions = property.propertyRestrictions.concat([restriction])
+            this.setState(prevState => ({
+                property: {
+                    ...prevState.property,
+                    propertyRestrictions: newPropertyRestrictions
+                }
+            }))
         } else {
-            property.propertyRestrictions = restrictions.splice(restrictions.indexOf(restriction), 1)
-            this.setState({ property });
+            var indexRestrictionToRemove = property.propertyRestrictions.findIndex(restr => restr.id == restriction.id);
+            var newPropertyRestrictions = property.propertyRestrictions;
+            newPropertyRestrictions.splice(indexRestrictionToRemove, 1);
+            this.setState(prevState => ({
+                property: {
+                    ...prevState.property,
+                    propertyRestrictions: newPropertyRestrictions
+                }
+            }))
         }
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        let property = { ...this.state.property };
+        console.log('property => ' + JSON.stringify(property));
+        PropertyService.createProperty(property).then(res => {
+            alert("Property created");
+            this.props.onCreateDone(res.data);
+        }).catch(error => {
+            console.log(error.response);
+        });
     }
 
     render() {
         return (
-            <Modal
+            <Modal onHide={() => alert("okes")}
                 {...this.props}
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
+                centered>
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-vcenter">
-                        Update Property
+                        Create Property
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -128,23 +146,23 @@ class UpdatePropertyPopUp extends Component {
                                 <Form onChange={this.handleChange}>
                                     <Form.Group controlId="title">
                                         <Form.Label>Title:</Form.Label>
-                                        <Form.Control type="text" name="title" defaultValue={this.state.property.title} />
+                                        <Form.Control type="text" name="title" required/>
                                     </Form.Group>
                                     <Form.Group controlId="description">
                                         <Form.Label>Description:</Form.Label>
-                                        <Form.Control as="textarea" rows={3} type="text" name="description" defaultValue={this.state.property.description} />
+                                        <Form.Control as="textarea" rows={3} type="text" name="description" required/>
                                     </Form.Group>
                                     <Form.Group controlId="address">
                                         <Form.Label>Address:</Form.Label>
-                                        <Form.Control type="text" name="address" defaultValue={this.state.property.address} />
+                                        <Form.Control type="text" name="address" required/>
                                     </Form.Group>
                                     <Form.Group controlId="city">
                                         <Form.Label>City:</Form.Label>
-                                        <Form.Control type="text" name="city" defaultValue={this.state.property.city} />
+                                        <Form.Control type="text" name="city" required/>
                                     </Form.Group>
                                     <Form.Group controlId="totalOccupancy">
                                         <Form.Label>Total occupancy:</Form.Label>
-                                        <Form.Control type="text" name="totalOccupancy" defaultValue={this.state.property.totalOccupancy} />
+                                        <Form.Control type="number" name="totalOccupancy" required/>
                                     </Form.Group>
                                 </Form>
                             </div>
@@ -163,18 +181,17 @@ class UpdatePropertyPopUp extends Component {
                             </Form.Group>
 
                             <Form.Group controlId="propertyServices">
-                                <Accordion className="col-auto">
+                                <Accordion className="col-auto" defaultActiveKey="0">
                                     <Card>
                                         <Accordion.Toggle as={Card.Header} eventKey="0">
                                             <CardChecklist></CardChecklist>  Services
-                                </Accordion.Toggle>
+                                        </Accordion.Toggle>
                                         <Accordion.Collapse eventKey="0">
                                             <Card.Body>
                                                 {
                                                     this.state.allServices.map(
                                                         service =>
                                                             <Form.Check key={"service" + service.id}
-                                                                defaultChecked={this.state.property.propertyServices.some(item => service.name === item.name)}
                                                                 name={"service" + service.id}
                                                                 label={service.name}
                                                                 id={"service" + service.id} onClick={(e) => { this.handleClickService(e, service) }}
@@ -187,18 +204,17 @@ class UpdatePropertyPopUp extends Component {
                                 </Accordion>
                             </Form.Group>
                             <Form.Group controlId="propertyRestrictions">
-                                <Accordion className="col-auto">
+                                <Accordion className="col-auto" defaultActiveKey="0">
                                     <Card>
                                         <Accordion.Toggle as={Card.Header} eventKey="0">
                                             <CardList></CardList>  Restrictions
-                                </Accordion.Toggle>
+                                        </Accordion.Toggle>
                                         <Accordion.Collapse eventKey="0">
                                             <Card.Body>
                                                 {
                                                     this.state.allRestrictions.map(
                                                         restriction =>
                                                             <Form.Check key={"restriction" + restriction.id}
-                                                                defaultChecked={this.state.property.propertyRestrictions.some(item => restriction.name === item.name)}
                                                                 name={"restriction" + restriction.id}
                                                                 label={restriction.name}
                                                                 id={"restriction" + restriction.id} onClick={(e) => { this.handleClickRestriction(e, restriction) }}
@@ -215,11 +231,16 @@ class UpdatePropertyPopUp extends Component {
                     </Row>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.props.onHide}> <XCircle /> Close</Button>
-                    <Button variant="primary" onClick={this.handleSubmit}> <Pencil /> Update</Button>
+                    <Button className="strong-button" onClick={this.props.onHide}>
+                        <XCircle /> Close
+                    </Button>
+                    <Button className="strong-button" variant="primary" onClick={this.handleSubmit}>
+                        <PlusCircle /> Add
+                    </Button>
                 </Modal.Footer>
             </Modal>
 
         );
     }
-} export default UpdatePropertyPopUp;
+}
+export default CreatePropertyPopUp;

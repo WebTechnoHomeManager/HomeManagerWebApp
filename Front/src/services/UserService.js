@@ -7,10 +7,6 @@ class UserService {
         return axios.get(USER_API_BASE_URL);
     }
 
-    createUser(user) {
-        return axios.post(USER_API_BASE_URL, user);
-    }
-
     getUserById(userId) {
         return axios.get(USER_API_BASE_URL + '/' + userId);
     }
@@ -25,6 +21,10 @@ class UserService {
 
     checkAuthentication(data) {
         return axios.post(USER_API_BASE_URL + '/authentication', data);
+    }
+
+    createUser(user) {
+        return axios.post(USER_API_BASE_URL, user);
     }
 }
 

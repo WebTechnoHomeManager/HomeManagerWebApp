@@ -2,7 +2,7 @@ import logo from '../images/logo.png';
 import React, { Component } from 'react';
 import { Container, Row, Col, Image, DropdownButton, Dropdown, Button } from 'react-bootstrap';
 import { Link } from "react-router-dom";
-import LogInPopUp from '../components/LogInPopUp';
+import LogInPopUp from '../components/PopUp/LogInPopUp';
 
 class Navbar extends Component {
 
@@ -38,13 +38,11 @@ class Navbar extends Component {
     }
 
     
-    logIn(data) {
-        var user = data.user;
-        
+    logIn(user) {
         this.setState({ logInPopUp: false });
-        this.setState({ user: JSON.parse(user) });
+        this.setState({ user: user });
 
-        localStorage.setItem('user', user);
+        localStorage.setItem('user', JSON.stringify(user));
     }
 
     logOut() {
@@ -57,7 +55,9 @@ class Navbar extends Component {
     };
 
     render() {
-        var dropDownItems = <Col sm="auto"><Button as="input" type="button" value="Log in" onClick={this.showLogInPopUp} /></Col>
+        var dropDownItems = <Col sm="auto">
+            <Button className="strong-button" as="input" type="button" value="Log in" onClick={this.showLogInPopUp} />
+            </Col>
 
         var userType = this.state.user.type;
         if (userType != undefined){ 
@@ -81,7 +81,7 @@ class Navbar extends Component {
 
         return (
 
-            <Container fluid className="py-2" id="header" ref={c => !this.state.container && this.setState({ container: c })}>
+            <Container fluid className="py-2" id="header">
 
                 <Row>
                     <Link to="/" className="col-auto" >
@@ -89,7 +89,6 @@ class Navbar extends Component {
                     </Link>
                     <Col></Col>
 
-                    <Col sm="auto">({this.state.user.type != undefined ? this.state.user.type.toUpperCase()[0] : ""})</Col>
                     <Col sm="auto">FAQ</Col>
                     {dropDownItems}
 

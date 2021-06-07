@@ -4,6 +4,11 @@ import SearchBar from '../components/SearchBar';
 import PropertyService from '../services/PropertyService';
 import photo from '../images/houses/house1.jpg';
 
+/*import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import XYZ from 'ol/source/XYZ';*/
+
 class Search extends Component {
 
     constructor(props) {
@@ -15,9 +20,7 @@ class Search extends Component {
 
         this.launchSearch = this.launchSearch.bind(this);
         this.viewProperty = this.viewProperty.bind(this);
-    }
 
-    componentDidMount() {
         var dataFromSearch = this.props.location.state;
         if (dataFromSearch) {
             this.launchSearch(dataFromSearch);
@@ -35,6 +38,21 @@ class Search extends Component {
     }
 
     render() {
+        /*const map = new Map({
+            target: 'map',
+            layers: [
+                new TileLayer({
+                    source: new XYZ({
+                        url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                    })
+                })
+            ],
+            view: new View({
+                center: [0, 0],
+                zoom: 2
+            })
+        });*/
+
         return (
             <div>
 
@@ -67,14 +85,18 @@ class Search extends Component {
                                                     <Card.Text>For {property.totalOccupancy} occupant(s)</Card.Text>
                                                     <Card.Text>Required services:
                                                         <ul>
-                                                            {property.propertyServices.map(service =>
+                                                            {property.propertyServices
+                                                                .sort((a, b) => a.id > b.id ? 1 : -1)
+                                                                .map(service =>
                                                                 <li key={service.id} className="card-list-items">{service.name}</li>
                                                             )}
                                                         </ul>
                                                     </Card.Text>
                                                     <Card.Text>Constraints to respect:
                                                         <ul>
-                                                            {property.propertyRestrictions.map(restriction =>
+                                                            {property.propertyRestrictions
+                                                                .sort((a, b) => a.id > b.id ? 1 : -1)
+                                                                .map(restriction =>
                                                                 <li key={restriction.id} className="card-list-items">{restriction.name}</li>
                                                             )}
                                                         </ul>
@@ -90,7 +112,8 @@ class Search extends Component {
                             }
 
                         </Col>
-                        <Col sm={6}></Col>
+                        <Col sm={6}>
+                        </Col>
                     </Row>
                 </Container>
 

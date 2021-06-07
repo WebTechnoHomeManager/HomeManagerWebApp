@@ -1,12 +1,15 @@
 
 $verydark: #475465;
 $dark: #556C96;
+$mediumDark: #699FDD;
+$medium: #91b9e6;
 $light: #B6CDE8;
 $verylight: #EEEDFF;
 $highlight: #FF584D;
 $darkHighlight: #ff4034;
 
-$primary: #FF584D;
+$primary: $highlight;
+$secondary: $medium;
 $gray: #e3e3e3;
 $gray2: #b5b5b5;
 $gray3: #8d8d8d;
@@ -44,37 +47,50 @@ body, html{
     width: 100%;
 }
 
-// .btn-primary, .btn-primary:active{
-//     background-color: $highlight !important;
-//     border-color: $highlight !important;
-// }
 
-// .btn-primary:hover{
-//     background-color: $darkHighlight !important;
-//     border-color: $darkHighlight !important;
-// }
-
-.btn-primary:hover{
+.strong-button, 
+.dropdown-toggle{
+    border-radius: 2rem !important;
+    color: white;
+}
+.strong-button:hover,
+.dropdown-toggle:hover{
     background-color: $darkHighlight !important;
     border-color: $darkHighlight !important;
 }
+.strong-button:not(:hover){
+    background-color: $highlight !important;
+    border-color: $highlight !important; 
+}
+.strong-button:not(:active),
+.dropdown-toggle:not(:active){
+    box-shadow: none !important;
+}
+
+.soft-button{
+    border-radius: 0.5rem !important;
+    color: white !important;
+    margin: 5px !important;
+}
+.soft-button:hover{
+    background-color: $mediumDark !important;
+    border-color: $mediumDark !important;
+}
+.soft-button:not(:hover){
+    background-color: $medium !important;
+    border-color: $medium !important; 
+}
+.soft-button:not(:active){
+    box-shadow: none !important;
+}
+
+
+
+
 
 .dropdown-item:active {
     background-color: $dark !important;
     border-color: $dark !important;
-}
-
-button, 
-input[type="button"], 
-input[type="submit"]{
-    border-radius: 2rem !important;
-}
-
-button:focus,
-input[type="button"]:focus, 
-input[type="submit"]:focus{
-    //box-shadow: 0 0 0 0.25rem rgb(245, 129, 122, 0.5) !important;
-    box-shadow: none !important;
 }
 
 #header{
@@ -85,8 +101,6 @@ input[type="submit"]:focus{
 #header .row>div{
     margin: auto;
 }
-
-
 
 .center{
     text-align: center;
@@ -115,4 +129,9 @@ input[type="submit"]:focus{
 .div-center-content{
     display: flex;
     justify-content: center;
+}
+
+.error-form{
+    color: red;
+    font-size: 0.8rem;
 }

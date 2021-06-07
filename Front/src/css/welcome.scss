@@ -10,3 +10,15 @@
     background-color: white;
 }
 
+.tag-input{
+    display: inline-block;
+    background-color: $light;
+    margin: 4px;
+    padding: 2px 5px 2px 10px;
+    border-radius: 0.5rem;
+}
+
+.tag-input-close-button{
+    cursor: pointer;
+    margin-left: 3px;
+}

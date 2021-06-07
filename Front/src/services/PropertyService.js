@@ -31,6 +31,10 @@ class PropertyService {
     deleteProperty(propertyId) {
         return axios.delete(PROPERTY_API_BASE_URL + '/' + propertyId);
     }
+
+    getFourMostRecentProperties(){
+        return axios.get(PROPERTY_API_BASE_URL + '/recent');
+    }
 }
 
 export default new PropertyService()

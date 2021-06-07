@@ -31,7 +31,7 @@ public class ChatController {
 	private ChatRepository chatRepository;
 	
 	@GetMapping()
-	  public @ResponseBody Iterable<Chat> getAllMessages() {
+	public @ResponseBody Iterable<Chat> getAllMessages() {
 	    return chatRepository.findAll();
 	}
 	

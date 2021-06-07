@@ -27,34 +27,38 @@ import com.homemanager.springboot.repository.UserRepository;
 
 @RestController
 @CrossOrigin(origins="http://localhost:3000")
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/users")
 public class UserController {
 	
 	@Autowired
 	private UserRepository userRepository;
 
-	@GetMapping("/users")
+	@GetMapping()
 	public @ResponseBody Iterable<User> getAllUsers() {
 		return userRepository.findAll();
 	}
 
-	@PostMapping("/users")
+	@PostMapping()
 	public User createUser(@RequestBody User user) {
+		User userIfExists = userRepository.findByEmail(user.getEmail());
+		if(userIfExists != null) {
+			return null;
+		}
 		return userRepository.save(user);
 	}
 
-	@GetMapping("/users/{id}")
+	@GetMapping("/{id}")
 	public User findUserById(@PathVariable Integer id) {
 		Optional<User> User = userRepository.findById(id);
 		return User.get();
 	}
 
-	@PutMapping("/users/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@RequestBody User userDetails, @PathVariable Integer id) {
 		User user = userRepository.findById(id).get();
 
-		user.setFirst_name(userDetails.getFirst_name());
-		user.setLast_name(userDetails.getLast_name());
+		user.setFirstName(userDetails.getFirstName());
+		user.setLastName(userDetails.getLastName());
 		user.setEmail(userDetails.getEmail());
 		user.setPassword(userDetails.getPassword());
 
@@ -62,12 +66,12 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@DeleteMapping("/users/{id}")
+	@DeleteMapping("/{id}")
 	public void deleteUser(@PathVariable Integer id) {
 		userRepository.deleteById(id);
 	}
 
-	@PostMapping("/users/authentication")
+	@PostMapping("/authentication")
 	public String checkAuthentication(@RequestBody String dataString) throws Exception, JSONException {
 
 		JSONObject data = new JSONObject(dataString);
