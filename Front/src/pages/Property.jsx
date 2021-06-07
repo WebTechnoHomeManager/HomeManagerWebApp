@@ -148,10 +148,10 @@ class Property extends Component {
                                         </Row>
                                         <Row>
                                             <Col className="div-center-content">
-                                                <Button className="soft-button btn-secondary"
+                                                <Button className="soft-button blue-soft-button btn-secondary"
                                                     onClick={() => this.goToMessagingPage()}>
                                                     <EnvelopeFill />  Contact the owner
-                                            </Button>
+                                                </Button>
                                             </Col>
                                         </Row>
 

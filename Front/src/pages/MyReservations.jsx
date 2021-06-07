@@ -74,11 +74,11 @@ class MyReservations extends Component {
                     <Dropdown.Item onClick={() => this.displayReservationsToCome()}
                         active={this.state.selectedOption === 1 || this.state.selectedOption === undefined}>
                         Reservations to come
-                                                    </Dropdown.Item>
+                    </Dropdown.Item>
                     <Dropdown.Item onClick={() => this.displayPastReservations()}
                         active={this.state.selectedOption === 0}>
                         Past reservations
-                                                    </Dropdown.Item>
+                    </Dropdown.Item>
                 </DropdownButton>
 
                 {this.state.selectedOption === 0 &&

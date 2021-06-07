@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Row } from 'react-bootstrap';
 import UserService from '../services/UserService';
-import { Trash } from 'react-bootstrap-icons';
+import { Trash, EnvelopeFill } from 'react-bootstrap-icons';
 import { Redirect } from "react-router-dom";
 
 class Members extends Component {
@@ -14,6 +14,7 @@ class Members extends Component {
             users: []
         }
         this.deleteMember = this.deleteMember.bind(this);
+        this.goToMessagingPage = this.goToMessagingPage.bind(this);
     }
 
     componentDidMount() {
@@ -24,11 +25,16 @@ class Members extends Component {
 
     deleteMember(userId) {
         UserService.deleteUser(userId).then((res) => {
-            this.setState({ users: this.state.users.filter(user => user.id !== res.data.deletedId) }, () => {
-                this.props.history.push("/members");
-            });
+            this.setState({ users: this.state.users.filter(user => user.id !== res.data.deletedId) });
         }).catch(error => {
             console.log(error.response);
+        });
+    }
+
+    goToMessagingPage(user) {
+        this.props.history.push({
+            pathname: '/messaging',
+            state: { newInterlocutor: user }
         });
     }
 
@@ -54,14 +60,28 @@ class Members extends Component {
                             </thead>
                             <tbody>
                                 {
-                                    this.state.users.map(
+                                    this.state.users
+                                    .filter(user => user.type != "Admin")
+                                    .map(
                                         user =>
                                             <tr key={user.id}>
                                                 <td> {user.firstName} </td>
                                                 <td> {user.lastName}</td>
                                                 <td> {user.email}</td>
-                                                <td>
-                                                    <Button style={{ marginLeft: "10px" }} onClick={() => { if (window.confirm('Are you sure you wish to delete ' + user.firstName + ' ' + user.lastName + '\'s profile?')) this.deleteMember(user.id) }} className="btn btn-danger"> <Trash></Trash>Delete </Button>
+                                                <td style={{display: "flex"}}>
+                                                    <Button style={{ marginLeft: "10px"}} 
+                                                    onClick={() => { if (window.confirm('Are you sure you wish to delete ' + user.firstName + ' ' + user.lastName + '\'s profile?')) this.deleteMember(user.id) }} 
+                                                    className="soft-button red-soft-button btn-danger">
+                                                        <div style={{flexDirection:"row", display:"flex"}}>
+                                                            <Trash style={{margin:"auto"}}/>  Delete 
+                                                        </div>
+                                                    </Button>
+                                                    <Button className="soft-button blue-soft-button btn-secondary"
+                                                        onClick={() => this.goToMessagingPage(user)}>
+                                                        <div style={{display:"flex"}}>
+                                                            <EnvelopeFill style={{margin:"auto"}}/>  Contact
+                                                        </div>
+                                                    </Button>
                                                 </td>
                                             </tr>
                                     )

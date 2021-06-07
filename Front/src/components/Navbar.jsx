@@ -59,7 +59,7 @@ class Navbar extends Component {
         </Col>
 
         var title = "";
-
+        var isAdmin = false;
         var userType = this.state.user.type;
         if (userType != undefined) {
             if (userType.toLowerCase() == 'member') {
@@ -71,19 +71,20 @@ class Navbar extends Component {
                     <Dropdown.Item onClick={this.logOut} href="/">Log out</Dropdown.Item>
                 </DropdownButton>
             } else if (userType.toLowerCase() == 'admin') {
-                dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="Back office" >
+                dropDownItems = <DropdownButton className="col-auto dropdown-navbar" title="Back office" >
                     <Dropdown.Item href="/messaging">Messaging</Dropdown.Item>
                     <Dropdown.Item href="/members">Members</Dropdown.Item>
                     <Dropdown.Item href="/offers">Offers</Dropdown.Item>
                     <Dropdown.Item onClick={this.logOut} href="/">Log out</Dropdown.Item>
                 </DropdownButton>;
                 title = <h3>Back Office Account</h3>
+                isAdmin = true;
             }
         }
 
         return (
 
-            <Container fluid className="py-2" id="header">
+            <Container fluid className="py-2" id="header" className={isAdmin ? "admin-header" : "member-header"}>
 
                 <Row>
                     <Link to="/" className="col-auto" >

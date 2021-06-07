@@ -69,8 +69,12 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public void deleteUser(@PathVariable Integer id) {
+	public String deleteUser(@PathVariable Integer id) throws JSONException {
 		userRepository.deleteById(id);
+
+		JSONObject response = new JSONObject();
+		response.put("deletedId", id);
+		return response.toString();
 	}
 
 	@PostMapping("/authentication")
