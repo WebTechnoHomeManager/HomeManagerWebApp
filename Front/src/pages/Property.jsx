@@ -171,6 +171,7 @@ class Property extends Component {
                         show={this.state.showPublicProfilePopUp}
                         onHide={this.hidePublicProfile}
                         userId={this.state.userID} key={this.state.userID}
+                        history={this.props.history}
                     />
                 }
                 {this.state.isUserLoggedIn &&
@@ -178,8 +179,8 @@ class Property extends Component {
                         show={this.state.showBookingPopUp}
                         onHide={this.hideBookingPopUp}
                         propertyId={this.state.id} key={this.state.id}
-                        dateFrom={this.props.location.state.dateFrom}
-                        dateTo={this.props.location.state.dateTo}
+                        dateFrom={this.props.location.state != undefined ? this.props.location.state.dateFrom : null}
+                        dateTo={this.props.location.state != undefined ? this.props.location.state.dateTo : null}
                         onCreateDone={this.createDone}
                     />
                 }

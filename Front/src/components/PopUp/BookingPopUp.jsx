@@ -16,8 +16,8 @@ class BookingPopUp extends Component {
                     propertyServices: [],
                     propertyRestrictions: []
                 },
-                start_date: this.props.dateFrom,
-                end_date: this.props.dateTo
+                start_date: this.props.dateFrom, // peut être null !! 
+                end_date: this.props.dateTo // peut être null !! 
             }
         }
         this.handleChange = this.handleChange.bind(this);

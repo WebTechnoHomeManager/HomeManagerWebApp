@@ -30,7 +30,7 @@ class Home extends Component {
                 </Container>
                 <Container className="my-5">
                     <Row>
-                        <HighlightedProperties></HighlightedProperties>
+                        <HighlightedProperties history={this.props.history}></HighlightedProperties>
                     </Row>
                 </Container>
             </div>
