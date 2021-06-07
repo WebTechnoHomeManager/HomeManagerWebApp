@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 
 import com.homemanager.springboot.model.Reservation;
@@ -60,14 +62,15 @@ public class ReservationController {
 	}
 		
 	@DeleteMapping("/reservations/{id}")
-	public ResponseEntity<Map<String, Boolean>> deleteReservation(@PathVariable Integer id){
+	public String deleteReservation(@PathVariable Integer id) throws JSONException{
 		Reservation reservation = reservationRepository.findById(id)
 				.orElseThrow();
 		
 		reservationRepository.delete(reservation);
-		Map<String, Boolean> response = new HashMap<>();
-		response.put("deleted", Boolean.TRUE);
-		return ResponseEntity.ok(response);
+
+		JSONObject response = new JSONObject();
+		response.put("deletedId", id);
+		return response.toString();
 	}
 	
 	@GetMapping("/reservations/user/{id}")

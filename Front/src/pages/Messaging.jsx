@@ -4,13 +4,14 @@ import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import Image from 'react-bootstrap/Image';
 import ChatService from '../services/ChatService';
 import sendIcon from '../images/icons/send-message.png';
+import { Redirect } from "react-router-dom";
 
 class Messaging extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            user: JSON.parse(localStorage.getItem('user')),
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             recipient: {},
             message: "",
             sentMessagesBetweenTheTwo: [],
@@ -131,6 +132,9 @@ class Messaging extends Component {
     }
 
     render(){
+        if (this.state.user == "") {
+            return <Redirect to='/' />;
+        }
         return (
             <div>
                 <Container id="messaging">

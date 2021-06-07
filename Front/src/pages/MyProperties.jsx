@@ -15,7 +15,7 @@ class MyProperties extends Component {
         super(props)
 
         this.state = {
-            user: JSON.parse(localStorage.getItem('user')),
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             properties: [],
             showCreatePopUp: false,
             showUpdateModal: false,
@@ -98,8 +98,7 @@ class MyProperties extends Component {
     }
 
     render() {
-
-        if (JSON.parse(localStorage.getItem('user')).type != "Member") {
+        if (this.state.user == "" || this.state.user.type != "Member") {
             return <Redirect to='/' />;
         }
         return (
@@ -128,10 +127,10 @@ class MyProperties extends Component {
                                         <Row>
                                             <Col style={{ textAlign: 'center' }}>
                                                 <Card.Img variant="top" src={photo} style={{marginBottom: "10px"}}/>
-                                                <Button className="soft-button" onClick={() => this.showUpdatePopUp(property.id)}>
+                                                <Button className="soft-button blue-soft-button" onClick={() => this.showUpdatePopUp(property.id)}>
                                                     <Pencil /> Update
                                                 </Button>
-                                                <Button className="soft-button" onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}>
+                                                <Button className="soft-button red-soft-button" onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}>
                                                     <Trash /> Delete</Button>
                                             </Col>
                                             <Col>

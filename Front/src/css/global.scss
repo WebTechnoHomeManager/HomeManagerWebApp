@@ -14,6 +14,8 @@ $gray: #e3e3e3;
 $gray1: #CCCCCC;
 $gray2: #b5b5b5;
 $gray3: #8d8d8d;
+$red: #dc3546;
+$redDark: #c82333;
 
 [class*="col"] {
     /*border: 1px solid black;*/
@@ -73,17 +75,26 @@ body, html{
     color: white !important;
     margin: 5px !important;
 }
-.soft-button:hover{
-    background-color: $mediumDark !important;
-    border-color: $mediumDark !important;
-}
-.soft-button:not(:hover){
-    background-color: $medium !important;
-    border-color: $medium !important; 
-}
 .soft-button:not(:active){
     box-shadow: none !important;
 }
+.blue-soft-button:hover{
+    background-color: $mediumDark !important;
+    border-color: $mediumDark !important;
+}
+.blue-soft-button:not(:hover){
+    background-color: $medium !important;
+    border-color: $medium !important; 
+}
+.red-soft-button:hover{
+    background-color: $redDark !important;
+    border-color: $redDark !important;
+}
+.red-soft-button:not(:hover){
+    background-color: $red !important;
+    border-color: $red !important; 
+}
+
 
 .dropdown-filter {
     text-align: right !important;
@@ -119,12 +130,18 @@ body, html{
 }
 
 #header{
-    background-color: $dark;
     color: white;
 }
 
 #header .row>div{
     margin: auto;
+}
+
+.admin-header{
+    background-color: #2e7783;
+}
+.member-header{
+    background-color: $dark;
 }
 
 .center{
@@ -169,4 +186,8 @@ body, html{
 ul {
     //list-style: none;
     padding-left: 15px;
+}
+
+td, th {
+    vertical-align: middle !important;
 }

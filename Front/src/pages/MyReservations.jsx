@@ -5,14 +5,14 @@ import { Container, Row, Col, Card, Button, Dropdown, DropdownButton, Image } fr
 import photo from '../images/banner/banner2.jpg';
 import { Trash, PersonLinesFill } from 'react-bootstrap-icons';
 import Moment from 'moment';
-import { Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom";
 
 class MyReservations extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            user: JSON.parse(localStorage.getItem('user')),
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             reservations: [],
             selectedOption: 1
         }
@@ -63,7 +63,7 @@ class MyReservations extends Component {
     }
 
     render() {
-        if (JSON.parse(localStorage.getItem('user')).type != "Member") {
+        if (this.state.user == "" || this.state.user.type != "Member") {
             return <Redirect to='/' />;
         }
         return (
@@ -74,11 +74,11 @@ class MyReservations extends Component {
                     <Dropdown.Item onClick={() => this.displayReservationsToCome()}
                         active={this.state.selectedOption === 1 || this.state.selectedOption === undefined}>
                         Reservations to come
-                                                    </Dropdown.Item>
+                    </Dropdown.Item>
                     <Dropdown.Item onClick={() => this.displayPastReservations()}
                         active={this.state.selectedOption === 0}>
                         Past reservations
-                                                    </Dropdown.Item>
+                    </Dropdown.Item>
                 </DropdownButton>
 
                 {this.state.selectedOption === 0 &&

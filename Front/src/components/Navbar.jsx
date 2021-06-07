@@ -20,11 +20,13 @@ class Navbar extends Component {
         }
 
         this.myRef = React.createRef();
-
+        
         this.showLogInPopUp = this.showLogInPopUp.bind(this);
-        this.logIn = this.logIn.bind(this);
+        this.updateUserAfterLogIn = this.updateUserAfterLogIn.bind(this);
+        this.onHideLogInPopUp = this.onHideLogInPopUp.bind(this);
+        
         this.logOut = this.logOut.bind(this);
-        this.onHidePopUp = this.onHidePopUp.bind(this);
+        
     }
 
     componentDidMount() {
@@ -38,22 +40,18 @@ class Navbar extends Component {
         this.setState({ logInPopUp: true });
     }
 
-
-    logIn(user) {
-        this.setState({ logInPopUp: false });
-        this.setState({ user: user });
-
-        localStorage.setItem('user', JSON.stringify(user));
-    }
-
     logOut() {
         localStorage.setItem('user', '');
         this.setState({ user: {} });
     }
 
-    onHidePopUp() {
+    onHideLogInPopUp() {
         this.setState({ logInPopUp: false });
     };
+
+    updateUserAfterLogIn(user){
+        this.setState({ user: user });
+    }
 
     render() {
         var dropDownItems = <Col sm="auto">
@@ -61,7 +59,7 @@ class Navbar extends Component {
         </Col>
 
         var title = "";
-
+        var isAdmin = false;
         var userType = this.state.user.type;
         if (userType != undefined) {
             if (userType.toLowerCase() == 'member') {
@@ -73,19 +71,20 @@ class Navbar extends Component {
                     <Dropdown.Item onClick={this.logOut} href="/">Log out</Dropdown.Item>
                 </DropdownButton>
             } else if (userType.toLowerCase() == 'admin') {
-                dropDownItems = <DropdownButton id="dropdown-basic-button" className="col-auto" title="Back office" >
+                dropDownItems = <DropdownButton className="col-auto dropdown-navbar" title="Back office" >
                     <Dropdown.Item href="/messaging">Messaging</Dropdown.Item>
                     <Dropdown.Item href="/members">Members</Dropdown.Item>
                     <Dropdown.Item href="/offers">Offers</Dropdown.Item>
                     <Dropdown.Item onClick={this.logOut} href="/">Log out</Dropdown.Item>
                 </DropdownButton>;
                 title = <h3>Back Office Account</h3>
+                isAdmin = true;
             }
         }
 
         return (
 
-            <Container fluid className="py-2" id="header">
+            <Container fluid className="py-2" id="header" className={isAdmin ? "admin-header" : "member-header"}>
 
                 <Row>
                     <Link to="/" className="col-auto" >
@@ -99,8 +98,8 @@ class Navbar extends Component {
                     {/* key: to rerender when the key change */}
                     <LogInPopUp container={this.state.container}
                         show={this.state.logInPopUp} key={this.state.logInPopUp}
-                        logIn={this.logIn}
-                        onHide={this.onHidePopUp} />
+                        setParentStateUser={this.updateUserAfterLogIn}
+                        onHide={this.onHideLogInPopUp}/>
 
                 </Row>
             </Container>
