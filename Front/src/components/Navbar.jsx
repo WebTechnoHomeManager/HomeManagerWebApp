@@ -20,11 +20,13 @@ class Navbar extends Component {
         }
 
         this.myRef = React.createRef();
-
+        
         this.showLogInPopUp = this.showLogInPopUp.bind(this);
-        this.logIn = this.logIn.bind(this);
+        this.updateUserAfterLogIn = this.updateUserAfterLogIn.bind(this);
+        this.onHideLogInPopUp = this.onHideLogInPopUp.bind(this);
+        
         this.logOut = this.logOut.bind(this);
-        this.onHidePopUp = this.onHidePopUp.bind(this);
+        
     }
 
     componentDidMount() {
@@ -38,22 +40,18 @@ class Navbar extends Component {
         this.setState({ logInPopUp: true });
     }
 
-
-    logIn(user) {
-        this.setState({ logInPopUp: false });
-        this.setState({ user: user });
-
-        localStorage.setItem('user', JSON.stringify(user));
-    }
-
     logOut() {
         localStorage.setItem('user', '');
         this.setState({ user: {} });
     }
 
-    onHidePopUp() {
+    onHideLogInPopUp() {
         this.setState({ logInPopUp: false });
     };
+
+    updateUserAfterLogIn(user){
+        this.setState({ user: user });
+    }
 
     render() {
         var dropDownItems = <Col sm="auto">
@@ -99,8 +97,8 @@ class Navbar extends Component {
                     {/* key: to rerender when the key change */}
                     <LogInPopUp container={this.state.container}
                         show={this.state.logInPopUp} key={this.state.logInPopUp}
-                        logIn={this.logIn}
-                        onHide={this.onHidePopUp} />
+                        setParentStateUser={this.updateUserAfterLogIn}
+                        onHide={this.onHideLogInPopUp}/>
 
                 </Row>
             </Container>

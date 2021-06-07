@@ -7,6 +7,7 @@ import userIcon from '../images/icons/user.png';
 import { Envelope, EnvelopeFill, InfoCircle, InfoCircleFill } from 'react-bootstrap-icons';
 import PublicProfile from '../components/PublicProfile';
 import BookingPopUp from '../components/PopUp/BookingPopUp';
+import LogInPopUp from '../components/PopUp/LogInPopUp';
 
 class Property extends Component {
 
@@ -19,17 +20,20 @@ class Property extends Component {
                 propertyServices: [],
                 propertyRestrictions: [],
                 propertyType: {},
-                owner: {}
+                owner: {},
             },
             showPublicProfilePopUp: false,
             showBookingPopUp: false,
-            userID: null
+            showLogInPopUp: false,
+            userID: null,
+            isUserLoggedIn: localStorage.getItem("user") != ""
         }
+        this.goToMessagingPage = this.goToMessagingPage.bind(this);
         this.showPublicProfile = this.showPublicProfile.bind(this);
         this.hidePublicProfile = this.hidePublicProfile.bind(this);
         this.showBookingPopUp = this.showBookingPopUp.bind(this);
         this.hideBookingPopUp = this.hideBookingPopUp.bind(this);
-        this.goToMessagingPage = this.goToMessagingPage.bind(this);
+        this.hideLogInPopUp = this.hideLogInPopUp.bind(this);
         this.createDone = this.createDone.bind(this);
     }
 
@@ -41,14 +45,22 @@ class Property extends Component {
     }
 
     goToMessagingPage() {
-        this.props.history.push({
-            pathname: '/messaging',
-            state: { newInterlocutor: this.state.property.owner }
-        });
+        if (this.state.isUserLoggedIn){
+            this.props.history.push({
+                pathname: '/messaging',
+                state: { newInterlocutor: this.state.property.owner }
+            });
+        } else {
+            this.setState({ showLogInPopUp: true });
+        }
     }
 
     showPublicProfile(ownerId) {
-        this.setState({ userID: ownerId, showPublicProfilePopUp: true });
+        if (this.state.isUserLoggedIn){
+            this.setState({ userID: ownerId, showPublicProfilePopUp: true });
+        } else {
+            this.setState({ showLogInPopUp: true });
+        }
     }
 
     hidePublicProfile() {
@@ -56,11 +68,19 @@ class Property extends Component {
     }
 
     showBookingPopUp() {
-        this.setState({ showBookingPopUp: true });
+        if (this.state.isUserLoggedIn){
+            this.setState({ showBookingPopUp: true });
+        } else {
+            this.setState({ showLogInPopUp: true });
+        }
     }
 
     hideBookingPopUp() {
         this.setState({ showBookingPopUp: false });
+    }
+
+    hideLogInPopUp() {
+        this.setState({ showLogInPopUp: false });
     }
 
     createDone() {
@@ -72,7 +92,6 @@ class Property extends Component {
     }
 
     render() {
-
         return (
             <>
                 <div>
@@ -154,13 +173,19 @@ class Property extends Component {
                         userId={this.state.userID} key={this.state.userID}
                     />
                 }
-                <BookingPopUp
-                    show={this.state.showBookingPopUp}
-                    onHide={this.hideBookingPopUp}
-                    propertyId={this.state.id} key={this.state.id}
-                    dateFrom={this.props.location.state.dateFrom}
-                    dateTo={this.props.location.state.dateTo}
-                    onCreateDone={this.createDone}
+                {this.state.isUserLoggedIn &&
+                    <BookingPopUp
+                        show={this.state.showBookingPopUp}
+                        onHide={this.hideBookingPopUp}
+                        propertyId={this.state.id} key={this.state.id}
+                        dateFrom={this.props.location.state.dateFrom}
+                        dateTo={this.props.location.state.dateTo}
+                        onCreateDone={this.createDone}
+                    />
+                }
+                <LogInPopUp
+                    show={this.state.showLogInPopUp} key={this.state.showLogInPopUp}
+                    onHide={this.hideLogInPopUp}
                 />
             </>
         )

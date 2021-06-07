@@ -25,23 +25,18 @@ function App() {
                     <Route exact path='/' component={Home}></Route>
                     <Route exact path='/search' component={Search}></Route>
                     <Route exact path='/property/:id' component={Property}></Route>
+                    <Route exact path='/faq' component={FAQ}></Route>
+
+                    {/* User only pages */}
+                    <Route exact path='/messaging' component={Messaging}></Route>
+                    <Route exact path='/myreservations' component={MyReservations}></Route>
+                    <Route exact path='/myproperties' component={MyProperties}></Route>
+                    <Route exact path='/profile' component={Profile}></Route>
+                    
+                    {/* Admin only pages */}
                     <Route exact path='/members' component={Members}></Route>
                     <Route exact path='/offers' component={Offers}></Route>
 
-                    {localStorage.getItem('user') &&
-                        <>
-                            <Route exact path='/messaging' component={Messaging}></Route>
-                            <Route exact path='/myproperties' component={MyProperties}></Route>
-                            <Route exact path='/profile' component={Profile}></Route>
-                            <Route exact path='/myreservations' component={MyReservations}></Route>
-                            <Route exact path='/faq' component={FAQ}></Route>
-                        </>
-                    }
-
-                    {/* Avec conditions (localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).type == "Member"),
-                    marche mais si admin accède à /profile par exemple, on aura page vide sur l'url /profile,
-                    au lieu d'aller sur NotFoundRoute.
-                    Du coup je redirige dans le render() des pages concernées */}
                     <Route path="*" component={NotFoundRoute} />
 
                 </Switch>

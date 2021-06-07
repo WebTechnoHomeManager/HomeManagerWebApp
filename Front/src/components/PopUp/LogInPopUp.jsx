@@ -14,23 +14,36 @@ class LogInPopUp extends Component {
         };
 
         this.displaySignUpPopUp = this.displaySignUpPopUp.bind(this);
+        this.logIn = this.logIn.bind(this);
     }
 
     displaySignUpPopUp(){
         this.setState({ needToSignUp: true });
     }
-   
+
+    logIn(user) {
+        this.setState({ showModal: false });
+        this.setState({ user: user });
+
+        localStorage.setItem('user', JSON.stringify(user));
+        if (this.props.setParentStateUser != undefined){
+            this.props.setParentStateUser(user);
+        } else {
+            document.location.reload();
+        }
+    }
+
     render() {
 
         var contentToDisplay = ""; 
         if (this.state.needToSignUp) {
             contentToDisplay = <SignUpPopUpContent 
                                     displaySignUpPopUp={this.displaySignUpPopUp}
-                                    logIn={this.props.logIn}/>
+                                    logIn={this.logIn}/>
         } else {
             contentToDisplay = <LogInPopUpContent 
                                     displaySignUpPopUp={this.displaySignUpPopUp}
-                                    logIn={this.props.logIn}/>
+                                    logIn={this.logIn}/>
             
         }
 
