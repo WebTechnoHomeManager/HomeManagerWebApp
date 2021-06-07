@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Row } from 'react-bootstrap';
 import UserService from '../services/UserService';
-import { Pencil, Trash, Eye } from 'react-bootstrap-icons';
+import { Trash } from 'react-bootstrap-icons';
 
 class Members extends Component {
 
@@ -36,37 +36,37 @@ class Members extends Component {
             <div style={{ margin: '20px' }}>
                 <h2 className="center">Members List</h2>
                 <br></br>
-                <Row>
-                    <Table striped bordered hover style={{ width: "90%", textAlign: "center" }}>
+                <div className="div-center-content">
+                    <Row>
+                        <Table striped bordered hover style={{ width: "90%", textAlign: "center" }}>
 
-                        <thead>
-                            <tr>
-                                <th> Member's First Name</th>
-                                <th> Member's Last Name</th>
-                                <th> Member's Email</th>
-                                <th> Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                this.state.users.map(
-                                    user =>
-                                        <tr key={user.id}>
-                                            <td> {user.firstName} </td>
-                                            <td> {user.lastName}</td>
-                                            <td> {user.email}</td>
-                                            <td>
-                                                <Button className="btn btn-info"> <Pencil></Pencil>Update </Button>
-                                                <Button style={{ marginLeft: "10px" }} onClick={() => { if (window.confirm('Are you sure you wish to delete ' + user.firstName + ' ' + user.lastName + '\'s profile?')) this.deleteMember(user.id) }} className="btn btn-danger"> <Trash></Trash>Delete </Button>
-                                                <Button style={{ marginLeft: "10px" }} className="btn btn-info"> <Eye></Eye>View </Button>
-                                            </td>
-                                        </tr>
-                                )
-                            }
-                        </tbody>
-                    </Table>
+                            <thead>
+                                <tr>
+                                    <th> Member's First Name</th>
+                                    <th> Member's Last Name</th>
+                                    <th> Member's Email</th>
+                                    <th> Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    this.state.users.map(
+                                        user =>
+                                            <tr key={user.id}>
+                                                <td> {user.firstName} </td>
+                                                <td> {user.lastName}</td>
+                                                <td> {user.email}</td>
+                                                <td>
+                                                    <Button style={{ marginLeft: "10px" }} onClick={() => { if (window.confirm('Are you sure you wish to delete ' + user.firstName + ' ' + user.lastName + '\'s profile?')) this.deleteMember(user.id) }} className="btn btn-danger"> <Trash></Trash>Delete </Button>
+                                                </td>
+                                            </tr>
+                                    )
+                                }
+                            </tbody>
+                        </Table>
+                    </Row>
+                </div>
 
-                </Row>
 
             </div>
         )

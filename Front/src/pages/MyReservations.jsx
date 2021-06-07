@@ -86,7 +86,7 @@ class MyReservations extends Component {
                         .filter(reservation => new Date(reservation.end_date) < new Date())
                         .sort((a, b) => a.start_date < b.start_date ? 1 : -1)
                         .map(pastReservation =>
-                            <div className="div-center-content" style={{ marginTop: '30px' }}>
+                            <div key={pastReservation.id} className="div-center-content" style={{ marginTop: '30px' }}>
                                 <Card style={{ width: '70%' }}>
                                     <Card.Header>
                                         From&nbsp;
@@ -133,7 +133,7 @@ class MyReservations extends Component {
                         .filter(reservation => new Date(reservation.start_date) > new Date() || (new Date(reservation.start_date) <= new Date() && new Date(reservation.end_date) >= new Date()))
                         .sort((a, b) => a.start_date < b.start_date ? 1 : -1)
                         .map(upcomingReservation =>
-                            <div className="div-center-content" style={{ marginTop: '30px' }}>
+                            <div key={upcomingReservation.id} className="div-center-content" style={{ marginTop: '30px' }}>
                                 <Card style={{ width: '70%' }}>
                                     <Card.Header>
                                         From&nbsp;
@@ -164,7 +164,7 @@ class MyReservations extends Component {
                                                     </Card.Text>
                                                     <div style={{ textAlign: 'center' }}>
                                                         <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => this.goToMessagingPage(upcomingReservation.property_reservation.owner)}> <PersonLinesFill /> Contact</Button>
-                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteReservation(upcomingReservation.id) }}> <Trash />Cancel</Button>
+                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => { if (window.confirm('Are you sure you wish to cancel this reservation?')) this.deleteReservation(upcomingReservation.id) }}> <Trash />Cancel</Button>
                                                     </div>
                                                 </Col>
                                             </Row>

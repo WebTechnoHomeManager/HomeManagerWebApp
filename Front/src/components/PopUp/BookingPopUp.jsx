@@ -62,11 +62,11 @@ class BookingPopUp extends Component {
                         Make a reservation
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <Row>
-                        <div className="div-center-content">
 
-                            <Form onChange={this.handleChange}>
+                <div className="div-center-content">
+                    <Row>
+                        <Form onChange={this.handleChange} onSubmit={this.handleSubmit}>
+                            <Modal.Body>
                                 <Form.Group controlId="start_date">
                                     <Form.Label>From:</Form.Label>
                                     <Form.Control type="date" name="start_date" defaultValue={this.props.dateFrom} required />
@@ -75,45 +75,45 @@ class BookingPopUp extends Component {
                                     <Form.Label>To:</Form.Label>
                                     <Form.Control type="date" name="end_date" defaultValue={this.props.dateTo} required />
                                 </Form.Group>
-                            </Form>
-                        </div>
-                    </Row>
-                    <Row>
-                        <p>I agree to respect the following services and constraints:</p>
-                        <Form>
-                            {
-                                this.state.reservation.property_reservation.propertyServices.map(
-                                    service =>
-                                        <Form.Check key={"service" + service.id}
-                                            name={"service" + service.id}
-                                            label={service.name}
-                                            id={"service" + service.id}
-                                            type="checkbox"
-                                            required />
-                                )
-                            }
-                            {
-                                this.state.reservation.property_reservation.propertyRestrictions.map(
-                                    restriction =>
-                                        <Form.Check key={"restriction" + restriction.id}
-                                            name={"restriction" + restriction.id}
-                                            label={restriction.name}
-                                            id={"restriction" + restriction.id}
-                                            type="checkbox"
-                                            required />
-                                )
-                            }
+
+                                <p>I agree to respect the following services and constraints:</p>
+
+                                {
+                                    this.state.reservation.property_reservation.propertyServices.map(
+                                        service =>
+                                            <Form.Check key={"service" + service.id}
+                                                name={"service" + service.id}
+                                                label={service.name}
+                                                id={"service" + service.id}
+                                                type="checkbox"
+                                                required />
+                                    )
+                                }
+                                {
+                                    this.state.reservation.property_reservation.propertyRestrictions.map(
+                                        restriction =>
+                                            <Form.Check key={"restriction" + restriction.id}
+                                                name={"restriction" + restriction.id}
+                                                label={restriction.name}
+                                                id={"restriction" + restriction.id}
+                                                type="checkbox"
+                                                required />
+                                    )
+                                }
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button className="strong-button" onClick={this.props.onHide}>
+                                    <XCircle /> Close
+                    </Button>
+                                <Button className="strong-button" variant="primary" type="submit">
+                                    <PlusCircle /> Make the reservation
+                    </Button>
+                            </Modal.Footer>
                         </Form>
                     </Row>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className="strong-button" onClick={this.props.onHide}>
-                        <XCircle /> Close
-                    </Button>
-                    <Button className="strong-button" variant="primary" onClick={this.handleSubmit}>
-                        <PlusCircle /> Make the reservation
-                    </Button>
-                </Modal.Footer>
+                </div>
+
+
             </Modal>
 
         );
