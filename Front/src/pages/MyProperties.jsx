@@ -15,7 +15,7 @@ class MyProperties extends Component {
         super(props)
 
         this.state = {
-            user: JSON.parse(localStorage.getItem('user')),
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             properties: [],
             showCreatePopUp: false,
             showUpdateModal: false,
@@ -98,8 +98,7 @@ class MyProperties extends Component {
     }
 
     render() {
-
-        if (JSON.parse(localStorage.getItem('user')).type != "Member") {
+        if (this.state.user == "" || this.state.user.type != "Member") {
             return <Redirect to='/' />;
         }
         return (

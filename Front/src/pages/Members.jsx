@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table, Button, Row } from 'react-bootstrap';
 import UserService from '../services/UserService';
 import { Trash } from 'react-bootstrap-icons';
+import { Redirect } from "react-router-dom";
 
 class Members extends Component {
 
@@ -9,6 +10,7 @@ class Members extends Component {
         super(props);
 
         this.state = {
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             users: []
         }
         this.deleteMember = this.deleteMember.bind(this);
@@ -31,7 +33,9 @@ class Members extends Component {
     }
 
     render() {
-
+        if (this.state.user == "" || this.state.user.type != "Admin") {
+            return <Redirect to='/' />;
+        }
         return (
             <div style={{ margin: '20px' }}>
                 <h2 className="center">Members List</h2>

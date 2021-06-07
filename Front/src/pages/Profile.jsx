@@ -10,7 +10,7 @@ class Profile extends Component {
         super(props)
 
         this.state = {
-            user: JSON.parse(localStorage.getItem('user'))
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {}
         }
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,6 +24,7 @@ class Profile extends Component {
         console.log('user => ' + JSON.stringify(user));
 
         UserService.updateUser(user, this.state.user.id).then(res => {
+            localStorage.setItem('user', JSON.stringify(user));
             this.props.history.push('/profile');
             alert("Profile updated");
         });
@@ -39,8 +40,9 @@ class Profile extends Component {
     deleteProfile(userId) {
         UserService.deleteUser(userId).then((res) => {
             localStorage.setItem('user', '');
-            this.setState({ user: {} });
+            this.setState({ user: "" });
             this.props.history.push("/");
+            document.location.reload();
         }).catch(error => {
             console.log(error.response);
         });
@@ -54,7 +56,7 @@ class Profile extends Component {
     }
 
     render() {
-        if (JSON.parse(localStorage.getItem('user')).type != "Member") {
+        if (this.state.user == "" || this.state.user.type != "Member") {
             return <Redirect to='/' />;
         }
         return (<div>

@@ -14,6 +14,7 @@ class Offers extends Component {
         super(props)
 
         this.state = {
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             properties: [],
             showUpdateModal: false,
             propertyID: null,
@@ -82,7 +83,9 @@ class Offers extends Component {
     }
 
     render() {
-
+        if (this.state.user == "" || this.state.user.type != "Admin") {
+            return <Redirect to='/' />;
+        }
         return (
             <div>
                 <h1 className="center">Offers</h1>

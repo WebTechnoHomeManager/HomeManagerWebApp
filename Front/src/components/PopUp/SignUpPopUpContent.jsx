@@ -78,7 +78,7 @@ class SignUpPopUpContent extends Component {
             firstName: formData.get("firstName"),
             lastName: formData.get("lastName"),
             tel: formData.get("tel"),
-            dateBirth: Moment(formData.get("dateBirth")).format('YYYY-MM-DD'),
+            dateBirth: Moment(formData.get("dateBirth")).format('YYYY-MM-DD HH:mm:ss.SSS'),
             dateRegistration: nowDateWithoutTimeZone,
             type: "Member"
         }
@@ -134,7 +134,7 @@ class SignUpPopUpContent extends Component {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>Tel</Form.Label>
-                            <Form.Control type="tel" name="tel" defaultValue="555-" maxlength="8" required/>
+                            <Form.Control type="tel" name="tel" defaultValue="555-" maxLength="8" required/>
                             <Form.Text className="error-form">{this.state.errorTel}</Form.Text>
                         </Form.Group>
                         <div className="div-center-content">
