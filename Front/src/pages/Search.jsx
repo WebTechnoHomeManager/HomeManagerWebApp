@@ -1,13 +1,9 @@
 import React, { Component, useState } from 'react';
 import { Container, Form, Button, Row, Col, Accordion, Card, Image } from 'react-bootstrap';
 import SearchBar from '../components/SearchBar';
+import MapProperties from '../components/MapProperties';
 import PropertyService from '../services/PropertyService';
 import photo from '../images/houses/house1.jpg';
-
-/*import Map from 'ol/Map';
-import View from 'ol/View';
-import TileLayer from 'ol/layer/Tile';
-import XYZ from 'ol/source/XYZ';*/
 
 class Search extends Component {
 
@@ -20,6 +16,7 @@ class Search extends Component {
 
         this.launchSearch = this.launchSearch.bind(this);
         this.viewProperty = this.viewProperty.bind(this);
+        this.selectCard = this.selectCard.bind(this);
 
         var dataFromSearch = this.props.location.state;
         if (dataFromSearch) {
@@ -40,25 +37,20 @@ class Search extends Component {
         })
     }
 
+    selectCard(id){
+        var cards = document.querySelectorAll('[id^="property"]');
+        for (var card of cards){
+            card.style.backgroundColor = "white";
+        }
+        document.getElementById("property"+id).style.backgroundColor = "#e3e3e3";
+        document.getElementById("property"+id).scrollIntoView();
+    }
+
     render() {
-        /*const map = new Map({
-            target: 'map',
-            layers: [
-                new TileLayer({
-                    source: new XYZ({
-                        url: 'https://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                    })
-                })
-            ],
-            view: new View({
-                center: [0, 0],
-                zoom: 2
-            })
-        });*/
+       
 
         return (
             <div>
-
                 <Container className="my-5">
                     <h3>Your search</h3>
                     <Row>
@@ -69,13 +61,13 @@ class Search extends Component {
                             launchSearch={this.launchSearch}></SearchBar>
                     </Row>
                 </Container>
-                <Container className="my-5">
-                    <Row>
-                        <Col sm={6}>
-                            <h4>{this.state.properties.length} result(s)</h4>
+                <Container className="my-5" id="search-results" fluid style={{paddingLeft: 50, paddingRight: 50}}>
+                    <Row style={{height: "100%"}}>
+                        <h4>{this.state.properties.length} result(s)</h4>
+                        <Col sm={6} id="search-results-list">
                             {
                                 this.state.properties.map(property =>
-                                    <Card className="my-3 card-with-link" key={"property" + property.id}
+                                    <Card id={"property"+property.id} className="my-3 card-with-link" key={"property" + property.id}
                                         onClick={() => this.viewProperty(property.id)}>
                                         <Card.Body>
                                             <Row>
@@ -116,6 +108,8 @@ class Search extends Component {
 
                         </Col>
                         <Col sm={6}>
+                            <MapProperties properties={this.state.properties}
+                                           onClickOnPoint={this.selectCard}></MapProperties>
                         </Col>
                     </Row>
                 </Container>

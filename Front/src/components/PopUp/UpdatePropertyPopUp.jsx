@@ -5,6 +5,7 @@ import RestrictionService from '../../services/RestrictionService';
 import ServiceService from '../../services/ServiceService';
 import TypeService from '../../services/TypeService';
 import { Pencil, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
+import AdressService from "../../services/AddressService"
 
 class UpdatePropertyPopUp extends Component {
 
@@ -13,6 +14,7 @@ class UpdatePropertyPopUp extends Component {
 
         this.state = {
             id: this.props.propertyId,
+            suggestedAddresses: [],
             allServices: [],
             allRestrictions: [],
             allPropertyTypes: [],
@@ -30,6 +32,8 @@ class UpdatePropertyPopUp extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.doesServiceNeedToBeChecked = this.doesServiceNeedToBeChecked.bind(this);
         this.doesRestrictionNeedToBeChecked = this.doesRestrictionNeedToBeChecked.bind(this);
+        this.addressAutocomplete = this.addressAutocomplete.bind(this);
+        this.handleAddressSelection = this.handleAddressSelection.bind(this);
     }
 
     componentDidMount() {
@@ -68,6 +72,10 @@ class UpdatePropertyPopUp extends Component {
         let property = { ...this.state.property };
         property[event.target.name] = event.target.value;
         this.setState({ property });
+
+        if (event.target.name == "address" && event.target.value.trim() != ""){
+            this.addressAutocomplete(event.target.value);
+        }
     }
 
     handleTypeChange = (event) => {
@@ -138,6 +146,24 @@ class UpdatePropertyPopUp extends Component {
         return this.state.property.propertyRestrictions.some(item => item.id == id);
     } 
 
+    addressAutocomplete(address){
+        AdressService.getAddress(encodeURI(address)).then((resp) => {
+            console.log(resp.data); 
+            const suggestedAddresses = resp.data.results.filter(address => address.type == "Point Address");
+            this.setState({ suggestedAddresses: suggestedAddresses.slice(0, 5) }); 
+        });
+    }
+
+    handleAddressSelection(address){
+        let property = { ...this.state.property };
+        property["address"] = address.address.freeformAddress;
+        property["city"] = address.address.municipality;
+        property["latitude"] = address.position.lat;
+        property["longitude"] = address.position.lon;
+        this.setState({ property });
+        this.setState({ suggestedAddresses: [] });
+    }
+
     
     render() {
         return (
@@ -147,112 +173,126 @@ class UpdatePropertyPopUp extends Component {
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
             >
-                <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        Update Property
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Row>
-                        <Col>
-                            <div className="div-center-content">
+                <div style={{paddingLeft:"25px", paddingRight:"25px", paddingTop:"10px",paddingBottom:"10px"}}>
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            Update Property
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Row>
+                            <Col>
+                                <div className="div-center-content">
 
-                                <Form onChange={this.handleChange}>
-                                    <Form.Group controlId="title">
-                                        <Form.Label>Title:</Form.Label>
-                                        <Form.Control type="text" name="title" defaultValue={this.state.property.title} />
-                                    </Form.Group>
-                                    <Form.Group controlId="description">
-                                        <Form.Label>Description:</Form.Label>
-                                        <Form.Control as="textarea" rows={3} type="text" name="description" defaultValue={this.state.property.description} />
-                                    </Form.Group>
-                                    <Form.Group controlId="address">
-                                        <Form.Label>Address:</Form.Label>
-                                        <Form.Control type="text" name="address" defaultValue={this.state.property.address} />
-                                    </Form.Group>
-                                    <Form.Group controlId="city">
-                                        <Form.Label>City:</Form.Label>
-                                        <Form.Control type="text" name="city" defaultValue={this.state.property.city} />
-                                    </Form.Group>
-                                    <Form.Group controlId="totalOccupancy">
-                                        <Form.Label>Total occupancy:</Form.Label>
-                                        <Form.Control type="text" name="totalOccupancy" defaultValue={this.state.property.totalOccupancy} />
-                                    </Form.Group>
-                                </Form>
-                            </div>
-                        </Col>
-                        <Col>
+                                    <Form id="update-property-popup" onChange={this.handleChange}>
+                                        <Form.Group controlId="title">
+                                            <Form.Label>Title:</Form.Label>
+                                            <Form.Control type="text" name="title" defaultValue={this.state.property.title} />
+                                        </Form.Group>
+                                        <Form.Group controlId="description">
+                                            <Form.Label>Description:</Form.Label>
+                                            <Form.Control as="textarea" rows={3} type="text" name="description" defaultValue={this.state.property.description} />
+                                        </Form.Group>
+                                        <Form.Group controlId="address">
+                                            <Form.Label>Address:</Form.Label>
+                                            <Form.Control type="text" name="address" autocomplete="off"
+                                                          defaultValue={this.state.property.address}
+                                                          value={this.state.property.address}/>
+                                        </Form.Group>
+                                        {this.state.suggestedAddresses.length != 0 &&
+                                            <div className="dropdown-autocomplete">
+                                                {this.state.suggestedAddresses.map(address =>
+                                                    <div className="dropdown-item"
+                                                        onClick={() => this.handleAddressSelection(address)}>
+                                                        {address.address.freeformAddress}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        }
+                                        {/* <Form.Group controlId="city">
+                                            <Form.Label>City:</Form.Label>
+                                            <Form.Control type="text" name="city" defaultValue={this.state.property.city} />
+                                        </Form.Group> */}
+                                        <Form.Group controlId="totalOccupancy">
+                                            <Form.Label>Total occupancy:</Form.Label>
+                                            <Form.Control type="text" name="totalOccupancy" defaultValue={this.state.property.totalOccupancy} />
+                                        </Form.Group>
+                                    </Form>
+                                </div>
+                            </Col>
+                            <Col>
 
-                            <Form.Group controlId="propertyType" onChange={this.handleTypeChange}>
-                                <Form.Label>Property type:</Form.Label>
-                                <Form.Control as="select" name="propertyType">
-                                    {
-                                        this.state.allPropertyTypes.map(
-                                            type => <option key={type.id} value={[type.id, type.name]} 
-                                            selected={type.name === this.state.property.propertyType.name} > {type.name} </option>
-                                        )
-                                    }
-                                </Form.Control>
-                            </Form.Group>
+                                <Form.Group controlId="propertyType" onChange={this.handleTypeChange}>
+                                    <Form.Label>Property type:</Form.Label>
+                                    <Form.Control as="select" name="propertyType">
+                                        {
+                                            this.state.allPropertyTypes.map(
+                                                type => <option key={type.id} value={[type.id, type.name]} 
+                                                selected={type.name === this.state.property.propertyType.name} > {type.name} </option>
+                                            )
+                                        }
+                                    </Form.Control>
+                                </Form.Group>
 
-                            <Form.Group controlId="propertyServices">
-                                <Accordion className="col-auto" defaultActiveKey="0">
-                                    <Card>
-                                        <Accordion.Toggle as={Card.Header} eventKey="0">
-                                            <CardChecklist></CardChecklist>  Services
-                                        </Accordion.Toggle>
-                                        <Accordion.Collapse eventKey="0">
-                                            <Card.Body>
-                                                {
-                                                    this.state.allServices.map(
-                                                        service =>
-                                                            <Form.Check key={"service" + service.id}
-                                                                checked={this.doesServiceNeedToBeChecked(service.id)}
-                                                                name={"service" + service.id}
-                                                                label={service.name}
-                                                                id={"service" + service.id} 
-                                                                onChange={(e) => { this.handleClickService(e, service) }}
-                                                            />
-                                                    )
-                                                }
-                                            </Card.Body>
-                                        </Accordion.Collapse>
-                                    </Card>
-                                </Accordion>
-                            </Form.Group>
-                            <Form.Group controlId="propertyRestrictions">
-                                <Accordion className="col-auto" defaultActiveKey="0">
-                                    <Card>
-                                        <Accordion.Toggle as={Card.Header} eventKey="0">
-                                            <CardList></CardList>  Restrictions
-                                        </Accordion.Toggle>
-                                        <Accordion.Collapse eventKey="0">
-                                            <Card.Body>
-                                                {
-                                                    this.state.allRestrictions.map(
-                                                        restriction =>
-                                                            <Form.Check key={"restriction" + restriction.id}
-                                                                checked={this.doesRestrictionNeedToBeChecked(restriction.id)}
-                                                                name={"restriction" + restriction.id}
-                                                                label={restriction.name}
-                                                                id={"restriction" + restriction.id} 
-                                                                onChange={(e) => { this.handleClickRestriction(e, restriction) }}
-                                                            />
-                                                    )
-                                                }
-                                            </Card.Body>
-                                        </Accordion.Collapse>
-                                    </Card>
-                                </Accordion>
-                            </Form.Group>
+                                <Form.Group controlId="propertyServices">
+                                    <Accordion className="col-auto" defaultActiveKey="0">
+                                        <Card>
+                                            <Accordion.Toggle as={Card.Header} eventKey="0">
+                                                <CardChecklist></CardChecklist>  Services
+                                            </Accordion.Toggle>
+                                            <Accordion.Collapse eventKey="0">
+                                                <Card.Body>
+                                                    {
+                                                        this.state.allServices.map(
+                                                            service =>
+                                                                <Form.Check key={"service" + service.id}
+                                                                    checked={this.doesServiceNeedToBeChecked(service.id)}
+                                                                    name={"service" + service.id}
+                                                                    label={service.name}
+                                                                    id={"service" + service.id} 
+                                                                    onChange={(e) => { this.handleClickService(e, service) }}
+                                                                />
+                                                        )
+                                                    }
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    </Accordion>
+                                </Form.Group>
+                                <Form.Group controlId="propertyRestrictions">
+                                    <Accordion className="col-auto" defaultActiveKey="0">
+                                        <Card>
+                                            <Accordion.Toggle as={Card.Header} eventKey="0">
+                                                <CardList></CardList>  Restrictions
+                                            </Accordion.Toggle>
+                                            <Accordion.Collapse eventKey="0">
+                                                <Card.Body>
+                                                    {
+                                                        this.state.allRestrictions.map(
+                                                            restriction =>
+                                                                <Form.Check key={"restriction" + restriction.id}
+                                                                    checked={this.doesRestrictionNeedToBeChecked(restriction.id)}
+                                                                    name={"restriction" + restriction.id}
+                                                                    label={restriction.name}
+                                                                    id={"restriction" + restriction.id} 
+                                                                    onChange={(e) => { this.handleClickRestriction(e, restriction) }}
+                                                                />
+                                                        )
+                                                    }
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    </Accordion>
+                                </Form.Group>
 
-                        </Col>
-                    </Row>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className="strong-button" onClick={this.props.onHide}> <XCircle /> Close</Button>
-                    <Button className="strong-button" onClick={this.handleSubmit}> <Pencil /> Update</Button>
-                </Modal.Footer>
+                            </Col>
+                        </Row>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className="strong-button" onClick={this.props.onHide}> <XCircle /> Close</Button>
+                        <Button className="strong-button" onClick={this.handleSubmit}> <Pencil /> Update</Button>
+                    </Modal.Footer>
+                </div>
             </Modal>
 
         );

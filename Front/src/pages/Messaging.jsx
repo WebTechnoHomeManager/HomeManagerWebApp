@@ -154,25 +154,23 @@ class Messaging extends Component {
                         </Col>
                         <Col className="col-messaging">
                             <Row id="messaging-chat">
-                            <div id="message-view" className="m-2">
-                                
-                                {Object.keys(this.state.sentMessagesBetweenTheTwo).map(date => 
-                                    <>
-                                        <Col className="messages-date">{date}</Col>
-                                        {this.state.sentMessagesBetweenTheTwo[date].map(message => 
+                                <div id="message-view" className="m-2">
+                                    {Object.keys(this.state.sentMessagesBetweenTheTwo).map(date => 
+                                        <>
+                                            <Col className="messages-date">{date}</Col>
+                                            {this.state.sentMessagesBetweenTheTwo[date].map(message => 
 
-                                            <Col key={message.id} 
-                                                className={"p-0 " + (message.sender.id == this.state.user.id ? "sentMessage-parent" : "")}>
-                                                <div className="messages-time">{this.formatTime(message.datetime)}</div>
-                                                <div className={"message " + (message.sender.id == this.state.user.id ? "sentMessage" : "receivedMessage")}>
-                                                    {message.message}
-                                                </div>
-                                            
-                                            </Col>
-                                        )}
-                                    </>
-                                        
-                                )}
+                                                <Col key={message.id} 
+                                                    className={"p-0 " + (message.sender.id == this.state.user.id ? "sentMessage-parent" : "")}>
+                                                    <div className="messages-time">{this.formatTime(message.datetime)}</div>
+                                                    <div className={"message " + (message.sender.id == this.state.user.id ? "sentMessage" : "receivedMessage")}>
+                                                        {message.message}
+                                                    </div>
+                                                
+                                                </Col>
+                                            )}
+                                        </>    
+                                    )}
                                 </div>
                                 <div id="message-input" className="m-2">
                                     <Form>

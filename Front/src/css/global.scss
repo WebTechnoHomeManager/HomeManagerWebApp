@@ -96,7 +96,7 @@ body, html{
 }
 
 
-.dropdown-filter {
+.dropdown-filter{
     text-align: right !important;
     .dropdown-toggle{
         background-color: $gray !important;
@@ -119,6 +119,27 @@ body, html{
     }
     .dropdown-toggle{
         box-shadow: none !important;
+    }
+}
+.dropdown-autocomplete{
+    margin-bottom: 16px;
+    margin-top: -16px;
+    border: 1px solid #ced4da;
+    cursor: pointer;
+
+    .dropdown-item{
+        overflow: "hidden";
+        font-size: 0.9rem !important;
+    }
+    .dropdown-item:active {
+        background-color: $gray1 !important;
+        border-color: $gray1 !important;
+        color: black !important;
+    }
+    .dropdown-item.active {
+        background-color: $gray !important;
+        border-color: $gray !important;
+        color: black !important;
     }
 }
 
@@ -190,4 +211,8 @@ ul {
 
 td, th {
     vertical-align: middle !important;
+}
+
+#create-property-popup, #update-property-popup {
+    width: 400px
 }

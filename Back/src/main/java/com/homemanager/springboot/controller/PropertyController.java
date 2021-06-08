@@ -77,8 +77,10 @@ public class PropertyController {
 		
 		List<Property> recentPropertiesList = new ArrayList<Property>();
 		
-		for (int i = propertiesListLength; i >= 1; i--) {
-			recentPropertiesList.add(propertiesList.get(i-1));
+		for (int i = propertiesListLength; i >= propertiesListLength-3; i--) {
+			if(i >= 1) {
+				recentPropertiesList.add(propertiesList.get(i-1));
+			}
 		}
 
 		return recentPropertiesList;
@@ -145,6 +147,7 @@ public class PropertyController {
 		}
 				
 		List<Property> listProperty = listPropertyLocation.stream()
+				.distinct()
 				.filter(x -> areEveryServicesInList(x.getPropertyServices(), servicesIdList)
 						&& areEveryRestrictionsInList(x.getPropertyRestrictions(), restrictionsIdList)
 						&& !areDatesRangesOverlap(x.getReservations(), dateFrom, dateTo))

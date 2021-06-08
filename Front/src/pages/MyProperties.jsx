@@ -137,7 +137,6 @@ class MyProperties extends Component {
                                                 <Card.Text>Type: {property.propertyType.name}</Card.Text>
                                                 <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
                                                 <Card.Text>Address: {property.address}</Card.Text>
-                                                <Card.Text>City: {property.city}</Card.Text>
                                                 <Card.Text>Services: {property.propertyServices.map(function (d, idx) {
                                                     return (<li key={idx}>{d.name}</li>)
                                                 })}</Card.Text>

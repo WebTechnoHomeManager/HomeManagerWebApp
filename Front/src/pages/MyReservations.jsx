@@ -103,7 +103,6 @@ class MyReservations extends Component {
                                                     <Card.Text>Title : {pastReservation.property.title}</Card.Text>
                                                     <Card.Text>Total occupancy: {pastReservation.totalOccupancy}</Card.Text>
                                                     <Card.Text>Address: {pastReservation.property.address}</Card.Text>
-                                                    <Card.Text>City: {pastReservation.property.city}</Card.Text>
                                                     <Card.Text>Services: {pastReservation.property.propertyServices.map(function (d, idx) {
                                                         return (<li key={idx}>{d.name}</li>)
                                                     })}</Card.Text>
@@ -150,7 +149,6 @@ class MyReservations extends Component {
                                                     <Card.Text>Title : {upcomingReservation.property.title}</Card.Text>
                                                     <Card.Text>Total occupancy: {upcomingReservation.totalOccupancy}</Card.Text>
                                                     <Card.Text>Address: {upcomingReservation.property.address}</Card.Text>
-                                                    <Card.Text>City: {upcomingReservation.property.city}</Card.Text>
                                                     <Card.Text>Services: {upcomingReservation.property.propertyServices.map(function (d, idx) {
                                                         return (<li key={idx}>{d.name}</li>)
                                                     })}</Card.Text>
