@@ -12,12 +12,12 @@ class BookingPopUp extends Component {
             propertyId: this.props.propertyId,
             reservation: {
                 reservationUser: JSON.parse(localStorage.getItem('user')),
-                property_reservation: {
+                property: {
                     propertyServices: [],
                     propertyRestrictions: []
                 },
-                start_date: this.props.dateFrom,
-                end_date: this.props.dateTo
+                start_date: this.props.dateFrom, // peut être null !! 
+                end_date: this.props.dateTo // peut être null !! 
             }
         }
         this.handleChange = this.handleChange.bind(this);
@@ -27,7 +27,7 @@ class BookingPopUp extends Component {
     componentDidMount() {
         let reservation = { ...this.state.reservation };
         PropertyService.getPropertyById(this.props.propertyId).then(res => {
-            reservation.property_reservation = res.data;
+            reservation.property = res.data;
             this.setState({ reservation });
         })
     }
@@ -79,7 +79,7 @@ class BookingPopUp extends Component {
                                 <p>I agree to respect the following services and constraints:</p>
 
                                 {
-                                    this.state.reservation.property_reservation.propertyServices.map(
+                                    this.state.reservation.property.propertyServices.map(
                                         service =>
                                             <Form.Check key={"service" + service.id}
                                                 name={"service" + service.id}
@@ -90,7 +90,7 @@ class BookingPopUp extends Component {
                                     )
                                 }
                                 {
-                                    this.state.reservation.property_reservation.propertyRestrictions.map(
+                                    this.state.reservation.property.propertyRestrictions.map(
                                         restriction =>
                                             <Form.Check key={"restriction" + restriction.id}
                                                 name={"restriction" + restriction.id}

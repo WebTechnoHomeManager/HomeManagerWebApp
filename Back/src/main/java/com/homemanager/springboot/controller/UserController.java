@@ -1,10 +1,11 @@
 package com.homemanager.springboot.controller;
 
+import com.homemanager.springboot.model.Chat;
 import com.homemanager.springboot.model.Property;
-import org.springframework.boot.configurationprocessor.json.JSONArray;
+import com.homemanager.springboot.model.Reservation;
+
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +19,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Optional;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
 import com.homemanager.springboot.model.User;
+import com.homemanager.springboot.repository.ChatRepository;
+import com.homemanager.springboot.repository.PropertyRepository;
+import com.homemanager.springboot.repository.ReservationRepository;
 import com.homemanager.springboot.repository.UserRepository;
 
 @RestController
@@ -32,7 +37,16 @@ public class UserController {
 	
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private ChatRepository chatRepository;
+	@Autowired
+	private PropertyRepository propertyRepository;
+	@Autowired
+	private ReservationRepository reservationRepository;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+    
 	@GetMapping()
 	public @ResponseBody Iterable<User> getAllUsers() {
 		return userRepository.findAll();
@@ -68,8 +82,39 @@ public class UserController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@SuppressWarnings("unchecked")
 	@DeleteMapping("/{id}")
 	public String deleteUser(@PathVariable Integer id) throws JSONException {
+		
+		User user = userRepository.findById(id).get();
+		
+		// delete chat messages from and to user
+		List<Chat> messagesFrom = chatRepository.findBySender_Id(id);
+		for (Chat message : messagesFrom) {
+			chatRepository.delete(message);
+		}
+		List<Chat> messagesTo = chatRepository.findByRecipient_Id(id);
+		for (Chat message : messagesTo) {
+			chatRepository.delete(message);
+		}
+		
+		// delete user's properties
+		List<Property> properties = propertyRepository.findByOwner_Id(id);
+		for (Property property : properties) {
+			// delete reservations of user's properties
+			List<Reservation> reservations = reservationRepository.findByProperty_Id(property.getId());
+			for (Reservation reservation : reservations) {
+				reservationRepository.delete(reservation);
+			}
+			propertyRepository.delete(property);
+		}
+		
+		// delete user's reservations
+		List<Reservation> reservations = reservationRepository.findByReservationUser_Id(id);
+		for (Reservation reservation : reservations) {
+			reservationRepository.delete(reservation);
+		}
+
 		userRepository.deleteById(id);
 
 		JSONObject response = new JSONObject();

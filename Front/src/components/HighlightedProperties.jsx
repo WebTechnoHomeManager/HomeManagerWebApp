@@ -20,8 +20,17 @@ class HighlightedProperties extends Component {
             this.setState({ recentProperties: res.data });
             console.log(res.data);
         })
+
+        this.viewProperty = this.viewProperty.bind(this);
     }
     
+    
+    viewProperty(id) {
+        this.props.history.push({
+            pathname: `/property/${id}`,
+            //state: this.props.location.state
+        })
+    }
 
     render() {
         return (
@@ -30,7 +39,8 @@ class HighlightedProperties extends Component {
                 {this.state.recentProperties.map(property => 
                     <Col key={property.id}>
                         <h5>{property.city}</h5>
-                        <Image src={house1} className="img-fluid mx-auto d-block" />
+                        <Image src={house1} className="img-fluid mx-auto d-block card-with-link" 
+                               onClick={() => this.viewProperty(property.id)}/>
                     </Col>
                 )}
             </Row>

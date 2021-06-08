@@ -30,18 +30,18 @@ public class Reservation {
 	
 	@ManyToOne
     @JoinColumn(name="property_id")
-    private Property property_reservation;
+    private Property property;
 	
 	@Column(name = "start_date")
 	private Date start_date;
 	@Column(name = "end_date")
 	private Date end_date;
 	
-	public Property getProperty_reservation() {
-		return property_reservation;
+	public Property getProperty() {
+		return property;
 	}
-	public void setProperty_reservation(Property property_reservation) {
-		this.property_reservation = property_reservation;
+	public void setProperty(Property property) {
+		this.property = property;
 	}
 	public Integer getId() {
 		return id;

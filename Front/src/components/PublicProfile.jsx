@@ -5,7 +5,7 @@ import '../css/App.scss';
 import { Button, Modal, Row, Col, Image, Card, Container } from 'react-bootstrap';
 import { XCircle, Telephone, Envelope, CalendarCheck } from 'react-bootstrap-icons';
 import userIcon from '../images/icons/user.png';
-import photo from '../images/banner/banner2.jpg';
+import photo from '../images/houses/house1.jpg';
 import Moment from 'moment';
 
 class PublicProfile extends Component {
@@ -17,6 +17,8 @@ class PublicProfile extends Component {
             user: {},
             properties: []
         }
+
+        this.viewProperty = this.viewProperty.bind(this);
     }
 
     componentDidMount() {
@@ -26,6 +28,14 @@ class PublicProfile extends Component {
         PropertyService.getPropertiesByOwnerId(this.state.userId).then((res) => {
             this.setState({ properties: res.data });
         });
+    }
+
+    viewProperty(id) {
+        this.props.history.push({
+            pathname: `/property/${id}`,
+            //state: this.props.location.state
+        })
+        document.location.reload();
     }
 
     render() {
@@ -61,14 +71,18 @@ class PublicProfile extends Component {
                                 <div className="div-center-content">
                                     {
                                         this.state.properties.map(
-                                            property => <div className="div-center-content" style={{ marginTop: '30px' }}><Card style={{ width: '100%' }}> <Card.Header>{property.title}</Card.Header>
-                                                <Card.Body>
-                                                    <Card.Img variant="top" src={photo} />
-                                                    <Card.Text>Type: {property.propertyType.name}</Card.Text>
-                                                    <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
-                                                    <Card.Text>City: {property.city}</Card.Text>
-                                                </Card.Body >
-                                            </Card >
+                                            property => 
+                                            <div className="div-center-content" style={{ marginTop: '30px' }}>
+                                                <Card className="card-with-link" style={{ width: '100%' }}
+                                                      onClick={() => this.viewProperty(property.id)}>
+                                                    <Card.Header>{property.title}</Card.Header>
+                                                    <Card.Body>
+                                                        <Card.Img variant="top" src={photo} />
+                                                        <Card.Text>Type: {property.propertyType.name}</Card.Text>
+                                                        <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
+                                                        <Card.Text>City: {property.city}</Card.Text>
+                                                    </Card.Body >
+                                                </Card>
                                             </div>
                                         )
                                     }

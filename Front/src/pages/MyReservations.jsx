@@ -100,23 +100,23 @@ class MyReservations extends Component {
                                                     <img class="card-img" src={photo} alt="Card image"></img>
                                                 </Col>
                                                 <Col>
-                                                    <Card.Text>Title : {pastReservation.property_reservation.title}</Card.Text>
+                                                    <Card.Text>Title : {pastReservation.property.title}</Card.Text>
                                                     <Card.Text>Total occupancy: {pastReservation.totalOccupancy}</Card.Text>
-                                                    <Card.Text>Address: {pastReservation.property_reservation.address}</Card.Text>
-                                                    <Card.Text>City: {pastReservation.property_reservation.city}</Card.Text>
-                                                    <Card.Text>Services: {pastReservation.property_reservation.propertyServices.map(function (d, idx) {
+                                                    <Card.Text>Address: {pastReservation.property.address}</Card.Text>
+                                                    <Card.Text>City: {pastReservation.property.city}</Card.Text>
+                                                    <Card.Text>Services: {pastReservation.property.propertyServices.map(function (d, idx) {
                                                         return (<li key={idx}>{d.name}</li>)
                                                     })}</Card.Text>
-                                                    <Card.Text>Constraints: {pastReservation.property_reservation.propertyRestrictions.map(function (d, idx) {
+                                                    <Card.Text>Constraints: {pastReservation.property.propertyRestrictions.map(function (d, idx) {
                                                         return (<li key={idx}>{d.name}</li>)
                                                     })}</Card.Text>
                                                 </Col>
                                                 <Col>
                                                     <Card.Text style={{ textAlign: 'center' }}>
-                                                        Owner : {pastReservation.property_reservation.owner.firstName} {pastReservation.property_reservation.owner.lastName}
+                                                        Owner : {pastReservation.property.owner.firstName} {pastReservation.property.owner.lastName}
                                                     </Card.Text>
                                                     <div style={{ textAlign: 'center' }}>
-                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => this.goToMessagingPage(pastReservation.property_reservation.owner)}> <PersonLinesFill /> Contact</Button>
+                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => this.goToMessagingPage(pastReservation.property.owner)}> <PersonLinesFill /> Contact</Button>
                                                     </div>
                                                 </Col>
                                             </Row>
@@ -147,23 +147,23 @@ class MyReservations extends Component {
                                                     <img class="card-img" src={photo} alt="Card image"></img>
                                                 </Col>
                                                 <Col>
-                                                    <Card.Text>Title : {upcomingReservation.property_reservation.title}</Card.Text>
+                                                    <Card.Text>Title : {upcomingReservation.property.title}</Card.Text>
                                                     <Card.Text>Total occupancy: {upcomingReservation.totalOccupancy}</Card.Text>
-                                                    <Card.Text>Address: {upcomingReservation.property_reservation.address}</Card.Text>
-                                                    <Card.Text>City: {upcomingReservation.property_reservation.city}</Card.Text>
-                                                    <Card.Text>Services: {upcomingReservation.property_reservation.propertyServices.map(function (d, idx) {
+                                                    <Card.Text>Address: {upcomingReservation.property.address}</Card.Text>
+                                                    <Card.Text>City: {upcomingReservation.property.city}</Card.Text>
+                                                    <Card.Text>Services: {upcomingReservation.property.propertyServices.map(function (d, idx) {
                                                         return (<li key={idx}>{d.name}</li>)
                                                     })}</Card.Text>
-                                                    <Card.Text>Constraints: {upcomingReservation.property_reservation.propertyRestrictions.map(function (d, idx) {
+                                                    <Card.Text>Constraints: {upcomingReservation.property.propertyRestrictions.map(function (d, idx) {
                                                         return (<li key={idx}>{d.name}</li>)
                                                     })}</Card.Text>
                                                 </Col>
                                                 <Col>
                                                     <Card.Text style={{ textAlign: 'center' }}>
-                                                        Owner : {upcomingReservation.property_reservation.owner.firstName} {upcomingReservation.property_reservation.owner.lastName}
+                                                        Owner : {upcomingReservation.property.owner.firstName} {upcomingReservation.property.owner.lastName}
                                                     </Card.Text>
                                                     <div style={{ textAlign: 'center' }}>
-                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => this.goToMessagingPage(upcomingReservation.property_reservation.owner)}> <PersonLinesFill /> Contact</Button>
+                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => this.goToMessagingPage(upcomingReservation.property.owner)}> <PersonLinesFill /> Contact</Button>
                                                         <Button className="strong-button" variant="primary" style={{ margin: '3px' }} onClick={() => { if (window.confirm('Are you sure you wish to cancel this reservation?')) this.deleteReservation(upcomingReservation.id) }}> <Trash />Cancel</Button>
                                                     </div>
                                                 </Col>

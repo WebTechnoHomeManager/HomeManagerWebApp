@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+
 @Entity
 @Table(name = "user")
 public class User {
@@ -44,6 +45,7 @@ public class User {
 	@OneToMany(mappedBy = "reservationUser")
     private Set<Reservation> reservations;
 
+	
 	public boolean isPasswordRight(String inputPassword) {
 		return inputPassword.equals(this.password);
 	}
@@ -136,5 +138,6 @@ public class User {
 				+ "\", \"type\": \"" + type + "\", \"profilePicturePath\": \"" + profilePicturePath
 				+ "\", \"reservations\": \"" + reservations + "\"}";
 	}
+
 	
 }	
