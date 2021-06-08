@@ -13,6 +13,7 @@ import Messaging from './pages/Messaging';
 import FAQ from './pages/FAQ';
 import Members from './pages/Members';
 import Offers from './pages/Offers';
+import FAQmanagement from './pages/FAQmanagement';
 
 
 function App() {
@@ -32,10 +33,11 @@ function App() {
                     <Route exact path='/myreservations' component={MyReservations}></Route>
                     <Route exact path='/myproperties' component={MyProperties}></Route>
                     <Route exact path='/profile' component={Profile}></Route>
-                    
+
                     {/* Admin only pages */}
                     <Route exact path='/members' component={Members}></Route>
                     <Route exact path='/offers' component={Offers}></Route>
+                    <Route exact path='/faq-admin' component={FAQmanagement}></Route>
 
                     <Route path="*" component={NotFoundRoute} />
 

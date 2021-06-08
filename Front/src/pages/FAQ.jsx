@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import FAQService from '../services/FAQService';
 import '../css/App.scss';
-import { Accordion, Card } from 'react-bootstrap';
-import { ArrowDownCircle } from 'react-bootstrap-icons';
+import { Accordion, Card, Button } from 'react-bootstrap';
+import { ArrowDownCircle, Pencil } from 'react-bootstrap-icons';
 
 class FAQ extends Component {
     constructor(props) {
@@ -19,10 +19,23 @@ class FAQ extends Component {
         })
     }
 
+
+
     render() {
+
+        var userType = JSON.parse(localStorage.getItem("user")).type;
+        var editButton = null;
+
+        if (userType !== undefined) {
+            if (userType.toLowerCase() === 'admin') {
+                editButton = <Button href="/faq-admin"><Pencil></Pencil>Edit FAQ</Button>
+            }
+        }
+
         return (
             <div>
                 <h1 style={{ textAlign: 'center', margin: '20px' }}>FAQ</h1>
+                <div style={{ textAlign: 'center', margin: '20px' }}>{editButton}</div>
                 <Accordion defaultActiveKey="0">
                     {
                         this.state.faq.map(faq =>
