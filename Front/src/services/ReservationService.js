@@ -15,6 +15,14 @@ class ReservationService {
     getReservationsByReservationUserId(id) {
         return axios.get(RESERVATION_API_BASE_URL + '/user/' + id);
     }
+
+    deleteReservation(id) {
+        return axios.delete(RESERVATION_API_BASE_URL + '/' + id);
+    }
+
+    createReservation(reservation) {
+        return axios.post(RESERVATION_API_BASE_URL, reservation);
+    }
 }
 
 export default new ReservationService()

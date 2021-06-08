@@ -6,6 +6,8 @@ import photo from '../images/houses/house1.jpg';
 import userIcon from '../images/icons/user.png';
 import { Envelope, EnvelopeFill, InfoCircle, InfoCircleFill } from 'react-bootstrap-icons';
 import PublicProfile from '../components/PublicProfile';
+import BookingPopUp from '../components/PopUp/BookingPopUp';
+import LogInPopUp from '../components/PopUp/LogInPopUp';
 
 class Property extends Component {
 
@@ -18,36 +20,78 @@ class Property extends Component {
                 propertyServices: [],
                 propertyRestrictions: [],
                 propertyType: {},
-                owner: {}
+                owner: {},
             },
-            addModalShow: false,
-            userID: null
+            showPublicProfilePopUp: false,
+            showBookingPopUp: false,
+            showLogInPopUp: false,
+            userID: null,
+            isUserLoggedIn: localStorage.getItem("user") != ""
         }
-
-        //this.showPublicProfilePopUp = this.showPublicProfilePopUp.bind(this);
         this.goToMessagingPage = this.goToMessagingPage.bind(this);
+        this.showPublicProfile = this.showPublicProfile.bind(this);
+        this.hidePublicProfile = this.hidePublicProfile.bind(this);
+        this.showBookingPopUp = this.showBookingPopUp.bind(this);
+        this.hideBookingPopUp = this.hideBookingPopUp.bind(this);
+        this.hideLogInPopUp = this.hideLogInPopUp.bind(this);
+        this.createDone = this.createDone.bind(this);
     }
 
     componentDidMount() {
         PropertyService.getPropertyById(this.state.id).then(res => {
             this.setState({ property: res.data });
         })
+        console.log(this.props.location.state);
     }
 
-    /*showPublicProfilePopUp() {
-        alert("TODO: Public profile popup");
-    }*/
-
     goToMessagingPage() {
+        if (this.state.isUserLoggedIn){
+            this.props.history.push({
+                pathname: '/messaging',
+                state: { newInterlocutor: this.state.property.owner }
+            });
+        } else {
+            this.setState({ showLogInPopUp: true });
+        }
+    }
+
+    showPublicProfile(ownerId) {
+        if (this.state.isUserLoggedIn){
+            this.setState({ userID: ownerId, showPublicProfilePopUp: true });
+        } else {
+            this.setState({ showLogInPopUp: true });
+        }
+    }
+
+    hidePublicProfile() {
+        this.setState({ showPublicProfilePopUp: false });
+    }
+
+    showBookingPopUp() {
+        if (this.state.isUserLoggedIn){
+            this.setState({ showBookingPopUp: true });
+        } else {
+            this.setState({ showLogInPopUp: true });
+        }
+    }
+
+    hideBookingPopUp() {
+        this.setState({ showBookingPopUp: false });
+    }
+
+    hideLogInPopUp() {
+        this.setState({ showLogInPopUp: false });
+    }
+
+    createDone() {
+        this.hideBookingPopUp();
+
         this.props.history.push({
-            pathname: '/messaging',
-            state: { newInterlocutor: this.state.property.owner }
+            pathname: '/myreservations'
         });
     }
 
     render() {
-
-        let addModalClose = () => this.setState({ addModalShow: false });
         return (
             <>
                 <div>
@@ -63,7 +107,7 @@ class Property extends Component {
                                         <Row>
                                             <Card.Title>{this.state.property.propertyType.name} for {this.state.property.totalOccupancy} occupant(s)</Card.Title>
                                             <Card.Text>{this.state.property.description}</Card.Text>
-                                            <Card.Text>Address: {this.state.property.address}, {this.state.property.city}</Card.Text>
+                                            <Card.Text>Address: {this.state.property.address}</Card.Text>
 
                                             <Card.Text>Required services:
                                             <ul>
@@ -96,7 +140,7 @@ class Property extends Component {
                                                     {this.state.property.owner.firstName} {(this.state.property.owner.lastName ? this.state.property.owner.lastName[0] : "") + "."}
                                                 </Card.Text>
                                                 <Button className="strong-button" style={{ fontSize: "0.8rem" }}
-                                                    onClick={() => this.setState({ userID: this.state.property.owner.id, addModalShow: true })} >
+                                                    onClick={() => this.showPublicProfile(this.state.property.owner.id)} >
                                                     <InfoCircleFill />
                                                   More information
                                             </Button>
@@ -104,10 +148,10 @@ class Property extends Component {
                                         </Row>
                                         <Row>
                                             <Col className="div-center-content">
-                                                <Button className="soft-button btn-secondary"
+                                                <Button className="soft-button blue-soft-button btn-secondary"
                                                     onClick={() => this.goToMessagingPage()}>
                                                     <EnvelopeFill />  Contact the owner
-                                            </Button>
+                                                </Button>
                                             </Col>
                                         </Row>
 
@@ -115,17 +159,35 @@ class Property extends Component {
                                 </Card>
                             </Col>
                         </Row>
+                        <Row>
+                            <Button onClick={() => this.showBookingPopUp()}>Book this property</Button>
+                        </Row>
                     </Container>
                     {/* <pre>{JSON.stringify(this.state.property, null, 2)}</pre> */}
                 </div>
 
                 {this.state.userID != null &&
                     <PublicProfile
-                        show={this.state.addModalShow}
-                        onHide={addModalClose}
+                        show={this.state.showPublicProfilePopUp}
+                        onHide={this.hidePublicProfile}
                         userId={this.state.userID} key={this.state.userID}
+                        history={this.props.history}
                     />
                 }
+                {this.state.isUserLoggedIn &&
+                    <BookingPopUp
+                        show={this.state.showBookingPopUp}
+                        onHide={this.hideBookingPopUp}
+                        propertyId={this.state.id} key={this.state.id}
+                        dateFrom={this.props.location.state != undefined ? this.props.location.state.dateFrom : null}
+                        dateTo={this.props.location.state != undefined ? this.props.location.state.dateTo : null}
+                        onCreateDone={this.createDone}
+                    />
+                }
+                <LogInPopUp
+                    show={this.state.showLogInPopUp} key={this.state.showLogInPopUp}
+                    onHide={this.hideLogInPopUp}
+                />
             </>
         )
     }

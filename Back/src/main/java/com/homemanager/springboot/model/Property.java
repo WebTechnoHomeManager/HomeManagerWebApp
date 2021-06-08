@@ -48,11 +48,11 @@ public class Property {
     @JoinColumn(name="property_type_id")
     private Property_type propertyType;
 	
-	@OneToMany(mappedBy = "property_reservation")
+	@OneToMany(mappedBy = "property")
     private Set<Reservation> reservations;
 	
 	// Liaison avec property_photo
-	/*@OneToMany(mappedBy = "property_reservation")
+	/*@OneToMany(mappedBy = "property")
     private Set<Reservation> reservations;*/
 
 	@ManyToMany
