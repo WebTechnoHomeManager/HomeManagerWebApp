@@ -261,7 +261,33 @@ class CreatePropertyPopUp extends Component {
                                             <Form.Label>Total occupancy:</Form.Label>
                                             <Form.Control type="number" name="totalOccupancy" required/>
                                         </Form.Group>
+                                        <div>
+                                            <label className="btn btn-default">
+                                                <input type="file" onChange={this.selectFile} />
+                                            </label>
+
+                                            <Button disabled={!selectedFiles} onClick={this.upload} >
+                                                Upload
+                                            </Button>
+
+                                            <div className="alert alert-light" role="alert">
+                                                {message}
+                                            </div>
+
+                                            <div className="card">
+                                                <div className="card-header">List of pictures</div>
+                                                <ul className="list-group list-group-flush">
+                                                    {fileInfos &&
+                                                    fileInfos.map((file, index) => (
+                                                        <li className="list-group-item" key={index}>
+                                                        <a href={file.url}>{file.name}</a>
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </Form>
+                                    
                                 </div>
                             </Col>
                             <Col>
@@ -323,44 +349,17 @@ class CreatePropertyPopUp extends Component {
                                         </Card>
                                     </Accordion>
                                 </Form.Group>
-
-                            <div>
-                                <label className="btn btn-default">
-                                    <input type="file" onChange={this.selectFile} />
-                                </label>
-
-                                <Button disabled={!selectedFiles} onClick={this.upload} >
-                                    Upload
-                                </Button>
-
-                                <div className="alert alert-light" role="alert">
-                                    {message}
-                                </div>
-
-                                <div className="card">
-                                    <div className="card-header">List of pictures</div>
-                                    <ul className="list-group list-group-flush">
-                                        {fileInfos &&
-                                        fileInfos.map((file, index) => (
-                                            <li className="list-group-item" key={index}>
-                                            <a href={file.url}>{file.name}</a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </div>
-
-                        </Col>
-                    </Row>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button className="strong-button" onClick={this.props.onHide}>
-                        <XCircle /> Close
-                    </Button>
-                    <Button className="strong-button" variant="primary" onClick={this.handleSubmit}>
-                        <PlusCircle /> Add
-                    </Button>
-                </Modal.Footer>
+                            </Col>
+                        </Row>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button className="strong-button" onClick={this.props.onHide}>
+                            <XCircle /> Close
+                        </Button>
+                        <Button className="strong-button" variant="primary" onClick={this.handleSubmit}>
+                            <PlusCircle /> Add
+                        </Button>
+                    </Modal.Footer>
                 </div>
             </Modal>
 

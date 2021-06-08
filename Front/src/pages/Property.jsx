@@ -16,6 +16,7 @@ class Property extends Component {
 
         this.state = {
             id: this.props.match.params.id,
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             property: {
                 propertyServices: [],
                 propertyRestrictions: [],
@@ -149,7 +150,8 @@ class Property extends Component {
                                         <Row>
                                             <Col className="div-center-content">
                                                 <Button className="soft-button blue-soft-button btn-secondary"
-                                                    onClick={() => this.goToMessagingPage()}>
+                                                    onClick={() => this.goToMessagingPage()}
+                                                    disabled={this.state.user.id != undefined && this.state.user.id == this.state.property.owner.id}>
                                                     <EnvelopeFill />  Contact the owner
                                                 </Button>
                                             </Col>
