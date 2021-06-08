@@ -48,6 +48,7 @@ body, html{
     bottom: 0;
     left: 0;
     width: 100%;
+    font-size: 0.9rem;
 }
 
 
@@ -84,6 +85,14 @@ body, html{
 }
 .blue-soft-button:not(:hover){
     background-color: $medium !important;
+    border-color: $medium !important; 
+}
+.blue-transparent-soft-button:hover{
+    background-color: $medium !important;
+    border-color: $mediumDark !important;
+}
+.blue-transparent-soft-button:not(:hover){
+    background-color: transparent;
     border-color: $medium !important; 
 }
 .red-soft-button:hover{

@@ -28,9 +28,8 @@ class LogInPopUp extends Component {
         localStorage.setItem('user', JSON.stringify(user));
         if (this.props.setParentStateUser != undefined){
             this.props.setParentStateUser(user);
-        } else {
-            document.location.reload();
         }
+        document.location.reload();
     }
 
     render() {
