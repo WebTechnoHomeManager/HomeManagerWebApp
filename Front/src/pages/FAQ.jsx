@@ -23,7 +23,7 @@ class FAQ extends Component {
 
     render() {
 
-        var userType = localStorage.getItem('user').userType;
+        var userType = JSON.parse(localStorage.getItem("user")).type;
         var editButton = null;
 
         if (userType !== undefined) {
