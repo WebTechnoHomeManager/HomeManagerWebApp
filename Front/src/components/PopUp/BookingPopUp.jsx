@@ -13,6 +13,7 @@ class BookingPopUp extends Component {
 
         this.state = {
             propertyId: this.props.propertyId,
+            propertyReservations: [],
             reservation: {
                 reservationUser: JSON.parse(localStorage.getItem('user')),
                 property: {
@@ -30,9 +31,12 @@ class BookingPopUp extends Component {
 
     componentDidMount() {
         let reservation = { ...this.state.reservation };
+        let propertyReservations = { ...this.state.propertyReservations };
         PropertyService.getPropertyById(this.props.propertyId).then(res => {
             reservation.property = res.data;
+            propertyReservations = res.data.reservations;
             this.setState({ reservation });
+            this.setState({ propertyReservations }, console.log(this.state.propertyReservations));
         })
     }
 
@@ -65,10 +69,9 @@ class BookingPopUp extends Component {
     }
 
     render() {
-        /*const isAvailable = (date) => {
-                    const day = getDay(date);
-                    return day <= date;
-        };*/
+        const isAvailable = (date) => {
+            return new Date(this.state.propertyReservations[0].start_date).getTime() >= new Date(date).getTime() || new Date(date).getTime() >= new Date(this.state.propertyReservations[0].end_date).getTime();
+        };
 
         return (
             <Modal onHide={() => alert("okes")}
@@ -91,7 +94,7 @@ class BookingPopUp extends Component {
                                     <DatePicker
                                         name='start_date'
                                         selected={new Date(this.state.reservation.start_date)}
-                                        //excludeDates={[new Date(this.props.dateFrom)]}
+                                        //excludeDates={isAvailable}
                                         dateFormat="dd/MM/yyyy"
                                         onChange={this.handleChangeStartDate}
                                     />
@@ -102,7 +105,7 @@ class BookingPopUp extends Component {
                                         name='end_date'
                                         minDate={new Date(this.state.reservation.start_date)}
                                         selected={new Date(this.state.reservation.end_date)}
-                                        //excludeDates={[new Date(this.props.dateFrom)]}
+                                        filterDate={isAvailable}
                                         dateFormat="dd/MM/yyyy"
                                         onChange={this.handleChangeEndDate}
                                     />
