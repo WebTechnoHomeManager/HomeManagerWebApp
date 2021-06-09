@@ -3,6 +3,9 @@ import { Form, Button, Modal, Row } from 'react-bootstrap';
 import { PlusCircle, XCircle } from 'react-bootstrap-icons';
 import PropertyService from '../../services/PropertyService';
 import ReservationService from '../../services/ReservationService';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import Moment from 'moment';
 
 class BookingPopUp extends Component {
     constructor(props) {
@@ -20,7 +23,8 @@ class BookingPopUp extends Component {
                 end_date: this.props.dateTo // peut être null !! 
             }
         }
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
+        this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -32,10 +36,20 @@ class BookingPopUp extends Component {
         })
     }
 
-    handleChange = (event) => {
+    handleChangeEndDate = (event) => {
+        console.log(Moment(event).format("YYYY-MM-DD"));
         let reservation = { ...this.state.reservation };
-        reservation[event.target.name] = event.target.value;
-        this.setState({ reservation });
+        reservation.end_date = Moment(event).format("YYYY-MM-DD");
+        this.setState({ reservation },
+            console.log(this.state));
+    }
+
+    handleChangeStartDate = (event) => {
+        console.log(Moment(event).format("YYYY-MM-DD"));
+        let reservation = { ...this.state.reservation };
+        reservation.start_date = Moment(event).format("YYYY-MM-DD");
+        this.setState({ reservation },
+            console.log(this.state));
     }
 
     handleSubmit(e) {
@@ -51,6 +65,8 @@ class BookingPopUp extends Component {
     }
 
     render() {
+
+
         return (
             <Modal onHide={() => alert("okes")}
                 {...this.props}
@@ -65,15 +81,28 @@ class BookingPopUp extends Component {
 
                 <div className="div-center-content">
                     <Row>
-                        <Form onChange={this.handleChange} onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleSubmit}>
                             <Modal.Body>
                                 <Form.Group controlId="start_date">
                                     <Form.Label>From:</Form.Label>
-                                    <Form.Control type="date" name="start_date" defaultValue={this.props.dateFrom} required />
+                                    <DatePicker
+                                        name='start_date'
+                                        selected={new Date(this.state.reservation.start_date)}
+                                        //excludeDates={[new Date(this.props.dateFrom)]}
+                                        dateFormat="dd/MM/yyyy"
+                                        onChange={this.handleChangeStartDate}
+                                    />
                                 </Form.Group>
                                 <Form.Group controlId="end_date">
                                     <Form.Label>To:</Form.Label>
-                                    <Form.Control type="date" name="end_date" min={this.state.reservation.start_date} defaultValue={this.props.dateTo} required />
+                                    <DatePicker
+                                        name='end_date'
+                                        minDate={new Date(this.state.reservation.start_date)}
+                                        selected={new Date(this.state.reservation.end_date)}
+                                        //excludeDates={[new Date(this.props.dateFrom)]}
+                                        dateFormat="dd/MM/yyyy"
+                                        onChange={this.handleChangeEndDate}
+                                    />
                                 </Form.Group>
 
                                 <p>I agree to respect the following services and constraints:</p>
