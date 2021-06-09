@@ -25,6 +25,7 @@ class MyReservations extends Component {
     componentDidMount() {
         ReservationService.getReservationsByReservationUserId(this.state.user.id).then((res) => {
             this.setState({ reservations: res.data });
+            console.log(this.state.reservations);
         });
     }
 
@@ -115,8 +116,8 @@ class MyReservations extends Component {
                                                         Owner : {pastReservation.property.owner.firstName} {pastReservation.property.owner.lastName}
                                                     </Card.Text>
                                                     <div style={{ textAlign: 'center' }}>
-                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} 
-                                                        onClick={() => this.goToMessagingPage(pastReservation.property.owner)}>
+                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }}
+                                                            onClick={() => this.goToMessagingPage(pastReservation.property.owner)}>
                                                             <PersonLinesFill /> Contact
                                                         </Button>
                                                     </div>
@@ -164,12 +165,12 @@ class MyReservations extends Component {
                                                         Owner : {upcomingReservation.property.owner.firstName} {upcomingReservation.property.owner.lastName}
                                                     </Card.Text>
                                                     <div style={{ textAlign: 'center' }}>
-                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} 
-                                                                onClick={() => this.goToMessagingPage(upcomingReservation.property.owner)}> 
+                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }}
+                                                            onClick={() => this.goToMessagingPage(upcomingReservation.property.owner)}>
                                                             <PersonLinesFill /> Contact
                                                         </Button>
-                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }} 
-                                                                onClick={() => { if (window.confirm('Are you sure you wish to cancel this reservation?')) this.deleteReservation(upcomingReservation.id) }}>
+                                                        <Button className="strong-button" variant="primary" style={{ margin: '3px' }}
+                                                            onClick={() => { if (window.confirm('Are you sure you wish to cancel this reservation?')) this.deleteReservation(upcomingReservation.id) }}>
                                                             <Trash />Cancel
                                                         </Button>
                                                     </div>

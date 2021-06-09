@@ -39,7 +39,6 @@ class Profile extends Component {
         else {
             user[event.target.name] = event.target.value;
         }
-        console.log(user);
         this.setState({ user });
     }
 

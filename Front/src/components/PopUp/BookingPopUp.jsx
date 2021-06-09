@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Modal, Row, Col } from 'react-bootstrap';
+import { Form, Button, Modal, Row } from 'react-bootstrap';
 import { PlusCircle, XCircle } from 'react-bootstrap-icons';
 import PropertyService from '../../services/PropertyService';
 import ReservationService from '../../services/ReservationService';
@@ -73,7 +73,7 @@ class BookingPopUp extends Component {
                                 </Form.Group>
                                 <Form.Group controlId="end_date">
                                     <Form.Label>To:</Form.Label>
-                                    <Form.Control type="date" name="end_date" defaultValue={this.props.dateTo} required />
+                                    <Form.Control type="date" name="end_date" min={this.state.reservation.start_date} defaultValue={this.props.dateTo} required />
                                 </Form.Group>
 
                                 <p>I agree to respect the following services and constraints:</p>

@@ -3,12 +3,14 @@ import FAQService from '../services/FAQService';
 import '../css/App.scss';
 import { Accordion, Card, Button, Form } from 'react-bootstrap';
 import { ArrowDownCircle, Check, PlusCircle, Trash } from 'react-bootstrap-icons';
+import { Redirect } from "react-router-dom";
 
 class FAQmanagement extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
+            user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             faq: [],
             showNewField: false,
             newFAQ: {
@@ -89,7 +91,9 @@ class FAQmanagement extends Component {
 
 
     render() {
-
+        if (this.state.user == "" || this.state.user.type != "Admin") {
+            return <Redirect to='/' />;
+        }
         return (
             <div>
                 <h1 style={{ textAlign: 'center', margin: '20px' }}>FAQ</h1>
