@@ -19,8 +19,8 @@ class BookingPopUp extends Component {
                     propertyServices: [],
                     propertyRestrictions: []
                 },
-                start_date: this.props.dateFrom, // peut être null !! 
-                end_date: this.props.dateTo // peut être null !! 
+                start_date: this.props.dateFrom == '' ? new Date() : this.props.dateFrom, // peut être null !! 
+                end_date: this.props.dateTo == '' ? new Date() : this.props.dateTo // peut être null !! 
             }
         }
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
@@ -65,7 +65,10 @@ class BookingPopUp extends Component {
     }
 
     render() {
-
+        /*const isAvailable = (date) => {
+                    const day = getDay(date);
+                    return day <= date;
+        };*/
 
         return (
             <Modal onHide={() => alert("okes")}
