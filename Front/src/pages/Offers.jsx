@@ -140,6 +140,7 @@ class Offers extends Component {
                                                         <Trash /> Delete</Button>
                                                 </Col>
                                                 <Col>
+                                                    <Card.Text>Description: {property.description}</Card.Text>
                                                     <Card.Text>Type: {property.propertyType.name}</Card.Text>
                                                     <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
                                                     <Card.Text>Address: {property.address}</Card.Text>

@@ -106,7 +106,8 @@ class Search extends Component {
                                                         <Card.Img variant="top" src={photo} />
                                                     </Col>
                                                     <Col sm={6}>
-                                                        <Card.Title>{property.title}</Card.Title>
+                                                        <Card.Title style={{margin:0}}>{property.title}</Card.Title>
+                                                        <Card.Text>{property.description}</Card.Text>
                                                         <Card.Text>{property.city}</Card.Text>
                                                         <Card.Text>For {property.totalOccupancy} occupant(s)</Card.Text>
                                                         <Card.Text>Required services:

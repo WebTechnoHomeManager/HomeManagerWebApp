@@ -135,7 +135,9 @@ class MyReservations extends Component {
                                                         <img class="card-img" src={photo} alt="Card image"></img>
                                                     </Col>
                                                     <Col>
-                                                        <Card.Text>Title : {pastReservation.property.title}</Card.Text>
+                                                        <Card.Title style={{margin:0}}>{pastReservation.property.title}</Card.Title>
+                                                        <Card.Text>{pastReservation.property.description}</Card.Text>
+
                                                         <Card.Text>Total occupancy: {pastReservation.totalOccupancy}</Card.Text>
                                                         <Card.Text>Address: {pastReservation.property.address}</Card.Text>
                                                         <Card.Text>Services: {pastReservation.property.propertyServices.map(function (d, idx) {
@@ -188,7 +190,7 @@ class MyReservations extends Component {
                                                         <img class="card-img" src={photo} alt="Card image"></img>
                                                     </Col>
                                                     <Col>
-                                                        <Card.Text>Title : {upcomingReservation.property.title}</Card.Text>
+                                                        <Card.Title style={{margin:0}}>{upcomingReservation.property.title}</Card.Title>
                                                         <Card.Text>{upcomingReservation.property.description}</Card.Text>
                                                         <Card.Text>Total occupancy: {upcomingReservation.totalOccupancy}</Card.Text>
                                                         <Card.Text>Address: {upcomingReservation.property.address}</Card.Text>

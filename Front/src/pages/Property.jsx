@@ -163,7 +163,7 @@ class Property extends Component {
                                 <Card className="my-3">
                                     <Card.Body>
                                         <Row>
-                                            <Card.Title>{this.state.property.propertyType.name} for {this.state.property.totalOccupancy} occupant(s)</Card.Title>
+                                            <Card.Title style={{margin:0}}>{this.state.property.propertyType.name} for {this.state.property.totalOccupancy} occupant(s)</Card.Title>
                                             <Card.Text>{this.state.property.description}</Card.Text>
                                             <Card.Text>Address: {this.state.property.address}</Card.Text>
 
