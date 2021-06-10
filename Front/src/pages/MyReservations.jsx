@@ -30,7 +30,7 @@ class MyReservations extends Component {
         ReservationService.getReservationsByReservationUserId(this.state.user.id).then((res) => {
             this.setState({ reservations: res.data });
             for (var index in res.data) {
-                this.getPropertyPhoto(res.data[index].property);
+                //this.getPropertyPhoto(res.data[index].property);
             }
         });
     }

@@ -3,7 +3,7 @@ import { Form, Button, Modal, Row } from 'react-bootstrap';
 import { PlusCircle, XCircle } from 'react-bootstrap-icons';
 import PropertyService from '../../services/PropertyService';
 import ReservationService from '../../services/ReservationService';
-import DatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker/dist/react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import Moment from 'moment';
 
@@ -20,8 +20,8 @@ class BookingPopUp extends Component {
                     propertyServices: [],
                     propertyRestrictions: []
                 },
-                start_date: this.props.dateFrom == '' ? new Date() : this.props.dateFrom, // peut être null !! 
-                end_date: this.props.dateTo == '' ? new Date() : this.props.dateTo // peut être null !! 
+                start_date: this.props.dateFrom == null ? new Date() : this.props.dateFrom,
+                end_date: this.props.dateTo == null ? new Date() : this.props.dateTo
             }
         }
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
@@ -129,7 +129,7 @@ class BookingPopUp extends Component {
                                     <DatePicker
                                         name='start_date'
                                         minDate={new Date()}
-                                        selected={new Date(this.state.reservation.start_date)}
+                                        selected={this.state.reservation.start_date ? new Date(this.state.reservation.start_date) : new Date()}
                                         filterDate={isAvailable}
                                         dateFormat="dd/MM/yyyy"
                                         onChange={this.handleChangeStartDate}
@@ -139,8 +139,8 @@ class BookingPopUp extends Component {
                                     <Form.Label>To:</Form.Label>
                                     <DatePicker
                                         name='end_date'
-                                        minDate={new Date(this.state.reservation.start_date)}
-                                        selected={new Date(this.state.reservation.end_date)}
+                                        minDate={this.state.reservation.start_date ? new Date(this.state.reservation.start_date) : new Date()}
+                                        selected={this.state.reservation.end_date ? new Date(this.state.reservation.end_date) : new Date()}
                                         filterDate={isAvailable}
                                         dateFormat="dd/MM/yyyy"
                                         onChange={this.handleChangeEndDate}
