@@ -76,6 +76,10 @@ body, html{
     color: white !important;
     margin: 5px !important;
 }
+.soft-button2{
+    border-radius: 0.2rem !important;
+    margin: 5px !important;
+}
 .soft-button:not(:active){
     box-shadow: none !important;
 }
@@ -103,7 +107,17 @@ body, html{
     background-color: $red !important;
     border-color: $red !important; 
 }
-
+.gray-soft-button:hover{
+    background-color: $gray2 !important;
+    border-color: $gray2 !important;
+}
+.gray-soft-button:active{
+    color: black !important;
+}
+.gray-soft-button:not(:hover){
+    background-color: $gray1 !important;
+    border-color: $gray1 !important; 
+}
 
 .dropdown-filter{
     text-align: right !important;

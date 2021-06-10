@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,11 +33,14 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
 
+import com.homemanager.springboot.model.Chat;
 import com.homemanager.springboot.model.Property;
+import com.homemanager.springboot.model.PropertyPhoto;
 import com.homemanager.springboot.model.Reservation;
 import com.homemanager.springboot.model.Restriction;
 import com.homemanager.springboot.model.Service;
 import com.homemanager.springboot.model.User;
+import com.homemanager.springboot.repository.PropertyPhotoRepository;
 import com.homemanager.springboot.repository.PropertyRepository;
 import com.homemanager.springboot.repository.ReservationRepository;
 
@@ -51,6 +55,8 @@ public class PropertyController {
 	private PropertyRepository propertyRepository;
 	@Autowired
 	private ReservationRepository reservationRepository;
+	@Autowired
+	private PropertyPhotoRepository propertyPhotoRepository;
 	
 	@GetMapping("/properties")
 	public @ResponseBody Iterable<Property> getAllProperties() {
@@ -62,6 +68,19 @@ public class PropertyController {
 	public Property createProperty(@RequestBody Property property) {
 		return propertyRepository.save(property);
 	}
+	
+	@PostMapping("/properties/photos")
+	public Property addPhotosToProperty(@RequestParam("property") Integer propertyId, @RequestParam("photoIds") List<Integer> photoIds) {
+
+		Property property = propertyRepository.findById(propertyId).orElseThrow();
+		for (int photoId : photoIds) {
+			PropertyPhoto photo = propertyPhotoRepository.findById(photoId).orElseThrow();
+			photo.setProperty(property);
+			propertyPhotoRepository.save(photo);
+		}
+		return property;
+	}
+	//
 	 
 	@GetMapping("/properties/{id}")
 	public Property findPropertyById(@PathVariable Integer id) {

@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.homemanager.springboot.model.Property;
+import com.homemanager.springboot.model.PropertyPhoto;
 
 public interface PropertyRepository extends CrudRepository<Property, Integer> {
 
@@ -21,6 +22,6 @@ public interface PropertyRepository extends CrudRepository<Property, Integer> {
 
 	// list all properties from a specific user
 	public List<Property> findByOwner_Id(@Param("id") int id); 
-
 	
+	public Property findById(int id);
 }

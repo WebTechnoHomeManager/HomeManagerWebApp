@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button, Modal, Row, Col, Accordion, Card, DropdownButton, Dropdown } from 'react-bootstrap';
-import PropertyPhotoService from '../../services/PropertyPhotoService';
+import { Form, Button, Modal, Row, Col, Accordion, Card, DropdownButton, Dropdown, Image } from 'react-bootstrap';
 import PropertyService from '../../services/PropertyService';
 import RestrictionService from '../../services/RestrictionService';
 import ServiceService from '../../services/ServiceService';
@@ -8,6 +7,7 @@ import TypeService from '../../services/TypeService';
 import { PlusCircle, CardChecklist, CardList, XCircle } from 'react-bootstrap-icons';
 import AdressService from "../../services/AddressService"
 import UserService from '../../services/UserService';
+import FileUpload from '../FileUpload';
 
 class CreatePropertyPopUp extends Component {
     constructor(props) {
@@ -32,10 +32,7 @@ class CreatePropertyPopUp extends Component {
                 propertyServices: [],
                 propertyRestrictions: []
             },
-            selectedFiles: undefined,
-            currentFile: undefined,
-            message: "",
-            fileInfos: [],
+            propertyPhotoIds: []
         }
         this.handleClickService = this.handleClickService.bind(this);
         this.handleClickRestriction = this.handleClickRestriction.bind(this);
@@ -44,8 +41,7 @@ class CreatePropertyPopUp extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.addressAutocomplete = this.addressAutocomplete.bind(this);
         this.handleAddressSelection = this.handleAddressSelection.bind(this);
-        this.selectFile = this.selectFile.bind(this);
-        this.upload = this.upload.bind(this);
+        this.savePhotoIds = this.savePhotoIds.bind(this);
     }
 
     componentDidMount() {
@@ -57,11 +53,6 @@ class CreatePropertyPopUp extends Component {
         });
         TypeService.getPropertyTypes().then((res) => {
             this.setState({ allPropertyTypes: res.data });
-        });
-        PropertyPhotoService.getFiles().then((res) => {
-            this.setState({
-                fileInfos: res.data,
-            });
         });
     }
 
@@ -147,9 +138,12 @@ class CreatePropertyPopUp extends Component {
         e.preventDefault();
         let property = { ...this.state.property };
         console.log('property => ' + JSON.stringify(property));
+
         PropertyService.createProperty(property).then(res => {
-            alert("Property created");
-            this.props.onCreateDone(res.data);
+            PropertyService.addPhotosToProperty(res.data.id, this.state.propertyPhotoIds).then(res => {
+                alert("Property created");
+                this.props.onCreateDone(res.data);
+            })
         }).catch(error => {
             console.log(error.response);
         });
@@ -165,50 +159,13 @@ class CreatePropertyPopUp extends Component {
         this.setState({ suggestedAddresses: [] });
     }
 
-    selectFile(event) {
-        this.setState({
-            selectedFiles: event.target.files,
-        });
-    }
-
-    upload() {
-        let currentFile = this.state.selectedFiles[0];
-    
-        this.setState({
-            currentFile: currentFile,
-        });
-    
-        PropertyPhotoService.upload(currentFile)
-            .then((response) => {
-                this.setState({
-                message: response.data.message,
-                });
-                return PropertyPhotoService.getFiles();
-            })
-            .then((files) => {
-                this.setState({
-                fileInfos: files.data,
-                });
-            })
-            .catch(() => {
-                this.setState({
-                message: "Could not upload the file!",
-                currentFile: undefined,
-                });
-            });
-    
-        this.setState({
-          selectedFiles: undefined,
-        });
+    savePhotoIds(ids){
+        const propertyPhotoIds = this.state.propertyPhotoIds;
+        propertyPhotoIds.push(...ids);
+        this.setState({ propertyPhotoIds: propertyPhotoIds })
     }
 
     render() {
-        const {
-            selectedFiles,
-            currentFile,
-            message,
-            fileInfos,
-        } = this.state;
 
         return (
             <Modal onHide={() => alert("okes")}
@@ -253,41 +210,11 @@ class CreatePropertyPopUp extends Component {
                                             </div>
                                         }
 
-                                        {/* <Form.Group controlId="city">
-                                            <Form.Label>City:</Form.Label>
-                                            <Form.Control type="text" name="city" required/>
-                                        </Form.Group> */}
                                         <Form.Group controlId="totalOccupancy">
                                             <Form.Label>Total occupancy:</Form.Label>
                                             <Form.Control type="number" name="totalOccupancy" required/>
                                         </Form.Group>
-                                        <div>
-                                            <label className="btn btn-default">
-                                                <input type="file" onChange={this.selectFile} />
-                                            </label>
-
-                                            <Button disabled={!selectedFiles} onClick={this.upload} >
-                                                Upload
-                                            </Button>
-
-                                            <div className="alert alert-light" role="alert">
-                                                {message}
-                                            </div>
-
-                                            <div className="card">
-                                                <div className="card-header">List of pictures</div>
-                                                <ul className="list-group list-group-flush">
-                                                    {fileInfos &&
-                                                    fileInfos.map((file, index) => (
-                                                        <li className="list-group-item" key={index}>
-                                                        <a href={file.url}>{file.name}</a>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        </div>
                                     </Form>
-                                    
                                 </div>
                             </Col>
                             <Col>
@@ -349,6 +276,11 @@ class CreatePropertyPopUp extends Component {
                                         </Card>
                                     </Accordion>
                                 </Form.Group>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <FileUpload onPhotoUpload={this.savePhotoIds}></FileUpload>
                             </Col>
                         </Row>
                     </Modal.Body>

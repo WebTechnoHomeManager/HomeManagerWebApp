@@ -1,10 +1,13 @@
 package com.homemanager.springboot.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -16,14 +19,19 @@ public class PropertyPhoto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Column(name = "name")
 	private String name;
 
+	@Column(name = "data")
 	@Lob
 	private byte[] data;
 
+	@Column(name = "type")
 	private String type;
 
-	private String property_id;
+	@ManyToOne
+    @JoinColumn(name="property_id")
+	private Property property;
 
 	public PropertyPhoto() {
 	}
@@ -34,7 +42,7 @@ public class PropertyPhoto {
 		this.data = data;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -47,7 +55,7 @@ public class PropertyPhoto {
 	}
 
 	public byte[] getData() {
-		return data;
+		return this.data;
 	}
 
 	public void setData(byte[] data) {
@@ -55,18 +63,18 @@ public class PropertyPhoto {
 	}
 
 	public String getType() {
-		return type;
+		return this.type;
 	}
 
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	public String getProperty_id() {
-		return property_id;
+	public Property getProperty() {
+		return this.property;
 	}
 
-	public void setProperty_id(String property_id) {
-		this.property_id = property_id;
+	public void setProperty(Property property) {
+		this.property = property;
 	}
 }

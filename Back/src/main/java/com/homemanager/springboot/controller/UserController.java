@@ -86,8 +86,6 @@ public class UserController {
 	@DeleteMapping("/{id}")
 	public String deleteUser(@PathVariable Integer id) throws JSONException {
 		
-		User user = userRepository.findById(id).get();
-		
 		// delete chat messages from and to user
 		List<Chat> messagesFrom = chatRepository.findBySender_Id(id);
 		for (Chat message : messagesFrom) {

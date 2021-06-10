@@ -3,12 +3,13 @@ import React, { Component } from 'react';
 import PropertyService from '../services/PropertyService';
 import '../css/App.scss';
 import { Container, Row, Col, Card, Button, Form, Accordion, DropdownButton, Dropdown, } from 'react-bootstrap';
-import photo from '../images/houses/house1.jpg';
+import photoPlaceholder from '../images/houses/placeholder.jpg';
 import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
 import UpdatePropertyPopUp from '../components/PopUp/UpdatePropertyPopUp';
 import CreatePropertyPopUp from '../components/PopUp/CreatePropertyPopUp';
 import { Redirect } from "react-router-dom";
 import Moment from 'moment';
+import PropertyPhotoService from '../services/PropertyPhotoService';
 
 class MyProperties extends Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class MyProperties extends Component {
         this.state = {
             user: localStorage.getItem('user') != "" ? JSON.parse(localStorage.getItem('user')) : {},
             properties: [],
+            propertiesPhotos: {},
             showCreatePopUp: false,
             showUpdateModal: false,
             propertyID: null,
@@ -30,14 +32,39 @@ class MyProperties extends Component {
         this.hideUpdatePopUp = this.hideUpdatePopUp.bind(this);
         this.displayPastReservations = this.displayPastReservations.bind(this);
         this.displayReservationsToCome = this.displayReservationsToCome.bind(this);
-        
+        this.getPropertyPhoto = this.getPropertyPhoto.bind(this);
     }
 
 
     componentDidMount() {
         PropertyService.getPropertiesByOwnerId(this.state.user.id).then((res) => {
             this.setState({ properties: res.data });
+            for (var index in res.data){
+                this.getPropertyPhoto(res.data[index]);
+            }
         });
+    }
+
+    
+    getPropertyPhoto(property){
+        var propertyId = property.id;
+        var that = this;
+        PropertyPhotoService.getPhotoByPropertyId(propertyId).then((res) => {
+            var photos = res.data;
+            var firstPhoto = photos[0];
+            var blobData = ""
+            if (firstPhoto != undefined){
+                var propertyId = firstPhoto.property.id;
+                blobData = photos[0].data
+
+                that.setState(prevState => ({
+                    propertiesPhotos: {
+                        ...prevState.propertiesPhotos,
+                        [propertyId]: blobData
+                    }
+                }))
+            }
+        })
     }
 
     deleteProperty(propertyId) {
@@ -72,6 +99,8 @@ class MyProperties extends Component {
         var properties = this.state.properties;
         properties.unshift(createdProperty);
         this.setState({ properties: properties });
+
+        this.getPropertyPhoto(createdProperty);
     }
     hideCreatePopUp(){
         this.setState({ showCreatePopUp: false });
@@ -118,74 +147,83 @@ class MyProperties extends Component {
                     <Row>
                         <Col>
                             <h4>{this.state.properties.length + (this.state.properties.length > 1 ? " properties" : " property")}</h4>
-                            {this.state.properties.map(property => 
-                                <Card className="my-3">
-                                    <Card.Header>
-                                        <Card.Title style={{marginBottom: 0}}>{property.title}</Card.Title>
-                                    </Card.Header>
-                                    <Card.Body>
-                                        <Row>
-                                            <Col style={{ textAlign: 'center' }}>
-                                                <Card.Img variant="top" src={photo} style={{marginBottom: "10px"}}/>
-                                                <Button className="soft-button blue-soft-button" onClick={() => this.showUpdatePopUp(property.id)}>
-                                                    <Pencil /> Update
-                                                </Button>
-                                                <Button className="soft-button red-soft-button" onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}>
-                                                    <Trash /> Delete</Button>
-                                            </Col>
-                                            <Col>
-                                                <Card.Text>Type: {property.propertyType.name}</Card.Text>
-                                                <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
-                                                <Card.Text>Address: {property.address}</Card.Text>
-                                                <Card.Text>Services: {property.propertyServices.map(function (d, idx) {
-                                                    return (<li key={idx}>{d.name}</li>)
-                                                })}</Card.Text>
-                                                <Card.Text>Constraints: {property.propertyRestrictions.map(function (d, idx) {
-                                                    return (<li key={idx}>{d.name}</li>)
-                                                })}</Card.Text>
-                                            </Col>
-                                            <Col style={{borderLeft: "1px solid #d8d8d8"}}>
-                                                <DropdownButton className="col-auto dropdown-filter" style={{marginBottom: "10px"}}
-                                                                title={this.getFilterTitle(property.id)} >
-                                                    <Dropdown.Item onClick={() => this.displayReservationsToCome(property.id)}
-                                                                active={this.state.selectedOptionByPropertyId[property.id] == 1 || this.state.selectedOptionByPropertyId[property.id] == undefined}>
-                                                        Reservations to come
-                                                    </Dropdown.Item>
-                                                    <Dropdown.Item onClick={() => this.displayPastReservations(property.id)}
-                                                                active={this.state.selectedOptionByPropertyId[property.id] == 0}>
-                                                        Past reservations
-                                                    </Dropdown.Item>
-                                                </DropdownButton>
+                            {this.state.properties
+                            .sort((a, b) => a.id < b.id ? 1 : -1)
+                            .map(property => {
+                                var blob = this.state.propertiesPhotos[property.id];
+                                var photo = blob != undefined ? "data:image/png;base64," + blob : photoPlaceholder
+                                var ere = 2;
+                                return (
+                                    <Card className="my-3">
+                                        <Card.Header>
+                                            <Card.Title style={{marginBottom: 0}}>{property.title}</Card.Title>
+                                        </Card.Header>
+                                        <Card.Body>
+                                            <Row>
+                                                <Col style={{ textAlign: 'center' }}>
+                                                    <Card.Img variant="top" style={{marginBottom: "10px"}}
+                                                            src={photo}  
+                                                    />
+                                                    <Button className="soft-button blue-soft-button" onClick={() => this.showUpdatePopUp(property.id)}>
+                                                        <Pencil /> Update
+                                                    </Button>
+                                                    <Button className="soft-button red-soft-button" onClick={() => { if (window.confirm('Are you sure you wish to delete this property?')) this.deleteProperty(property.id) }}>
+                                                        <Trash /> Delete</Button>
+                                                </Col>
+                                                <Col>
+                                                    <Card.Text>Type: {property.propertyType.name}</Card.Text>
+                                                    <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
+                                                    <Card.Text>Address: {property.address}</Card.Text>
+                                                    <Card.Text>Services: {property.propertyServices.map(function (d, idx) {
+                                                        return (<li key={idx}>{d.name}</li>)
+                                                    })}</Card.Text>
+                                                    <Card.Text>Constraints: {property.propertyRestrictions.map(function (d, idx) {
+                                                        return (<li key={idx}>{d.name}</li>)
+                                                    })}</Card.Text>
+                                                </Col>
+                                                <Col style={{borderLeft: "1px solid #d8d8d8"}}>
+                                                    <DropdownButton className="col-auto dropdown-filter" style={{marginBottom: "10px"}}
+                                                                    title={this.getFilterTitle(property.id)} >
+                                                        <Dropdown.Item onClick={() => this.displayReservationsToCome(property.id)}
+                                                                    active={this.state.selectedOptionByPropertyId[property.id] == 1 || this.state.selectedOptionByPropertyId[property.id] == undefined}>
+                                                            Reservations to come
+                                                        </Dropdown.Item>
+                                                        <Dropdown.Item onClick={() => this.displayPastReservations(property.id)}
+                                                                    active={this.state.selectedOptionByPropertyId[property.id] == 0}>
+                                                            Past reservations
+                                                        </Dropdown.Item>
+                                                    </DropdownButton>
 
-                                                <Card.Text>
-                                                    <ul>
-                                                        {this.state.selectedOptionByPropertyId[property.id] == 0 &&
-                                                        property.reservations
-                                                        .filter(reservation => new Date(reservation.end_date) < new Date())
-                                                        .sort((a, b) => a.start_date < b.start_date ? 1 : -1)
-                                                        .map(pastReservation =>
-                                                            <li key={pastReservation.id}> 
-                                                                From {Moment(pastReservation.start_date).format('DD-MM-YYYY')} to {Moment(pastReservation.end_date).format('DD-MM-YYYY')} 
-                                                                <p style={{textAlign: "right"}}>by {pastReservation.reservationUser.firstName} {pastReservation.reservationUser.lastName}</p>
-                                                            </li>
-                                                        )}
+                                                    <Card.Text>
+                                                        <ul>
+                                                            {this.state.selectedOptionByPropertyId[property.id] == 0 &&
+                                                            property.reservations
+                                                            .filter(reservation => new Date(reservation.end_date) < new Date())
+                                                            .sort((a, b) => a.start_date < b.start_date ? 1 : -1)
+                                                            .map(pastReservation =>
+                                                                <li key={pastReservation.id}> 
+                                                                    From {Moment(pastReservation.start_date).format('DD-MM-YYYY')} to {Moment(pastReservation.end_date).format('DD-MM-YYYY')} 
+                                                                    <p style={{textAlign: "right"}}>by {pastReservation.reservationUser.firstName} {pastReservation.reservationUser.lastName}</p>
+                                                                </li>
+                                                            )}
 
-                                                        {(this.state.selectedOptionByPropertyId[property.id] == 1 || this.state.selectedOptionByPropertyId[property.id] == undefined) &&
-                                                        property.reservations
-                                                        .filter(reservation => new Date(reservation.start_date) > new Date() || (new Date(reservation.start_date) <= new Date() && new Date(reservation.end_date) >= new Date()))
-                                                        .sort((a, b) => a.start_date > b.start_date ? 1 : -1)
-                                                        .map(pastReservation =>
-                                                            <li key={pastReservation.id}> 
-                                                                From {Moment(pastReservation.start_date).format('DD-MM-YYYY')} to {Moment(pastReservation.end_date).format('DD-MM-YYYY')} 
-                                                                <p style={{textAlign: "right"}}>by {pastReservation.reservationUser.firstName} {pastReservation.reservationUser.lastName}</p>
-                                                            </li>
-                                                        )}
-                                                    </ul>
-                                                </Card.Text>
-                                            </Col>
-                                        </Row>
-                                    </Card.Body>
-                                </Card>
+                                                            {(this.state.selectedOptionByPropertyId[property.id] == 1 || this.state.selectedOptionByPropertyId[property.id] == undefined) &&
+                                                            property.reservations
+                                                            .filter(reservation => new Date(reservation.start_date) > new Date() || (new Date(reservation.start_date) <= new Date() && new Date(reservation.end_date) >= new Date()))
+                                                            .sort((a, b) => a.start_date > b.start_date ? 1 : -1)
+                                                            .map(pastReservation =>
+                                                                <li key={pastReservation.id}> 
+                                                                    From {Moment(pastReservation.start_date).format('DD-MM-YYYY')} to {Moment(pastReservation.end_date).format('DD-MM-YYYY')} 
+                                                                    <p style={{textAlign: "right"}}>by {pastReservation.reservationUser.firstName} {pastReservation.reservationUser.lastName}</p>
+                                                                </li>
+                                                            )}
+                                                        </ul>
+                                                    </Card.Text>
+                                                </Col>
+                                            </Row>
+                                        </Card.Body>
+                                    </Card>
+                                )}
                             )}
                         </Col>
                     </Row>
