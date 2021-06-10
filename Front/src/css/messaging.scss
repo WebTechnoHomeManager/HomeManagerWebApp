@@ -90,7 +90,11 @@
     }
     .interlocutor-active{
         background-color: $gray;
-        border: 2px solid $gray2;
+        border: 2px solid $gray1;
+    }
+    .interlocutor-admin-active{
+        background-color: $red;
+        border: 2px solid $gray1;
     }
 }
 

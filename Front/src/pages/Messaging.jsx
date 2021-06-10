@@ -5,6 +5,7 @@ import Image from 'react-bootstrap/Image';
 import ChatService from '../services/ChatService';
 import sendIcon from '../images/icons/send-message.png';
 import { Redirect } from "react-router-dom";
+import { ArrowClockwise, PersonCircle, StarFill } from 'react-bootstrap-icons';
 
 class Messaging extends Component {
 
@@ -135,10 +136,17 @@ class Messaging extends Component {
         if (this.state.user == "") {
             return <Redirect to='/' />;
         }
+        var that = this;
         return (
             <div>
                 <Container id="messaging">
                     <h1 className="center">My messaging</h1>
+                    <div style={{flexDirection:"row", display:"flex", justifyContent: "flex-end", marginBottom:"-10px", padding:0}}>
+                        <Button className="arrow-button shadow-none" style={{ fontSize: "0.8rem", padding:0}}
+                                onClick={function(){ that.getSentMessages(); /*that.getInterlocutors()*/}}>
+                            <ArrowClockwise style={{fontSize: "2rem"}}/>
+                        </Button>
+                    </div>
                     <Row id="messaging-row">
                         <Col md={3} sm={2} className="col-messaging" style={{padding: 0}}>
                             <Row id="messaging-user-list">
@@ -147,6 +155,12 @@ class Messaging extends Component {
                                     <Col sm={12} key={interlocutor.id} 
                                          className={"interlocutor " + (interlocutor.id == this.state.recipient.id ? "interlocutor-active" : "")}
                                          onClick={() => this.handleClickInterlocutor(interlocutor)}>
+                                        {interlocutor.type == "Admin" &&
+                                            <StarFill style={{marginRight:"10px", color:"#ffbb00"}}/>
+                                        }
+                                        {interlocutor.type == "Member" &&
+                                            <PersonCircle style={{marginRight:"10px"}}/>
+                                        }
                                         {interlocutor.firstName} {interlocutor.lastName} 
                                     </Col>
                                 )}

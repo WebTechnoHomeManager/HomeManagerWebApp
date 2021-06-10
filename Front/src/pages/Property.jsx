@@ -201,7 +201,7 @@ class Property extends Component {
                                                     onClick={() => this.showPublicProfile(this.state.property.owner.id)} >
                                                     <InfoCircleFill />
                                                   More information
-                                            </Button>
+                                                </Button>
                                             </Col>
                                         </Row>
                                         <Row>
