@@ -3,7 +3,7 @@ import { Container, Form, Button, Row, Col, Accordion, Card, Image } from 'react
 import SearchBar from '../components/SearchBar';
 import PropertyService from '../services/PropertyService';
 import userIcon from '../images/icons/user.png';
-import { Envelope, EnvelopeFill, InfoCircle, InfoCircleFill, ArrowLeftCircleFill, ArrowRightCircleFill } from 'react-bootstrap-icons';
+import { Envelope, EnvelopeFill, InfoCircle, InfoCircleFill, ArrowLeftCircleFill, ArrowRightCircleFill, HouseFill } from 'react-bootstrap-icons';
 import PublicProfile from '../components/PublicProfile';
 import BookingPopUp from '../components/PopUp/BookingPopUp';
 import LogInPopUp from '../components/PopUp/LogInPopUp';
@@ -151,6 +151,14 @@ class Property extends Component {
                            
                         </Row>
                         <Row>
+                            <div className="div-center-content">
+                                <Button className="strong-button" variant="primary" onClick={() => this.showBookingPopUp()}
+                                style={{fontSize: "1.2rem", marginTop: "10px", marginBottom:"5px"}}>
+                                    <HouseFill style={{marginBottom: "1px"}}/>  Book this property
+                                </Button>
+                            </div>
+                        </Row>
+                        <Row>
                             <Col sm={6}>
                                 <Card className="my-3">
                                     <Card.Body>
@@ -210,9 +218,7 @@ class Property extends Component {
                                 </Card>
                             </Col>
                         </Row>
-                        <Row>
-                            <Button onClick={() => this.showBookingPopUp()}>Book this property</Button>
-                        </Row>
+
                     </Container>
                     {/* <pre>{JSON.stringify(this.state.property, null, 2)}</pre> */}
                 </div>

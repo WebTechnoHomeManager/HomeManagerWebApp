@@ -41,12 +41,12 @@ class Footer extends Component {
         return (
 
             <Container fluid className="py-2" id="footer">
-                <Row>
-                    <Col sm={2}></Col>
-                    <Col sm={8} style={{textAlign: "center"}}>
-                        <div>
-                            Designed by Sarah HEOUAINE - My-Linh LE THIEN - Elia TSO - Caroline YAN
-                        </div>
+                <Row className="align-items-end">
+                    <Col sm={2} >
+                        <div>General Conditions of Use</div>
+                    </Col>
+                    <Col sm={8} style={{textAlign: "center"}} className="my-auto">
+                        Designed by Sarah HEOUAINE - My-Linh LE THIEN - Elia TSO - Caroline YAN
                     </Col>
                     <Col sm={2} style={{textAlign: "right"}}>
                         <Button className="soft-button blue-transparent-soft-button btn-secondary"
@@ -55,12 +55,13 @@ class Footer extends Component {
                                     disabled={this.state.user.id != undefined && this.state.user.type == "Admin"}>
                             <EnvelopeFill />  Contact admin
                         </Button>
+                        <div>© 2021 Home Manager</div>
                     </Col>
                 </Row>
                 <Row>
                     <Col style={{flexDirection:"row", display:"flex", justifyContent: "space-between"}}>
-                        <div>General Conditions of Use</div>
-                        <div>© 2021 Home Manager</div>
+                        
+                        
                     </Col>
                 </Row>
   

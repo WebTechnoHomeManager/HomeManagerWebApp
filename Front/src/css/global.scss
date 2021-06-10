@@ -1,7 +1,9 @@
 
 $verydark: #475465;
 $dark: #556C96;
+
 $mediumDark: #699FDD;
+$medium2: #7DACE2;
 $medium: #91b9e6;
 $light: #B6CDE8;
 $verylight: #EEEDFF;
@@ -88,16 +90,16 @@ body, html{
     border-color: $mediumDark !important;
 }
 .blue-soft-button:not(:hover){
-    background-color: $medium !important;
-    border-color: $medium !important; 
+    background-color: $medium2 !important;
+    border-color: $medium2 !important; 
 }
 .blue-transparent-soft-button:hover{
-    background-color: $medium !important;
+    background-color: $medium2 !important;
     border-color: $mediumDark !important;
 }
 .blue-transparent-soft-button:not(:hover){
     background-color: transparent;
-    border-color: $medium !important; 
+    border-color: $medium2 !important; 
 }
 .red-soft-button:hover{
     background-color: $redDark !important;
