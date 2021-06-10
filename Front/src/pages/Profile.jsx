@@ -4,6 +4,7 @@ import '../css/App.scss';
 import { Button, Form } from 'react-bootstrap';
 import { Pencil, Trash } from 'react-bootstrap-icons';
 import { Redirect } from "react-router-dom";
+import Moment from "moment";
 
 class Profile extends Component {
     constructor(props) {
@@ -32,7 +33,12 @@ class Profile extends Component {
 
     handleChange = (event) => {
         let user = { ...this.state.user };
-        user[event.target.name] = event.target.value;
+        if (event.target.name == "dateBirth") {
+            user[event.target.name] = Moment(event.target.value).format("YYYY-MM-DD HH:mm:ss.SSS");
+        }
+        else {
+            user[event.target.name] = event.target.value;
+        }
         this.setState({ user });
     }
 
@@ -76,7 +82,7 @@ class Profile extends Component {
                     </Form.Group>
                     <Form.Group controlId="dateBirth">
                         <Form.Label>Date of Birth:</Form.Label>
-                        <Form.Control type="text" name="dateBirth" defaultValue={this.state.user.dateBirth} />
+                        <Form.Control type="date" name="dateBirth" defaultValue={Moment(this.state.user.dateBirth).format('YYYY-MM-DD')} />
                     </Form.Group>
                     <Form.Group controlId="email">
                         <Form.Label>Email:</Form.Label>

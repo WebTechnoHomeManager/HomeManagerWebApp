@@ -29,20 +29,20 @@ class MyReservations extends Component {
     componentDidMount() {
         ReservationService.getReservationsByReservationUserId(this.state.user.id).then((res) => {
             this.setState({ reservations: res.data });
-            for (var index in res.data){
+            for (var index in res.data) {
                 this.getPropertyPhoto(res.data[index].property);
             }
         });
     }
 
-    getPropertyPhoto(property){
+    getPropertyPhoto(property) {
         var propertyId = property.id;
         var that = this;
         PropertyPhotoService.getPhotoByPropertyId(propertyId).then((res) => {
             var photos = res.data;
             var firstPhoto = photos[0];
             var blobData = ""
-            if (firstPhoto != undefined){
+            if (firstPhoto != undefined) {
                 var propertyId = firstPhoto.property.id;
                 blobData = photos[0].data
 
@@ -98,20 +98,20 @@ class MyReservations extends Component {
         return (
             <Container className="my-5" fluid>
                 <h1 style={{ textAlign: 'center', margin: '20px' }}>My reservations</h1>
-                <div  className="div-center-content" >
+                <div className="div-center-content" >
                     <div style={{ width: '70%' }}>
-                <DropdownButton className="col-auto dropdown-filter" style={{ marginBottom: "-15px" }}
-                    title={this.getFilterTitle()} >
-                    <Dropdown.Item onClick={() => this.displayReservationsToCome()}
-                        active={this.state.selectedOption === 1 || this.state.selectedOption === undefined}>
-                        Reservations to come
+                        <DropdownButton className="col-auto dropdown-filter" style={{ marginBottom: "-15px" }}
+                            title={this.getFilterTitle()} >
+                            <Dropdown.Item onClick={() => this.displayReservationsToCome()}
+                                active={this.state.selectedOption === 1 || this.state.selectedOption === undefined}>
+                                Reservations to come
                     </Dropdown.Item>
-                    <Dropdown.Item onClick={() => this.displayPastReservations()}
-                        active={this.state.selectedOption === 0}>
-                        Past reservations
+                            <Dropdown.Item onClick={() => this.displayPastReservations()}
+                                active={this.state.selectedOption === 0}>
+                                Past reservations
                     </Dropdown.Item>
-                </DropdownButton>
-                </div>
+                        </DropdownButton>
+                    </div>
                 </div>
                 {this.state.selectedOption === 0 &&
                     this.state.reservations
@@ -150,8 +150,8 @@ class MyReservations extends Component {
                                                             Owner : {pastReservation.property.owner.firstName} {pastReservation.property.owner.lastName}
                                                         </Card.Text>
                                                         <div style={{ textAlign: 'center' }}>
-                                                            <Button className="soft-button blue-soft-button" variant="primary" style={{ margin: '3px' }} 
-                                                            onClick={() => this.goToMessagingPage(pastReservation.property.owner)}>
+                                                            <Button className="soft-button blue-soft-button" variant="primary" style={{ margin: '3px' }}
+                                                                onClick={() => this.goToMessagingPage(pastReservation.property.owner)}>
                                                                 <EnvelopeFill /> Contact the owner
                                                             </Button>
                                                         </div>
@@ -161,7 +161,8 @@ class MyReservations extends Component {
                                         </Card.Body >
                                     </Card>
                                 </div>
-                            )}
+                            )
+                        }
                         )
                 }
 
@@ -203,12 +204,12 @@ class MyReservations extends Component {
                                                             Owner : {upcomingReservation.property.owner.firstName} {upcomingReservation.property.owner.lastName}
                                                         </Card.Text>
                                                         <div style={{ textAlign: 'center' }}>
-                                                            <Button className="soft-button blue-soft-button" variant="primary" style={{ margin: '3px' }} 
-                                                                    onClick={() => this.goToMessagingPage(upcomingReservation.property.owner)}> 
+                                                            <Button className="soft-button blue-soft-button" variant="primary" style={{ margin: '3px' }}
+                                                                onClick={() => this.goToMessagingPage(upcomingReservation.property.owner)}>
                                                                 <EnvelopeFill /> Contact the owner
                                                             </Button>
-                                                            <Button className="strong-button" variant="primary" style={{ margin: '3px' }} 
-                                                                    onClick={() => { if (window.confirm('Are you sure you wish to cancel this reservation?')) this.deleteReservation(upcomingReservation.id) }}>
+                                                            <Button className="strong-button" variant="primary" style={{ margin: '3px' }}
+                                                                onClick={() => { if (window.confirm('Are you sure you wish to cancel this reservation?')) this.deleteReservation(upcomingReservation.id) }}>
                                                                 <Trash />Cancel
                                                             </Button>
                                                         </div>
@@ -218,7 +219,8 @@ class MyReservations extends Component {
                                         </Card.Body >
                                     </Card>
                                 </div>
-                            )}
+                            )
+                        }
                         )
                 }
 
