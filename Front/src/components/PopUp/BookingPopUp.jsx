@@ -27,6 +27,8 @@ class BookingPopUp extends Component {
         this.handleChangeEndDate = this.handleChangeEndDate.bind(this);
         this.handleChangeStartDate = this.handleChangeStartDate.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.getDatesBetweenDates = this.getDatesBetweenDates.bind(this);
+        this.flatDeep = this.flatDeep.bind(this);
     }
 
     componentDidMount() {
@@ -36,11 +38,13 @@ class BookingPopUp extends Component {
             reservation.property = res.data;
             propertyReservations = res.data.reservations;
             this.setState({ reservation });
-            this.setState({ propertyReservations }, console.log(this.state.propertyReservations));
+            this.setState({ propertyReservations });
         })
     }
 
     handleChangeEndDate = (event) => {
+        console.log(event);
+        console.log(typeof event);
         console.log(Moment(event).format("YYYY-MM-DD"));
         let reservation = { ...this.state.reservation };
         reservation.end_date = Moment(event).format("YYYY-MM-DD");
@@ -68,9 +72,40 @@ class BookingPopUp extends Component {
         });
     }
 
+    getDatesBetweenDates = (startDate, endDate) => {
+        let dates = []
+        //to avoid modifying the original date
+        const theDate = new Date(startDate)
+        while (theDate < endDate) {
+            dates = [...dates, new Date(theDate)]
+            theDate.setDate(theDate.getDate() + 1)
+        }
+        dates = [...dates, endDate]
+        return dates
+    }
+
+    flatDeep(arr) {
+        var ret = [];
+        for (var i = 0; i < arr.length; i++) {
+            if (Array.isArray(arr[i])) {
+                ret = ret.concat(this.flatDeep(arr[i]));
+            } else {
+                ret.push(arr[i]);
+            }
+        }
+        return ret;
+    };
+
+
+
     render() {
+        //map function
+        var bookedDates = this.state.propertyReservations.map(reservation =>
+            this.getDatesBetweenDates(new Date(reservation.start_date), new Date(reservation.end_date))
+        );
+
         const isAvailable = (date) => {
-            return new Date(this.state.propertyReservations[0].start_date).getTime() >= new Date(date).getTime() || new Date(date).getTime() >= new Date(this.state.propertyReservations[0].end_date).getTime();
+            return !(bookedDates.flat(this.state.propertyReservations.length).some(arrVal => Moment(date).format("YYYY-MM-DD") === Moment(arrVal).format("YYYY-MM-DD")));
         };
 
         return (
@@ -93,8 +128,9 @@ class BookingPopUp extends Component {
                                     <Form.Label>From:</Form.Label>
                                     <DatePicker
                                         name='start_date'
+                                        minDate={new Date()}
                                         selected={new Date(this.state.reservation.start_date)}
-                                        //excludeDates={isAvailable}
+                                        filterDate={isAvailable}
                                         dateFormat="dd/MM/yyyy"
                                         onChange={this.handleChangeStartDate}
                                     />
