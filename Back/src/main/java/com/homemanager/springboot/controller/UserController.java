@@ -2,6 +2,7 @@ package com.homemanager.springboot.controller;
 
 import com.homemanager.springboot.model.Chat;
 import com.homemanager.springboot.model.Property;
+import com.homemanager.springboot.model.PropertyPhoto;
 import com.homemanager.springboot.model.Reservation;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -26,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.homemanager.springboot.model.User;
 import com.homemanager.springboot.repository.ChatRepository;
+import com.homemanager.springboot.repository.PropertyPhotoRepository;
 import com.homemanager.springboot.repository.PropertyRepository;
 import com.homemanager.springboot.repository.ReservationRepository;
 import com.homemanager.springboot.repository.UserRepository;
@@ -41,6 +43,8 @@ public class UserController {
 	private ChatRepository chatRepository;
 	@Autowired
 	private PropertyRepository propertyRepository;
+	@Autowired
+	private PropertyPhotoRepository propertyPhotoRepository;
 	@Autowired
 	private ReservationRepository reservationRepository;
 
@@ -104,6 +108,12 @@ public class UserController {
 			for (Reservation reservation : reservations) {
 				reservationRepository.delete(reservation);
 			}
+			// delete photos of user's properties
+			List<PropertyPhoto> photos = propertyPhotoRepository.findByProperty_Id(property.getId());
+			for (PropertyPhoto photo : photos) {
+				propertyPhotoRepository.delete(photo);
+			}
+
 			propertyRepository.delete(property);
 		}
 		
