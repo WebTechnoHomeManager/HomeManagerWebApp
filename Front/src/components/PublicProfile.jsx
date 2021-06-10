@@ -7,6 +7,8 @@ import { XCircle, Telephone, Envelope, CalendarCheck } from 'react-bootstrap-ico
 import userIcon from '../images/icons/user.png';
 import photo from '../images/houses/house1.jpg';
 import Moment from 'moment';
+import PropertyPhotoService from '../services/PropertyPhotoService';
+import photoPlaceholder from '../images/houses/placeholder.jpg';
 
 class PublicProfile extends Component {
     constructor(props) {
@@ -15,10 +17,12 @@ class PublicProfile extends Component {
         this.state = {
             userId: this.props.userId,
             user: {},
-            properties: []
+            properties: [],
+            propertiesPhotos: []
         }
 
         this.viewProperty = this.viewProperty.bind(this);
+        this.getPropertyPhoto = this.getPropertyPhoto.bind(this);
     }
 
     componentDidMount() {
@@ -27,7 +31,31 @@ class PublicProfile extends Component {
         })
         PropertyService.getPropertiesByOwnerId(this.state.userId).then((res) => {
             this.setState({ properties: res.data });
+            for (var index in res.data){
+                this.getPropertyPhoto(res.data[index]);
+            }
         });
+    }
+
+    getPropertyPhoto(property){
+        var propertyId = property.id;
+        var that = this;
+        PropertyPhotoService.getPhotoByPropertyId(propertyId).then((res) => {
+            var photos = res.data;
+            var firstPhoto = photos[0];
+            var blobData = ""
+            if (firstPhoto != undefined){
+                var propertyId = firstPhoto.property.id;
+                blobData = photos[0].data
+
+                that.setState(prevState => ({
+                    propertiesPhotos: {
+                        ...prevState.propertiesPhotos,
+                        [propertyId]: blobData
+                    }
+                }))
+            }
+        })
     }
 
     viewProperty(id) {
@@ -71,19 +99,24 @@ class PublicProfile extends Component {
                                 <div className="div-center-content">
                                     {
                                         this.state.properties.map(
-                                            property => 
-                                            <div className="div-center-content" style={{ marginTop: '30px' }}>
-                                                <Card className="card-with-link" style={{ width: '100%' }}
-                                                      onClick={() => this.viewProperty(property.id)}>
-                                                    <Card.Header>{property.title}</Card.Header>
-                                                    <Card.Body>
-                                                        <Card.Img variant="top" src={photo} />
-                                                        <Card.Text>Type: {property.propertyType.name}</Card.Text>
-                                                        <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
-                                                        <Card.Text>City: {property.city}</Card.Text>
-                                                    </Card.Body >
-                                                </Card>
-                                            </div>
+                                            property => {
+                                                var blob = this.state.propertiesPhotos[property.id];
+                                                var photo = blob != undefined ? "data:image/png;base64," + blob : photoPlaceholder;
+                                                return (
+                                                    <div className="div-center-content" style={{ marginTop: '30px' }}>
+                                                        <Card className="card-with-link" style={{ width: '100%' }}
+                                                            onClick={() => this.viewProperty(property.id)}>
+                                                            <Card.Header>{property.title}</Card.Header>
+                                                            <Card.Body>
+                                                                <Card.Img variant="top" src={photo} />
+                                                                <Card.Text>Type: {property.propertyType.name}</Card.Text>
+                                                                <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
+                                                                <Card.Text>City: {property.city}</Card.Text>
+                                                            </Card.Body >
+                                                        </Card>
+                                                    </div>
+                                                )
+                                            }
                                         )
                                     }
                                 </div>
