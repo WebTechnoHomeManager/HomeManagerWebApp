@@ -19,14 +19,12 @@ class FAQ extends Component {
         })
     }
 
-
-
     render() {
 
-        var userType = JSON.parse(localStorage.getItem("user")).type;
+        var userType = localStorage.getItem("user") != "" ? JSON.parse(localStorage.getItem("user")).type : null;
         var editButton = null;
 
-        if (userType !== undefined) {
+        if (userType !== null) {
             if (userType.toLowerCase() === 'admin') {
                 editButton = <Button href="/faq-admin"><Pencil></Pencil>Edit FAQ</Button>
             }
