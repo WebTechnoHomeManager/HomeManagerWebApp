@@ -2,12 +2,13 @@ import React, { Component, useState } from 'react';
 import { Container, Form, Button, Row, Col, Accordion, Card, Image } from 'react-bootstrap';
 import SearchBar from '../components/SearchBar';
 import PropertyService from '../services/PropertyService';
-import photo from '../images/houses/house1.jpg';
 import userIcon from '../images/icons/user.png';
-import { Envelope, EnvelopeFill, InfoCircle, InfoCircleFill } from 'react-bootstrap-icons';
+import { Envelope, EnvelopeFill, InfoCircle, InfoCircleFill, ArrowLeftCircleFill, ArrowRightCircleFill } from 'react-bootstrap-icons';
 import PublicProfile from '../components/PublicProfile';
 import BookingPopUp from '../components/PopUp/BookingPopUp';
 import LogInPopUp from '../components/PopUp/LogInPopUp';
+import PropertyPhotoService from '../services/PropertyPhotoService';
+import photoPlaceholder from '../images/houses/placeholder.jpg';
 
 class Property extends Component {
 
@@ -23,6 +24,8 @@ class Property extends Component {
                 propertyType: {},
                 owner: {},
             },
+            propertyPhotos: [],
+            photoIndex: 0,
             showPublicProfilePopUp: false,
             showBookingPopUp: false,
             showLogInPopUp: false,
@@ -36,15 +39,32 @@ class Property extends Component {
         this.hideBookingPopUp = this.hideBookingPopUp.bind(this);
         this.hideLogInPopUp = this.hideLogInPopUp.bind(this);
         this.createDone = this.createDone.bind(this);
+        this.getPropertyPhotos = this.getPropertyPhotos.bind(this);
+        this.browsePhoto = this.browsePhoto.bind(this);
     }
 
     componentDidMount() {
         PropertyService.getPropertyById(this.state.id).then(res => {
             this.setState({ property: res.data });
+            this.getPropertyPhotos(res.data)
         })
         console.log(this.props.location.state);
     }
 
+    getPropertyPhotos(property){
+        var propertyId = property.id;
+        var that = this;
+        PropertyPhotoService.getPhotoByPropertyId(propertyId).then((res) => {
+            var photos = res.data;
+            if (photos.length > 0){
+                var blobData = [];
+                for (var index in photos){
+                    blobData.push(photos[index].data);
+                }
+                that.setState({ propertyPhotos: blobData })
+            }
+        })
+    }
     goToMessagingPage() {
         if (this.state.isUserLoggedIn){
             this.props.history.push({
@@ -92,14 +112,43 @@ class Property extends Component {
         });
     }
 
+    browsePhoto(shift){
+        var nbPhotos = this.state.propertyPhotos.length;
+        var currentIndex = this.state.photoIndex;
+        var newIndex = currentIndex + shift;
+        if (newIndex < 0){
+            newIndex = nbPhotos - 1;
+        } else if (newIndex >= nbPhotos){
+            newIndex = 0;
+        }
+        this.setState({ photoIndex: newIndex });
+    }
+
     render() {
+        var blob = this.state.propertyPhotos[this.state.photoIndex];
+        var photo = blob != undefined ? "data:image/png;base64," + blob : photoPlaceholder;
+
         return (
             <>
                 <div>
                     <Container className="my-5">
                         <h3 className="center">{this.state.property.title}</h3>
                         <Row>
-                            <Image src={photo} className="my-3 img-fluid mx-auto d-block banner" style={{ width: "30%" }} />
+                            <div style={{flexDirection:"row", display:"flex", justifyContent: "center", maxHeight:"500px", marginBottom: "10px"}}>
+                                <Button className="arrow-button shadow-none" type="button" >
+                                    <ArrowLeftCircleFill style={{fontSize: "2rem", marginRight: "15px"}}
+                                        onClick={() => this.browsePhoto(-1)}/>
+                                </Button>
+                                <Image src={photo} style={{margin:0, width:"500px"}}/>
+                                <Button className="arrow-button shadow-none" type="button" >
+                                    <ArrowRightCircleFill style={{fontSize: "2rem", marginLeft: "15px"}}
+                                                            onClick={() => this.browsePhoto(1)}/>
+                                </Button>
+                            </div>
+                            <h5 style={{textAlign: "center"}}>
+                                {this.state.propertyPhotos.length == 0 ? "Pas de photo" : "Photo " + (this.state.photoIndex+1) + "/" + this.state.propertyPhotos.length}
+                            </h5>
+                           
                         </Row>
                         <Row>
                             <Col sm={6}>

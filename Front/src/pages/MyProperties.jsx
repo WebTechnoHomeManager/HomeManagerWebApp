@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import PropertyService from '../services/PropertyService';
 import '../css/App.scss';
 import { Container, Row, Col, Card, Button, Form, Accordion, DropdownButton, Dropdown, } from 'react-bootstrap';
-import photoPlaceholder from '../images/houses/placeholder.jpg';
 import { Pencil, Trash, PlusCircle, ArrowDown } from 'react-bootstrap-icons';
 import UpdatePropertyPopUp from '../components/PopUp/UpdatePropertyPopUp';
 import CreatePropertyPopUp from '../components/PopUp/CreatePropertyPopUp';
 import { Redirect } from "react-router-dom";
 import Moment from 'moment';
+import photoPlaceholder from '../images/houses/placeholder.jpg';
 import PropertyPhotoService from '../services/PropertyPhotoService';
 
 class MyProperties extends Component {
@@ -152,7 +152,6 @@ class MyProperties extends Component {
                             .map(property => {
                                 var blob = this.state.propertiesPhotos[property.id];
                                 var photo = blob != undefined ? "data:image/png;base64," + blob : photoPlaceholder
-                                var ere = 2;
                                 return (
                                     <Card className="my-3">
                                         <Card.Header>

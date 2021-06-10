@@ -119,6 +119,18 @@ body, html{
     border-color: $gray1 !important; 
 }
 
+.arrow-button{
+    border-radius: 0.5rem !important;
+    color: $highlight !important;
+    margin: 5px !important;
+    background-color: transparent !important;
+    border: 0px solid black !important;
+}
+.arrow-button:active,
+.arrow-button:active{
+    box-shadow: none !important;
+}
+
 .dropdown-filter{
     text-align: right !important;
     .dropdown-toggle{

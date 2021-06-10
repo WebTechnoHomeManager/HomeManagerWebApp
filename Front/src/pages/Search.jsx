@@ -3,7 +3,8 @@ import { Container, Form, Button, Row, Col, Accordion, Card, Image } from 'react
 import SearchBar from '../components/SearchBar';
 import MapProperties from '../components/MapProperties';
 import PropertyService from '../services/PropertyService';
-import photo from '../images/houses/house1.jpg';
+import PropertyPhotoService from '../services/PropertyPhotoService';
+import photoPlaceholder from '../images/houses/placeholder.jpg';
 
 class Search extends Component {
 
@@ -11,22 +12,49 @@ class Search extends Component {
         super(props);
 
         this.state = {
-            properties: []
+            properties: [],
+            propertiesPhotos: []
         }
 
         this.launchSearch = this.launchSearch.bind(this);
         this.viewProperty = this.viewProperty.bind(this);
         this.selectCard = this.selectCard.bind(this);
+        this.getPropertyPhoto = this.getPropertyPhoto.bind(this);
 
         var dataFromSearch = this.props.location.state;
         if (dataFromSearch) {
             this.launchSearch(dataFromSearch);
         }
+
+    }
+
+    getPropertyPhoto(property){
+        var propertyId = property.id;
+        var that = this;
+        PropertyPhotoService.getPhotoByPropertyId(propertyId).then((res) => {
+            var photos = res.data;
+            var firstPhoto = photos[0];
+            var blobData = ""
+            if (firstPhoto != undefined){
+                var propertyId = firstPhoto.property.id;
+                blobData = photos[0].data
+
+                that.setState(prevState => ({
+                    propertiesPhotos: {
+                        ...prevState.propertiesPhotos,
+                        [propertyId]: blobData
+                    }
+                }))
+            }
+        })
     }
 
     launchSearch(data) {
-        PropertyService.getPropertiesBy(data).then((resp) => {
-            this.setState({ properties: resp.data });
+        PropertyService.getPropertiesBy(data).then((res) => {
+            this.setState({ properties: res.data });
+            for (var index in res.data){
+                this.getPropertyPhoto(res.data[index]);
+            }
         });
     }
 
@@ -66,43 +94,47 @@ class Search extends Component {
                         <h4>{this.state.properties.length} result(s)</h4>
                         <Col sm={6} id="search-results-list">
                             {
-                                this.state.properties.map(property =>
-                                    <Card id={"property"+property.id} className="my-3 card-with-link" key={"property" + property.id}
-                                        onClick={() => this.viewProperty(property.id)}>
-                                        <Card.Body>
-                                            <Row>
-                                                <Col sm={6}>
-                                                    <Card.Img variant="top" src={photo} />
-                                                </Col>
-                                                <Col sm={6}>
-                                                    <Card.Title>{property.title}</Card.Title>
-                                                    <Card.Text>{property.city}</Card.Text>
-                                                    <Card.Text>For {property.totalOccupancy} occupant(s)</Card.Text>
-                                                    <Card.Text>Required services:
-                                                        <ul>
-                                                            {property.propertyServices
-                                                                .sort((a, b) => a.id > b.id ? 1 : -1)
-                                                                .map(service =>
-                                                                    <li key={service.id} className="card-list-items">{service.name}</li>
-                                                                )}
-                                                        </ul>
-                                                    </Card.Text>
-                                                    <Card.Text>Constraints to respect:
-                                                        <ul>
-                                                            {property.propertyRestrictions
-                                                                .sort((a, b) => a.id > b.id ? 1 : -1)
-                                                                .map(restriction =>
-                                                                    <li key={restriction.id} className="card-list-items">{restriction.name}</li>
-                                                                )}
-                                                        </ul>
-                                                    </Card.Text>
-                                                    {/* <Card.Text>
-                                                        <small className="text-muted">Last updated 3 mins ago</small>
-                                                    </Card.Text> */}
-                                                </Col>
-                                            </Row>
-                                        </Card.Body>
-                                    </Card>
+                                this.state.properties.map(property =>{
+                                    var blob = this.state.propertiesPhotos[property.id];
+                                    var photo = blob != undefined ? "data:image/png;base64," + blob : photoPlaceholder;
+                                    return (
+                                        <Card id={"property"+property.id} className="my-3 card-with-link" key={"property" + property.id}
+                                            onClick={() => this.viewProperty(property.id)}>
+                                            <Card.Body>
+                                                <Row>
+                                                    <Col sm={6}>
+                                                        <Card.Img variant="top" src={photo} />
+                                                    </Col>
+                                                    <Col sm={6}>
+                                                        <Card.Title>{property.title}</Card.Title>
+                                                        <Card.Text>{property.city}</Card.Text>
+                                                        <Card.Text>For {property.totalOccupancy} occupant(s)</Card.Text>
+                                                        <Card.Text>Required services:
+                                                            <ul>
+                                                                {property.propertyServices
+                                                                    .sort((a, b) => a.id > b.id ? 1 : -1)
+                                                                    .map(service =>
+                                                                        <li key={service.id} className="card-list-items">{service.name}</li>
+                                                                    )}
+                                                            </ul>
+                                                        </Card.Text>
+                                                        <Card.Text>Constraints to respect:
+                                                            <ul>
+                                                                {property.propertyRestrictions
+                                                                    .sort((a, b) => a.id > b.id ? 1 : -1)
+                                                                    .map(restriction =>
+                                                                        <li key={restriction.id} className="card-list-items">{restriction.name}</li>
+                                                                    )}
+                                                            </ul>
+                                                        </Card.Text>
+                                                        {/* <Card.Text>
+                                                            <small className="text-muted">Last updated 3 mins ago</small>
+                                                        </Card.Text> */}
+                                                    </Col>
+                                                </Row>
+                                            </Card.Body>
+                                        </Card>
+                                    )}
                                 )
                             }
 
