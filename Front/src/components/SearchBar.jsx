@@ -120,7 +120,7 @@ class SearchBar extends Component {
         } else if (locations.length != 0){
             return locations.length + " selected cities";
         }
-        return "Locations...";
+        return "Cities...";
     }
 
     displayServicesValue(){

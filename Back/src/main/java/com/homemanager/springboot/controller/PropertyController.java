@@ -140,6 +140,12 @@ public class PropertyController {
 		for (Reservation reservation : reservations) {
 			reservationRepository.delete(reservation);
 		}
+		
+		// delete photos
+		List<PropertyPhoto> photos = propertyPhotoRepository.findByProperty_Id(id);
+		for (PropertyPhoto photo : photos) {
+			propertyPhotoRepository.delete(photo);
+		}
 
 		propertyRepository.delete(property);
 		
