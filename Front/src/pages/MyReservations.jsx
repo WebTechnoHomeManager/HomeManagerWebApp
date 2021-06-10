@@ -96,9 +96,11 @@ class MyReservations extends Component {
             return <Redirect to='/' />;
         }
         return (
-            <div>
+            <Container className="my-5" fluid>
                 <h1 style={{ textAlign: 'center', margin: '20px' }}>My reservations</h1>
-                <DropdownButton className="col-auto dropdown-filter" style={{ marginBottom: "10px" }}
+                <div  className="div-center-content" >
+                    <div style={{ width: '70%' }}>
+                <DropdownButton className="col-auto dropdown-filter" style={{ marginBottom: "-15px" }}
                     title={this.getFilterTitle()} >
                     <Dropdown.Item onClick={() => this.displayReservationsToCome()}
                         active={this.state.selectedOption === 1 || this.state.selectedOption === undefined}>
@@ -109,7 +111,8 @@ class MyReservations extends Component {
                         Past reservations
                     </Dropdown.Item>
                 </DropdownButton>
-
+                </div>
+                </div>
                 {this.state.selectedOption === 0 &&
                     this.state.reservations
                         .filter(reservation => new Date(reservation.end_date) < new Date())
@@ -219,7 +222,7 @@ class MyReservations extends Component {
                         )
                 }
 
-            </div >
+            </Container >
         )
     }
 }
