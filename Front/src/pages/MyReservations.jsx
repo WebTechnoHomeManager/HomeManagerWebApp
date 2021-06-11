@@ -30,32 +30,33 @@ class MyReservations extends Component {
         ReservationService.getReservationsByReservationUserId(this.state.user.id).then((res) => {
             this.setState({ reservations: res.data });
             for (var index in res.data) {
-                //this.getPropertyPhoto(res.data[index].property);
+                this.getPropertyPhoto(res.data[index].property);
             }
         });
     }
 
     getPropertyPhoto(property) {
-        var propertyId = property.id;
-        var that = this;
-        PropertyPhotoService.getPhotoByPropertyId(propertyId).then((res) => {
-            var photos = res.data;
-            var firstPhoto = photos[0];
-            var blobData = ""
-            if (firstPhoto != undefined) {
-                var propertyId = firstPhoto.property.id;
-                blobData = photos[0].data
-
-                that.setState(prevState => ({
-                    propertiesPhotos: {
-                        ...prevState.propertiesPhotos,
-                        [propertyId]: blobData
-                    }
-                }))
-            }
-        })
+        if (property != undefined){
+            var propertyId = property.id;
+            var that = this;
+            PropertyPhotoService.getPhotoByPropertyId(propertyId).then((res) => {
+                var photos = res.data;
+                var firstPhoto = photos[0];
+                var blobData = ""
+                if (firstPhoto != undefined) {
+                    var propertyId = firstPhoto.property.id;
+                    blobData = photos[0].data
+    
+                    that.setState(prevState => ({
+                        propertiesPhotos: {
+                            ...prevState.propertiesPhotos,
+                            [propertyId]: blobData
+                        }
+                    }))
+                }
+            })
+        }
     }
-
 
     goToMessagingPage(owner) {
         this.props.history.push({
@@ -138,7 +139,7 @@ class MyReservations extends Component {
                                                         <Card.Title style={{margin:0}}>{pastReservation.property.title}</Card.Title>
                                                         <Card.Text>{pastReservation.property.description}</Card.Text>
 
-                                                        <Card.Text>Total occupancy: {pastReservation.totalOccupancy}</Card.Text>
+                                                        <Card.Text>Total occupancy: {pastReservation.property.totalOccupancy}</Card.Text>
                                                         <Card.Text>Address: {pastReservation.property.address}</Card.Text>
                                                         <Card.Text>Services: {pastReservation.property.propertyServices.map(function (d, idx) {
                                                             return (<li key={idx}>{d.name}</li>)
@@ -192,7 +193,7 @@ class MyReservations extends Component {
                                                     <Col>
                                                         <Card.Title style={{margin:0}}>{upcomingReservation.property.title}</Card.Title>
                                                         <Card.Text>{upcomingReservation.property.description}</Card.Text>
-                                                        <Card.Text>Total occupancy: {upcomingReservation.totalOccupancy}</Card.Text>
+                                                        <Card.Text>Total occupancy: {upcomingReservation.property.totalOccupancy}</Card.Text>
                                                         <Card.Text>Address: {upcomingReservation.property.address}</Card.Text>
                                                         <Card.Text>Services: {upcomingReservation.property.propertyServices.map(function (d, idx) {
                                                             return (<li key={idx}>{d.name}</li>)

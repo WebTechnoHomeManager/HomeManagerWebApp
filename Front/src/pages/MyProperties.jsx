@@ -171,6 +171,7 @@ class MyProperties extends Component {
                                                 </Col>
                                                 <Col>
                                                     <Card.Text>Type: {property.propertyType.name}</Card.Text>
+                                                    <Card.Text>Description: {property.description}</Card.Text>
                                                     <Card.Text>Total occupancy: {property.totalOccupancy}</Card.Text>
                                                     <Card.Text>Address: {property.address}</Card.Text>
                                                     <Card.Text>Services: {property.propertyServices.map(function (d, idx) {
